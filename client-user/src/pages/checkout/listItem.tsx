@@ -3,7 +3,7 @@ import { CartContext } from "../../context/cartContext"
 import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { CartType } from "../../types/type"
-import Product_layout_02 from "../../pages/product/layout/product_layout_02"
+import Product_layout_02 from "../../components/product/layout_02"
 
 const ListItem = () => {
   const { cart } = useContext(CartContext)

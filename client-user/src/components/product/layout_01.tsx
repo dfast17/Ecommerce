@@ -1,13 +1,13 @@
 import { Card, Button, CardBody } from "@nextui-org/react"
-import { StateContext } from "../../../context/stateContext"
+import { StateContext } from "../../context/stateContext"
 import { useContext } from "react"
 import { Fade } from "react-awesome-reveal"
 import { TbListDetails } from "react-icons/tb";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { ProductType } from "types/type";
-import { CartContext } from "../../../context/cartContext";
-import { percentDiscount } from "../../../utils/utils";
+import { CartContext } from "../../context/cartContext";
+import { percentDiscount } from "../../utils/utils";
 const Product_Layout_01 = ({ data,name }: { data: ProductType,name:string }) => {
     const { type } = useContext(StateContext)
     const { addItemCart } = useContext(CartContext)

@@ -1,7 +1,7 @@
 import { ProductFilterType, ProductType } from 'types/type';
 import { StateContext } from '../../context/stateContext'
 import { useContext, useEffect, useState } from 'react'
-import Product_Layout_01 from './layout/product_layout_01';
+import Product_Layout_01 from '../../components/product/layout_01';
 import { Button, Pagination } from '@nextui-org/react';
 import { pagination } from '../../utils/utils';
 import FilterType from './layout/filterType';

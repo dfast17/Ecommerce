@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { CartContext } from "../../context/cartContext"
 import { CartType } from "../../types/type"
-import Product_layout_02 from "../../pages/product/layout/product_layout_02"
+import Product_layout_02 from "../../components/product/layout_02"
 import { StateContext } from "../../context/stateContext"
 import { RiDeleteBinFill } from "react-icons/ri";
 import { Button } from "@nextui-org/react"

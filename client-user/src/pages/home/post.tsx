@@ -1,7 +1,7 @@
 import { Fade } from 'react-awesome-reveal'
 import { StateContext } from '../../context/stateContext'
 import { useContext } from 'react'
-import PostLayout from '../post/layout/postLayout'
+import PostLayout from '../../components/post/post_layout'
 import { PostType } from '../../types/type'
 
 const Post = () => {

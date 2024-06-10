@@ -1,5 +1,5 @@
 import { Fade } from 'react-awesome-reveal';
-import Product_Layout_01 from '../product/layout/product_layout_01';
+import Product_Layout_01 from '../../components/product/layout_01';
 import { StateContext } from '../../context/stateContext';
 import { useContext, useEffect, useState } from 'react'
 
