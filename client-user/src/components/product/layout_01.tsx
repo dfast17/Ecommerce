@@ -15,7 +15,7 @@ const Product_Layout_01 = ({ data,name }: { data: ProductType,name:string }) => 
     const navigateDetail = () => {
         navigate(`/product/detail/${data.nameType}/${data.idProduct}/${data.nameProduct.split(" ").join("-")}`)
     }
-    return <Fade triggerOnce fraction={0.6} className="w-[20%] h-auto min-w-[200px] m-1 "  delay={1}>
+    return <Fade triggerOnce fraction={0.6} className="w-[20%] h-auto min-w-[200px] m-1 overflow-hidden"  delay={1}>
         <Card className="w-full h-auto min-h-[150px] rounded-md border border-solid border-zinc-300">
             <CardBody className="relative w-full h-auto flex flex-col items-center justify-center cursor-pointer">
                 <div className="absolute top-0 right-1 w-auto min-w-[80px] text-center font-bold my-1 z-10 bg-zinc-700 rounded-md text-white px-1">
@@ -42,13 +42,18 @@ const Product_Layout_01 = ({ data,name }: { data: ProductType,name:string }) => 
                         <Button size="sm" className="w-[90%] sm:w-4/5 lg:w-[49%] xl:w-[45%] bg-zinc-600 my-1 lg:my-0 text-white truncate">{data?.brand.toUpperCase()}</Button>
                         <Button size="sm" className="w-[90%] sm:w-4/5 lg:w-[49%] xl:w-[45%] bg-zinc-600 my-1 lg:my-0 text-white truncate">{data?.nameType.toUpperCase()}</Button>
                     </div>
+                    {/* chi tiết sản phẩm, 
+                     dữ liệu truyền vào nếu có detail thì sẽ hiển thị bằng cách filter từ state type trong StateContext sau đó sẽ slice còn 4 key  
+                     rồi dùng map để hien thị chi tiết dựa trên các key đó
+                    */}
                     {data?.detail && <div className="info w-[90%] h-auto flex flex-col justify-center my-1">
-                        {type?.filter((f: any) => f.nameType === data?.nameType)[0].detail.map((d: any) => d.name).map((k: string) =>
+                        {type?.filter((f: any) => f.nameType === data?.nameType)[0].detail.map((d: any) => d.name).slice(0,4).map((k: string) =>
                             <div className="w-full truncate" key={`${name}-${k}-${data.idProduct}`}>
                                 <span className="truncate font-semibold">{data?.detail?.map((d: any) => `${[k.toUpperCase()]}:${d[k]}`)}</span>
                             </div>
                         )}
                     </div>}
+
                     <div className="product-btn w-[90%] flex flex-wrap justify-around">
                         <Button size="sm" className="w-full xl:w-3/4 font-semibold rounded-md bg-[#0f172a] text-zinc-50" onClick={() => addItemCart(data)}>
                             <AiOutlineShoppingCart className="text-[15px]"/>Add to cart

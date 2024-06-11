@@ -33,6 +33,7 @@ const Auth = () => {
           SaveToken('rTk', res.data.refreshToken, res.data.expiredR)
           setLocalStorage('isLogs', true)
           setIsLogin(true)
+          SaveToken('login','true',res.data.expiredR)
           navigate('/')
         }
         (typeAuth === "register" || typeAuth === "forgot") && setFormName("signIn")

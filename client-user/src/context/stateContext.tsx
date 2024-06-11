@@ -14,6 +14,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     const [post,setPost] = useState<any[] | null>(null)
     const [listCheckOut,setListCheckOut] = useState<number[] | []>([])
     const [isLoading,setIsLoading] = useState<boolean>(false)
+    
     return (
         <StateContext.Provider value={{
             order,setOrder,
