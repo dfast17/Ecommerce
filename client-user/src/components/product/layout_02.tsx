@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { CartType } from "../../types/type"
-import { CartContext } from ".../../context/cartContext"
+import { CartContext } from "../../context/cartContext"
 import { percentDiscount } from "../../utils/utils"
 
 const Product_layout_02 = ({ data,isButton }: { data: CartType,isButton:boolean }) => {

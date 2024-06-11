@@ -1,9 +1,9 @@
 import { useContext } from "react"
-import LoadingComponent from "../loading/loadingComponent"
+import LoadingComponent from "../components/loading/loadingComponent"
 import { useLocation } from "react-router-dom"
-import { StateContext } from "../../context/stateContext"
+import { StateContext } from "../context/stateContext"
 import Header from "./header"
-import Auth from "../../pages/auth/auth"
+import Auth from "../pages/auth/auth"
 import ScrollToTop from "./scrollToTop"
 
 
