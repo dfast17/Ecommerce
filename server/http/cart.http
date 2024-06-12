@@ -1,0 +1,10 @@
+PATCH http://localhost:3001/cart
+Content-Type: application/json
+
+{
+    "id":143,
+    "value":1
+}
+###
+GET http://localhost:3001/ware
+Content-Type: application/json

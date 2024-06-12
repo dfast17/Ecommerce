@@ -7,12 +7,12 @@ import { pagination } from "../../utils/utils"
 const Purchase = () => {
   const { purchase } = useContext(StateContext)
   const [activePage, setActivePage] = useState<number>(1)
-  return <div className="user-purchase w-full sm:w-4/5 lg:w-2/4 h-auto flex flex-wrap justify-center items-center p-1">
+  return <div className="user-purchase w-full h-auto min-h-[500px] flex flex-wrap justify-center content-start p-1">
     <div className="product w-full h-auto flex flex-wrap justify-around content-start">
-      <div className="w-full text-zinc-900 flex items-center justify-center font-han text-[40px] font-bold"> Purchase Order</div>
-      <div className="w-full flex flex-wrap justify-between">
-        {purchase?.slice(0,6).map((p:OrderDetailType) => <div 
-        className="detail-purchase w-full md:w-[48%] max-h-[160px] min-h-[100px] flex rounded-md text-zinc-900 my-1 bg-zinc-700 hover:bg-zinc-500 transition-all cursor-pointer" 
+      <div className="w-full text-zinc-900 flex items-center justify-center font-han text-[35px] font-bold"> Purchase Order</div>
+      <div className="w-full flex flex-wrap justify-center items-center">
+        {purchase?.slice((activePage - 1) * 4, activePage * 4).map((p:OrderDetailType) => <div 
+        className="detail-purchase w-4/5 max-h-[140px] min-h-[100px] flex rounded-md text-zinc-900 my-1 bg-zinc-700 hover:bg-zinc-500 transition-all cursor-pointer" 
         key={p.id}>
           <div className="imagesProduct w-2/5 sm:w-1/5 flex items-center justify-center">
             <img src={p.imgProduct} className="max-h-[160px] object-contain" />
@@ -28,7 +28,7 @@ const Purchase = () => {
         </div>)}
       </div>
       {purchase && purchase.length !== 0 && <Pagination isCompact size="lg" showControls page={activePage} 
-      total={pagination(6, purchase.length)} initialPage={1} onChange={(e) => { setActivePage(e) }} />}
+      total={pagination(4, purchase.length)} initialPage={1} onChange={(e) => { setActivePage(e) }} />}
     </div>
   </div>
 }

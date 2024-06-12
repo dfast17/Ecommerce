@@ -65,13 +65,13 @@ const PostsDetail = () => {
                     }
                 })
     }
-    return <div className="PostsDetail w-full h-auto min-h-[90vh] flex flex-row items-start justify-evenly">
-        <div className="w-3/5 h-auto py-10">
+    return <div className="PostsDetail w-full h-auto min-h-[90vh] flex flex-col xl:flex-row items-start justify-evenly">
+        <div className="w-[99%] xl:w-3/5 h-auto py-10">
             {data !== null && data.data.map((e: any) => <div className="ql-snow" key={e.idPost}>
                 <div className={`ql-editor text-slate-700 bg-transparent`} dangerouslySetInnerHTML={{ __html: e.valuesPosts }} />
             </div>)}
         </div>
-        <div className="w-1/4 h-auto min-h-screen flex flex-col justify-start">
+        <div className="w-3/5 xl:w-1/4 h-auto min-h-screen flex flex-col justify-start">
             <div className="form-comment w-full flex flex-col justify-start pt-10">
                 <textarea {...register('message', { required: true })} rows={5}
                     value={value}

@@ -1,0 +1,73 @@
+POST http://localhost:3001/auth/login
+Content-Type: application/json
+
+{
+    "email":"phathuu12@gmail.com"
+}
+
+###
+GET http://localhost:3001/order/user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InBoYXRodXUxMiIsImlhdCI6MTcxNTU4MjY0MCwiZXhwIjoxNzE2MDE0NjQwfQ.AY4oTmxBW4Ec6XhF8fqmp13Vj_dfEzSTN8X24H9WDCA
+
+###
+GET http://localhost:3001/order/purchase
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InBoYXRodXUxMiIsImlhdCI6MTcxNTU4MjY0MCwiZXhwIjoxNzE2MDE0NjQwfQ.AY4oTmxBW4Ec6XhF8fqmp13Vj_dfEzSTN8X24H9WDCA
+
+###
+POST http://localhost:3001/order/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InBoYXRodXUxMiIsImlhdCI6MTcxNTk1NDE5NSwiZXhwIjoxNzE2Mzg2MTk1fQ.n9OmYV4cMoH5vvSxrblOiGVoY_bN6YpbwxAEEaajenY
+
+{
+    "order":[{
+        "fullName":"test",
+        "phone":"012345678",
+        "address":"test address",
+        "method":"Pay by credit card/visa",
+        "costs":0.85,
+        "edd":"2024-05-10",
+        "paymentStatus":"paid"
+    }],
+    "listId":[138,139]
+}
+
+###
+GET http://localhost:3001/user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InBoYXRodXUxMiIsImlhdCI6MTcxNDI4Nzk3OCwiZXhwIjoxNzE0Mjg4NTc4fQ.ycE7nZmoRzFSMmr6qm46w5XaiUbjxflbLBCVoF0Cu4k
+
+###
+PATCH http://localhost:3001/user/update
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRmYXN0MTciLCJpYXQiOjE3MTQyMjE1NjcsImV4cCI6MTcxNDIyMjE2N30.6NZWAhf5e5x530zj8ReE6uZsThRZbuFcVTuOz7MU6PQ
+
+{
+    "detail":[
+        {
+            "nameUser":"New name user"
+        }
+    ]
+}
+or
+{
+    "table":"carts",
+    "col":"idCart",
+    "cValue":4,
+    "detail":[
+        {
+            "countProduct":2
+        }
+    ]
+}
+
+
+###
+PATCH http://localhost:3001/order
+Content-Type: application/json
+
+{
+    "id":"phathuu1232024-95281525",
+    "status":"Thất bại"
+}

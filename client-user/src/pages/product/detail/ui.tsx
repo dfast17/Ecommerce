@@ -21,7 +21,7 @@ const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number
             <div className="lg:order-2 lg:ml-5">
               {/* current images */}
               <div className="max-w-xl overflow-hidden rounded-lg">
-                <img className="h-full w-full max-w-full object-cover" src={currentImage} alt="" />
+                <img className="h-full w-full max-w-full max-h-[320px] object-cover" src={currentImage} alt="" />
               </div>
             </div>
 
