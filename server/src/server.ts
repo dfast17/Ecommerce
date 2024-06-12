@@ -16,7 +16,7 @@ import tableRoute from "./routes/table"
 
 const app = express();
 const port = process.env.PORT ||3030;
-const redis = new Redis({
+/*const redis = new Redis({
   host: process.env.HOST_REDIS,
   port: Number(process.env.PORT_REDIS),
 });
@@ -28,7 +28,7 @@ redis.ping((err, result) => {
     console.log('Connected to Redis:', result);
   }
   redis.quit();
-});
+});*/
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

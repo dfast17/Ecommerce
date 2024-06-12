@@ -1,0 +1,68 @@
+POST http://localhost:3001/api/table
+Content-Type: application/json
+
+{
+    "table":"tb_test1",
+    "column":[
+        {
+            "name": "col_1",
+            "datatypes": "varchar",
+            "isNull": true,
+            "limit": 20
+        },
+        {
+            "name": "col_2",
+            "datatypes": "varchar",
+            "isNull": false,
+            "limit": 20
+        },
+        {
+            "name": "col_3",
+            "datatypes": "integer",
+            "isNull": true,
+            "limit": 0
+        }
+    ]
+}
+
+###
+DELETE http://localhost:3001/api/table
+Content-Type: application/json
+
+{
+    "table":"tb_test1"
+}
+
+###
+PUT http://localhost:3001/api/table
+Content-Type: application/json
+
+{
+    "method":"add",
+    "table":"tb_test1",
+    "colAdd":[
+        {
+            "name": "col_3",
+            "datatypes": "integer",
+            "isNull": true,
+            "limit": 0
+        },
+        {
+            "name": "col_4",
+            "datatypes": "date",
+            "isNull": true,
+            "limit": 0
+        }
+    ]
+
+}
+###
+PUT http://localhost:3001/api/table
+Content-Type: application/json
+
+{
+    "method":"remove",
+    "table":"tb_test1",
+    "colDel":["col_3","col_4"]
+}
+
