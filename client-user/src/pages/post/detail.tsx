@@ -78,7 +78,8 @@ const PostsDetail = () => {
                     onChange={(e) => setValue(e.target.value)}
                     className="rounded-md p-6 w-full text-sm outline-none border-0 bg-zinc-700 text-white placeholder-gray-400"
                     placeholder="Write a comment..." required />
-                <Button className="w-[200px] h-[40px] my-2 bg-zinc-800 text-zinc-100" size="sm" onClick={() => handleSubmit(onSubmit)()}>Send</Button>
+                <Button className="w-[200px] h-[40px] my-2 bg-zinc-800 text-zinc-100" size="sm" 
+                onClick={() => handleSubmit(onSubmit)()}>Send</Button>
             </div>
             <Code radius="sm" className="flex items-center justify-center my-2 font-bold cursor-pointer bg-zinc-600 text-zinc-50">Comment for post</Code>
             <div className="comment-detail w-full flex flex-wrap items-center justify-center">

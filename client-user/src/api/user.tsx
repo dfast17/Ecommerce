@@ -23,7 +23,7 @@ export const updateUser = async (token: string, data: UserUpdateType) => {
     })
         .then(res => res.json())
 }
-export const userAddress = async (token:string, data:UserAddressAddType) => {
+export const userAddress = async (token: string, data: UserAddressAddType) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user/address`, {
         method: "POST",
         headers: {
@@ -80,10 +80,22 @@ export const cartRemove = async (listId: number[] | string[]) => {
 
 }
 export const getApiProvince = async () => {
-    return fetch(`https://vapi.vnappmob.com/api/province`)
+    return fetch('https://vapi.vnappmob.com/api/province/', {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
         .then(res => res.json())
 }
 export const getProvincesDetail = async (type: string, id: string) => {
-    return fetch(`https://vapi.vnappmob.com/api/province/${type}/${id}`)
+    return fetch(`https://vapi.vnappmob.com/api/province/${type}/${id}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
         .then(res => res.json())
 }

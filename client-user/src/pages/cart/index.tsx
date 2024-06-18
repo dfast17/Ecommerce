@@ -31,8 +31,8 @@ const Cart = () => {
             </div>)}
         </div>
         <div className="check_out_demo w-full sm:w-4/5 lg:w-1/5 h-[200px] lg:h-4/5 flex flex-col items-center justify-start pt-2">
-            <div className="w-4/5 flex flex-col justify-around min-w-[250px] h-[80px] text-zinc-900 rounded-md">
-                <div className="count w-full flex justify-between bg-zinc-900 text-white rounded-md p-2">
+            <div className="w-4/5 flex flex-col justify-around h-[100px] text-zinc-900 rounded-md">
+                <div className="count w-full flex justify-between bg-zinc-900 text-white rounded-md p-2 my-1">
                     Total count:
                     <span>
                         {
@@ -44,7 +44,7 @@ const Cart = () => {
                         }
                     </span>
                 </div>
-                <div className="count w-full flex justify-between bg-zinc-900 text-white rounded-md p-2">
+                <div className="count w-full flex justify-between bg-zinc-900 text-white rounded-md p-2 my-1">
                     Total price:
                     <span>
                         ${

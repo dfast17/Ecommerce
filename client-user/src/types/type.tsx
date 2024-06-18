@@ -97,7 +97,6 @@ export interface OrderType{
     edd:string,
     paymentStatus:"paid" | "unpaid",
     orderStatus:string,
-    detail:OrderDetailType[]
 }
 export interface OrderDetailType{
     id?:string,

@@ -30,7 +30,6 @@ const ModalEdit = ({ setModalName }: Modals) => {
     token && changedKeys.length !== 0 && updateUser(token, dataUpdate)
       .then(res => {
         if (res.status === 200) {
-          console.log(dataUpdate)
           updated_Store_User(dataUpdate.detail[0])
         }
         alert(res.message)

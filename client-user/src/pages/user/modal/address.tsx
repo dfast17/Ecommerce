@@ -1,6 +1,6 @@
 import { Button, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { Modals, UserAddressAddType } from "../../../types/type";
+import {  UserAddressAddType } from "../../../types/type";
 import { getApiProvince, getProvincesDetail, userAddress } from "../../../api/user";
 import { GetToken } from "../../../utils/token";
 import { userStore } from "../../../store/user";
@@ -11,7 +11,7 @@ interface ResultAddress {
   details: string;
   [key: string]: string; // Chữ ký chỉ mục này cho phép bạn truy cập vào thuộc tính của object bằng một key kiểu string
 }
-const ModalAddress = ({ setModalName }: Modals) => {
+const ModalAddress = () => {
   const { user, add_address } = userStore()
   const [province, setProvince] = useState<any | null>(null);
   const [idProvinces, setIdProvinces] = useState<string | null>(null);
@@ -111,7 +111,7 @@ const ModalAddress = ({ setModalName }: Modals) => {
           </form>
         </ModalBody>
         <ModalFooter>
-          <Button color="danger" variant="light" onPress={() => { setModalName && setModalName(""); onClose() }}>
+          <Button color="danger" variant="light" onPress={() => { onClose() }}>
             Close
           </Button>
           <Button color="success" className="text-white font-bold" onClick={submitData}>Create</Button>

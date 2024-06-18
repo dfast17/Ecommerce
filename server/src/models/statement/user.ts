@@ -53,7 +53,6 @@ export default class UserStatement {
       .where("staff.idStaff", "=", idStaff)
       .execute();
   }
-  //#create public function get all user
   public getAllUser = async () => {
     return await db
       .selectFrom("users")

@@ -11,6 +11,7 @@ import PaymentPaypal from "./paypal"
 import ModalAddress from "../../pages/user/modal/address"
 import { GetToken } from "../../utils/token"
 import { insertPayment, orderInsert } from "../../api/order"
+import { userStore } from "../../store/user"
 interface FormInfo {
   nameUser: string,
   phone: string,
@@ -36,7 +37,8 @@ const getNextDay = (currentDate:Date, daysToAdd:number) => {
 
 const InfoCheckout = () => {
   const { cart } = useContext(CartContext)
-  const { user, listCheckOut } = useContext(StateContext)
+  const { listCheckOut } = useContext(StateContext)
+  const {user} = userStore()
   const { register, handleSubmit } = useForm<FormInfo>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [data, setData] = useState<any[] | []>([])
