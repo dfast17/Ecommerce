@@ -1,9 +1,8 @@
 import { Button, Code, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
-import { StateContext } from '../../context/stateContext'
-import { useContext } from 'react'
 import { UserAddressType, UserType } from 'types/type'
+import { userStore } from '../../store/user'
 const ModalEditAddress = ({ currentAddress, setCurrentAddress }: { currentAddress: string, setCurrentAddress: React.Dispatch<React.SetStateAction<string>> }) => {
-    const { user } = useContext(StateContext)
+    const { user } = userStore()
     return <ModalContent>
         {(onClose) => (
             <>
