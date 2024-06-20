@@ -14,8 +14,6 @@ import type {
   SaleDetailType,
   SaleType,
   StaffType,
-  TransportDetailType,
-  TransportType,
   TypeDetail,
   TypeProduct,
   UserAddressType,
@@ -39,8 +37,8 @@ export interface Database {
   products: ProductType;
   sale: SaleType;
   saleDetail: SaleDetailType;
-  ord: TransportType;
-  ordDetail: TransportDetailType;
+  order: OrderType;
+  order_Detail: OrderDetailType;
   type: TypeProduct;
   typedetail: TypeDetail;
   userAddress: UserAddressType;
