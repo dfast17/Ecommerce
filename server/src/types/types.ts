@@ -71,7 +71,7 @@ export interface TypeDetail{
   displayname:string,
   displayorder:number
 }
-export interface TransportType{
+export interface OrderType{
   idTrans:number,
   idUser:string | null,
   idShipper:string,
@@ -84,34 +84,13 @@ export interface TransportType{
   paymentStatus:'paid' | 'unpaid',
   orderStatus:string
 }
-export interface TransportDetailType{
+export interface OrderDetailType{
   idOrdDetail:number,
   idOrder:number,
   idProduct:number,
   countProduct:number,
   discount:number,
   status:string
-}
-
-export interface OrderType{
-  idBill?:string, //id for bill table
-  idFail?:string, // id for failOrder table
-  idUser:string,
-  infoOrder:string,
-  costs?:number, // this is column in bill table
-  dateBuy?:Date, // this is column in bill table
-  note?:string, // this is column in failOrder table
-  detailReason?:string, // this is column in failOrder table
-  total:string // this is column in bill table
-}
-
-export interface OrderDetailType{
-  idDetail?:number,//id for billDetail table
-  idFailDetail?:number, //id for failOrderDetail table
-  idProduct:number,
-  countProduct:number,
-  discount?:number, // this is column in billDetail table
-  total?:number // this is column in billDetail table
 }
 
 export interface WarehouseType{
