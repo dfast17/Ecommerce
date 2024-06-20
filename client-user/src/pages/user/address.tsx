@@ -27,7 +27,7 @@ const Address = () => {
     <div className="address w-full h-full text-zinc-900 mt-10">
       {user &&
         user[0]?.address.map((a: any) => (
-          <div className="address-detail w-[90%] my-2 !text-zic-100 flex" key={a.idAddress}>
+          <div className="address-detail w-[98%] my-2 !text-zic-100 flex" key={a.idAddress}>
             <Code
               radius="sm"
               style={{ color: "white" }}

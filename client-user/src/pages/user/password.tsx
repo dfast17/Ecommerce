@@ -24,7 +24,7 @@ const Password = () => {
         alert(res.message)
       })
   }
-  return <div className='password w-full h-auto xl:h-screen flex flex-col justify-center items-center'>
+  return <div className='password w-full h-[500px] flex flex-col justify-center items-center my-auto'>
     <form className="w-2/4">
       <Input {...register('current', { required: true })} type="text" label="Current password" className="w-full my-2" radius="sm" />
       <Input {...register('new', { required: true })} type="text" label="New password" className="w-full my-2" radius="sm" />
