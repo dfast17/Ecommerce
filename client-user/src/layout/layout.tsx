@@ -11,7 +11,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation()
   const { isLoading } = useContext(StateContext)
   return location.pathname !== "/auth" ?
-    <section className="w-full !h-screen flex flex-wrap content-start justify-center">
+    <section className="w-full h-auto min-h-screen flex flex-wrap content-start justify-center">
       {isLoading && <LoadingComponent />}
       <Header />
       <main className="w-full h-auto min-h-[99vh] overflow-y-auto">

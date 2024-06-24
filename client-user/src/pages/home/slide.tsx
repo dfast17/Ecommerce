@@ -1,8 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { StateContext } from "../../context/stateContext";
-import { BsPlusLg } from "react-icons/bs";
-import { CgBrowser } from "react-icons/cg";
-import { VscExtensions } from "react-icons/vsc";
 const  Slideshow = () => {
   const { product } = useContext(StateContext);
   const [index, setIndex] = useState(0);
@@ -77,23 +74,7 @@ const  Slideshow = () => {
 
   return (
     <div className="slideshow">
-      <div className="tabTitle w-full lg:w-4/5 h-[50px] flex justify-center items-center mx-auto rounded-lg bg-zinc-600 mb-6 transition-all">
-        <div className="dot w-1/5 md:w-[8%] h-full flex justify-around items-center">
-          <div className="w-[20px] h-[20px] bg-red-600 rounded-full cursor-pointer"></div>
-          <div className="w-[20px] h-[20px] bg-yellow-600 rounded-full cursor-pointer"></div>
-          <div className="w-[20px] h-[20px] bg-green-600 rounded-full cursor-pointer"></div>
-        </div>
-        <input
-          type="text"
-          className="w-2/4 md:w-4/5 h-3/5 rounded-lg bg-zinc-900 text-white px-2 outline-none"
-          defaultValue={"Tech Store Version II"}
-        />
-        <div className="extension w-[30%] md:w-[12%] h-full flex justify-around items-center">
-          <BsPlusLg className="w-[20px] h-[20px] text-white" />
-          <CgBrowser className="w-[20px] h-[20px] text-white" />
-          <VscExtensions className="w-[20px] h-[20px] text-white" />
-        </div>
-      </div>
+
       <div
         className="slideshowSlider"
         style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
