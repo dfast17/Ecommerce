@@ -71,7 +71,7 @@ const Header = () => {
       <img src={logo} width={50} height={30} alt="logo" className="mx-4" />
       <h1 className=" text-[15px] lg:text-[20px] xl:text-[30px] font-bold text-[#242424]">TECH STORE</h1>
     </div>
-    <nav className={`w-[35%] h-[30%] ssn:h-2/5 md:h-3/4 flex justify-around items-center transition-all rounded-lg`}>
+    <nav className={`w-[40%] h-3/4 flex justify-around items-center transition-all rounded-lg`}>
       {listNav.map((n: any) => <div
         key={`header-${n.id}`}
         onClick={() => { navigate(n.url) }}
@@ -98,7 +98,7 @@ const Header = () => {
         }
         />
     </nav>
-    <nav className={`w-[10%] h-2/5 md:h-3/4 flex justify-evenly items-center transition-all rounded-lg`}>
+    <nav className={`w-[5%] h-2/5 md:h-3/4 flex justify-evenly items-center transition-all rounded-lg`}>
       {!isLogin && <Button radius="sm" onClick={() => { navigate('/auth') }} className="bg-red-600 text-zinc-50 font-semibold text-[20px]">Login</Button>}
       {isLogin && <Dropdown placement="top-end" offset={20} className="relative bg-zinc-700">
         <DropdownTrigger className="fixed">

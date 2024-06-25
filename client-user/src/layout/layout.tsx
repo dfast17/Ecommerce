@@ -5,6 +5,7 @@ import { StateContext } from "../context/stateContext"
 import Header from "./header"
 import Auth from "../pages/auth/auth"
 import ScrollToTop from "./scrollToTop"
+import Footer from "./footer"
 
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -17,6 +18,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <main className="w-full h-auto min-h-[99vh] overflow-y-auto">
         <div className="w-full h-auto">{children}</div>
       </main>
+      <Footer />
       <ScrollToTop />
     </section>
     : <Auth />
