@@ -1,30 +1,11 @@
-import Product_Layout_01 from "../../components/product/layout_01"
 import { StateContext } from "../../context/stateContext"
 import { useContext } from "react"
+import Home_layout_01 from "../../components/home/home_layout_01"
 import { formatDate } from "../../utils/utils"
-import { Fade } from "react-awesome-reveal"
 
 const SaleEvent = () => {
     const { sale } = useContext(StateContext)
-    return sale && sale.length && <div className="w-full h-auto min-h-[600px] flex flex-col justify-around items-center">
-        {sale?.map((s: any) =>
-            <div key={`sale`} className="w-full h-auto min-h-[600px] flex flex-col justify-around items-center">
-                <Fade triggerOnce direction="up" delay={0} className='w-full text-center text-[35px] font-bold text-zinc-700'>
-                    <span>{s.title}</span>
-                    <span className="font-semibold text-[30px] text-center font-mono text-zinc-700">{formatDate(s.start_date)} - {formatDate(s.end_date)}</span>
-                </Fade>
-                {/* <Fade triggerOnce direction="up" delay={0} className='w-full text-center text-[35px] font-bold text-zinc-700'>
-                   h-01 {formatDate(s.start_date)} - {formatDate(s.end_date)}
-                </Fade> */}
-                
-                <div className="saleDetail w-full lg:w-[95%] h-auto flex flex-wrap justify-around items-center px-8">
-                    {
-                        s.detail.map((d: any) => <Product_Layout_01 data={d} name="sale" key={`sale-${d.idProduct}`} />)
-                    }
-                </div>
-            </div>
-        )}
-    </div>
+    return sale && sale.length !==0 && <Home_layout_01 data={sale[0].detail.slice(0,10)} k="h-sale" title="Sale Event" subTitle={`${formatDate(sale[0].start_date)} - ${formatDate(sale[0].end_date)}`} link={"/sale"}/>
 }
 
 export default SaleEvent

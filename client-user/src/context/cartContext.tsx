@@ -8,9 +8,10 @@ export const CartContext = createContext<any>({});
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const {user} = userStore()
     const [cart,setCart] = useState<CartType[]|null>(null)
-    useEffect(() => {user && setCart(user[0].cart)},[user])
+    useEffect(() => {user && setCart(user[0]?.cart)},[user])
     const addItemCart = (data:ProductType) => {
         const getId = cart && cart.filter((f:CartType) => f.idProduct === data.idProduct)
+        console.log(data)
         if(getId?.length !== 0 ){
             getId && updateCount(getId[0]?.idCart,getId[0]?.countProduct + 1)
         }else{

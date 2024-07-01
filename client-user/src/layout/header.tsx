@@ -75,10 +75,20 @@ const Header = () => {
       {listNav.map((n: any) => <div
         key={`header-${n.id}`}
         onClick={() => { navigate(n.url) }}
-        className={`w-1/5 h-4/5 flex items-center justify-evenly text-[17px] ${location.pathname === n.url ? "bg-zinc-950 bg-opacity-100 font-semibold text-white" : "bg-transparent text-zinc-950"} hover:bg-zinc-800 hover:text-white hover:font-semibold transition-all rounded-md cursor-pointer`}
+        className={`nav-content w-1/5 h-4/5 flex flex-col items-center content-center justify-evenly  text-zinc-900 hover:font-semibold transition-all rounded-md cursor-pointer
+          
+        `}
       >
         <span className="block lg:hidden">{<n.icon />}</span>
-        <span className="hidden lg:block">{n.name}</span>
+        <span className={`nav-text hidden lg:block
+        font-bold
+        transition-all 
+        bg-clip-text 
+        ${location.pathname === n.url ?
+        `text-[22px] text-transparent bg-[linear-gradient(to_right,theme(colors.cyan.500),theme(colors.blue.500),theme(colors.teal.500),theme(colors.teal.500),theme(colors.blue.400),theme(colors.cyan.500),theme(colors.indigo.500))]`: " text-zinc-950" }
+        text-[20px]
+        `}>{n.name}</span>
+        <div className={`border-nav ${location.pathname === n.url ? "!opacity-100" : "opacity-0"} w-full h-[2px] bg-gradient-to-r from-cyan-900 to-cyan-500`}></div>
       </div>)}
     </nav>
     {/* Search */}
@@ -89,7 +99,7 @@ const Header = () => {
         type="search"
         radius="sm"
         variant="bordered"
-        className="w-4/5 placeholder-zinc-900"
+        className="w-4/5 placeholder-zinc-900 text-zinc-950"
         placeholder="Search products" 
         startContent={
           <Button onClick={handleSearch} aria-label="button search" radius="sm" className="bg-transparent" isIconOnly>
@@ -107,7 +117,7 @@ const Header = () => {
           </Button>
         </DropdownTrigger>
         <DropdownMenu closeOnSelect={true} className="w-[500px] h-auto min-h-[100px] max-h-[450px]">
-          {cart && cart.length !== 0 && cart.slice(0, 4).map((c: CartType) => <DropdownItem key={c.idCart}>
+          {cart && cart.slice(0, 4).map((c: CartType) => <DropdownItem key={c.idCart}>
             <Product_layout_02 data={c} isButton={true} />
           </DropdownItem>)}
           {cart && cart.length !== 0 && <DropdownItem className="flex justify-center items-center" variant="light">

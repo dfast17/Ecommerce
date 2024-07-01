@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 
 const Laptop = lazy(() => import("./laptop"))
+const Monitor = lazy(() => import("./monitor"))
 const NewProduct = lazy(() => import("./newProduct"))
 const Post = lazy(() => import("./post"))
 const Slideshow = lazy(() => import("./slide"))
@@ -15,6 +16,7 @@ const Home = () => {
     <Suspense fallback={<div data-testid="saleevent">LOADING...</div>}><SaleEvent /></Suspense>
     <Suspense fallback={<div data-testid="newproduct">LOADING...</div>}><NewProduct /></Suspense>
     <Suspense fallback={<div data-testid="laptop">LOADING...</div>}><Laptop/></Suspense>
+    <Suspense fallback={<div data-testid="monitor">LOADING...</div>}><Monitor/></Suspense>
     <Suspense fallback={<div data-testid="post">LOADING...</div>}><Post /></Suspense>
   </div>
   

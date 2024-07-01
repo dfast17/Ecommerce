@@ -289,6 +289,14 @@
         stroke-dashoffset: 1800;
     }
 }
+@keyframes changeWidth{
+    0%{
+        width:0%
+    }
+    100%{
+        width:100%
+    }
+}
 .animateOpacity {
     animation: transX 0.2s ease-in-out forwards;
     @keyframes transX {
@@ -301,3 +309,24 @@
     }
 }
 
+.border-nav{
+    display: block;
+    opacity: 0;
+}
+.nav-content:hover .nav-text{
+    transition:all .2s linear;
+    color:transparent;
+    background-image: linear-gradient(to right, #06b6d4, #3b82f6, #14b8a6, #14b8a6, #60a5fa, #06b6d4, #6366f1);
+}
+.nav-content:hover .border-nav{
+    opacity: 1;
+    animation: changeWidth .2s linear;
+    transition: all .2s linear;
+}
+.slick-list{
+    width:90%
+}
+.slick-prev:before, .slick-next:before{
+    font-size: 30px;
+    border-radius: 10px;
+}
