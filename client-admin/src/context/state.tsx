@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { getLocalStorage } from "../utils/localStorage";
-
+import Cookies from "js-cookie";
 interface statisticalType {
     product: any[] | null,
     user: any[] | null,
@@ -20,9 +20,9 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     }, [isDark])
     useEffect(() => {
         const isDark = getLocalStorage('isDark')
-        const adminLog = getLocalStorage('a-isLog')
+        const adminLog = Cookies.get('a-Log')
         setIsDark(isDark)
-        setIsLogin(adminLog)
+        setIsLogin(adminLog ? true : false)
     }, [])
     return (
         <StateContext.Provider value={{

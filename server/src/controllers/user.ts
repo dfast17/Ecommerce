@@ -23,7 +23,7 @@ export default class UserController {
     const req = request as RequestCustom;
     const idUser = req.idUser;
     const data = req.body;
-    const table = data.table;
+    const table = data.table ? data.table : 'users';
     const detail = convertData(data.detail);
     const condition: ConditionType = {
       conditionName: "idUser",

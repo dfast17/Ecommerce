@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useContext } from 'react';
-import ReactQuill, { Quill,Range } from 'react-quill';
+import ReactQuill, { Quill, Range } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';// import styles
 import { formats, tollBars } from './toolBar';
 import ImageUploader from "quill-image-uploader";
@@ -10,7 +10,7 @@ import ImageResize from 'quill-image-resize-module-react';
 import { StateContext } from '../../context/state';
 // import styles
 hljs.configure({
-  languages: ['typescript','javascript', 'php', 'html', 'css', 'java', 'ruby', 'python', 'rust', 'sql'],
+  languages: ['typescript', 'javascript', 'php', 'html', 'css', 'java', 'ruby', 'python', 'rust', 'sql'],
 })
 const Block = Quill.import("blots/block");
 Block.tagName = "DIV";
@@ -19,7 +19,7 @@ Quill.register('modules/imageResize', ImageResize);
 Quill.register("modules/imageUploader", ImageUploader);
 
 const CreatePosts = () => {
-  const {isDark} = useContext(StateContext)
+  const { isDark } = useContext(StateContext)
   const { register, handleSubmit, formState: { errors: err } } = useForm();
   const [value, setValue] = useState('');
   const [resultValue, setResultValue] = useState(null);
@@ -42,27 +42,27 @@ const CreatePosts = () => {
 
   const modules = useMemo(() => ({
     syntax: {
-      highlight: (text:string) => hljs.highlightAuto(text).value,
+      highlight: (text: string) => hljs.highlightAuto(text).value,
     },
     toolbar: tollBars,
     imageUploader: {
-      upload: (file:File) => {
+      upload: (file: File) => {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => {
             const base64ImageSrc = reader.result;
             if (base64ImageSrc !== null) {
               // Convert base64 to file here
-              const byteString = typeof base64ImageSrc === 'string' ? atob(base64ImageSrc.split(',')[1]): "";
+              const byteString = typeof base64ImageSrc === 'string' ? atob(base64ImageSrc.split(',')[1]) : "";
               const mimeString = base64ImageSrc && typeof base64ImageSrc === 'string' && base64ImageSrc.split(',')[0].split(':')[1].split(';')[0];
               const arrayBuffer = byteString ? new ArrayBuffer(byteString.length) : null;
               const int8Array = arrayBuffer ? new Uint8Array(arrayBuffer) : new Uint8Array();
-          
+
               for (let i = 0; i < byteString.length; i++) {
                 int8Array[i] = byteString.charCodeAt(i);
               }
-          
-              const imageFile:File | false = int8Array.length !== 0 && new File([int8Array], file.name, { type: mimeString as string });
+
+              const imageFile: File | false = int8Array.length !== 0 && new File([int8Array], file.name, { type: mimeString as string });
               imageFile && setImgFile((prevImgFile: File[]) => [...prevImgFile, imageFile]);
               resolve(base64ImageSrc);
             } else {
@@ -110,7 +110,7 @@ const CreatePosts = () => {
         key: 'l', // The key you want to bind
         shortKey: true,
         shiftKey: true,
-      } as any, (range:Range, _context:any) => {
+      } as any, (range: Range, _context: any) => {
         const format = range && editor.getFormat(range); // Get the current format
         if (format && format['code-block']) {
           // If the user is in a code block, remove it
@@ -127,7 +127,7 @@ const CreatePosts = () => {
         editor.keyboard.addBinding({
           key: key,
           shortKey: true, // Whether you want to use `CMD`/`CTRL`
-        }, function (_range:Range, _context) {
+        }, function (_range: Range, _context) {
           // What happens when the shortcut is triggered
           editor.format('header', index + 1);
         });
@@ -154,7 +154,7 @@ const CreatePosts = () => {
         });
       });
 
-      const shortcuts:{[x:string]:{format:string,value:string}} = {
+      const shortcuts: { [x: string]: { format: string, value: string } } = {
         'R': { format: 'align', value: 'right' },
         'E': { format: 'align', value: 'center' },
         'J': { format: 'align', value: 'justify' },
@@ -175,7 +175,7 @@ const CreatePosts = () => {
         key: 'I', // The key you want to bind
         shortKey: true, // Whether you want to use `CMD`/`CTRL`
         shiftKey: true,
-      } as any, (_range:Range, _context:any) => {
+      } as any, (_range: Range, _context: any) => {
         imageHandler();
       });
     }
@@ -183,7 +183,7 @@ const CreatePosts = () => {
   useEffect(() => {
     if (value !== "" && imgUrl !== "") {
       let parser = new DOMParser();
-      let doc:any = parser.parseFromString(value, 'text/html');
+      let doc: any = parser.parseFromString(value, 'text/html');
 
       let images = doc.getElementsByTagName('img');
       for (let i = 0; i < images.length; i++) {
@@ -199,7 +199,7 @@ const CreatePosts = () => {
     }
   }, [imgFile])
   //To fixed it
-  const onSubmit = (data:any) => {
+  const onSubmit = (data: any) => {
     resultValue === null && alert("Null")
     if (resultValue !== null) {
       setTypePosts(data.type)
@@ -256,7 +256,7 @@ const CreatePosts = () => {
         ${isDark === true ? 'text-white' : 'text-slate-700'} hover:text-white font-bold my-2 transition-all`}
         onClick={(e) => { e.preventDefault(); handleSubmit(onSubmit)() }}
       >
-        Get Image
+        Create Post
       </button>
       {/* <div className="ql-snow bg-slate-100"><div className="ql-editor" dangerouslySetInnerHTML={{ __html: value }} /></div> */}
     </>

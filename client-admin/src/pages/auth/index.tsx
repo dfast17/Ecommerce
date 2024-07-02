@@ -6,7 +6,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SetToken } from "../../utils/token";
 import { useNavigate } from "react-router-dom";
-import { setLocalStorage } from "../../utils/localStorage";
 import { StateContext } from "../../context/state";
 interface FieldValues {
   username: string
@@ -30,7 +29,7 @@ const Auth = () => {
       }else{
         SetToken('aTk', res.data.accessToken, res.data.expiredA)
         SetToken('rTk', res.data.refreshToken, res.data.expiredR)
-        setLocalStorage('a-isLog', true)
+        SetToken('a-Log', 'true',res.data.expiredR)
         setIsLogin(true)
         navigate('/')
       }

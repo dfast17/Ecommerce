@@ -12,17 +12,16 @@ export default class CartController {
     const req = request as RequestCustom;
     const idUser = req.idUser;
     const data = req.body;
-    const formatData = data.cart.map((c:any) => {
+    const formatData = data.cart.map((c: any) => {
       return {
         ...c,
-        idUser:idUser
+        idUser: idUser
       }
     })
     const dataInsert = convertData(formatData);
     try {
       const result = await statement.insertData("carts", dataInsert);
-      console.log(Number(result.insertId))
-      responseData(res, 201, {idCart:Number(result.insertId)});
+      responseData(res, 201, { idCart: Number(result.insertId) });
     } catch {
       (errors: any) => {
         responseMessageData(res, 500, "Server errors", errors);
@@ -40,15 +39,15 @@ export default class CartController {
       nameCol: "countProduct",
       value: data.value,
     };
-    handleChangeData(res,statement.updateDataByCondition("carts", [dataUpdate], condition),"update")
+    handleChangeData(res, statement.updateDataByCondition("carts", [dataUpdate], condition), "update")
   };
-  public cartRemove = async(req: Request, res: Response) => {
+  public cartRemove = async (req: Request, res: Response) => {
     const data = req.body;
     const condition: ConditionType = {
-        conditionName: "idCart",
-        conditionMethod: "in",
-        value: data.listId,
-      };
-    handleChangeData(res,statement.removeData("carts",condition),"delete")
+      conditionName: "idCart",
+      conditionMethod: "in",
+      value: data.listId,
+    };
+    handleChangeData(res, statement.removeData("carts", condition), "delete")
   }
 }

@@ -9,7 +9,7 @@ import { userStore } from "../store/user";
 
 export const ApiContext = createContext<any>({});
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
-    const {setStatistical} = useContext(StateContext)
+    const {isLogin,setStatistical} = useContext(StateContext)
     const {setCategory,setProduct} = productStore()
     const {setUser,setStaff,setCurrentUser,setAddress} = userStore()
    useEffect(() => {
@@ -64,8 +64,8 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
         )
         
     }
-    fetchData()
-   },[setCurrentUser,setStaff,setUser,setAddress])
+    isLogin && fetchData()
+   },[isLogin,setCurrentUser,setStaff,setUser,setAddress])
     return (
         <ApiContext.Provider value={{
         }}>
