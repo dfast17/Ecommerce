@@ -1,4 +1,5 @@
 .history
+/server/http
 /server/.env
 /server/node_modules
 /client-user/.env

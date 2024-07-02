@@ -16,9 +16,9 @@ export default class StatisticalStatement {
                 .limit(6)
             ).as("view"),
             jsonArrayFrom(
-                eb.selectFrom("ordsDetail as od")
+                eb.selectFrom("order_Detail as od")
                 .select([
-                    "od.id","od.idProduct","p.nameProduct","p.price","p.imgProduct",
+                    "od.idOrdDetail","od.idProduct","p.nameProduct","p.price","p.imgProduct",
                     eb.fn.sum("od.countProduct").as("total_count")
                 ])
                 .innerJoin("products as p","p.idProduct","od.idProduct")
@@ -49,13 +49,14 @@ export default class StatisticalStatement {
         
     }
     public revenue = async () => {
-        return await db.selectFrom("ordsDetail as od")
+        return await db.selectFrom("order_Detail as od")
             .select<any>([
                 sql<number>`SUM(od.countProduct * p.price) AS total`,
-                sql<string>`DATE_FORMAT(os.dateBuy, '%Y-%m') AS month`
+                sql<string>`DATE_FORMAT(os.edd, '%Y-%m') AS month`
             ])
-            .innerJoin("ords as os", "os.idBill", "od.idOrder")
+            .innerJoin("order as os", "os.idOrder", "od.idOrder")
             .innerJoin("products as p", "p.idProduct", "od.idProduct")
+            .where("os.orderStatus", "=", "success")
             .groupBy("month")
             .orderBy("month", "desc")
             .execute()
