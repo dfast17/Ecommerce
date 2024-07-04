@@ -1,9 +1,8 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { StateContext } from "../../context/state"
 import { Code } from "@nextui-org/react"
 
 const UI = ({ title, value }: { title: string, value: string }) => {
-
   return <div className="w-full md:w-[49%] xl:w-[15%] h-[200px] bg-zinc-900 rounded-md flex flex-col contents-start justify-evenly my-1 p-2">
     <h1 className="text-[30px] font-bold font-mono">{title}</h1>
     <h2 className="text-[25px] font-bold font-mono">{value}</h2>
@@ -11,6 +10,11 @@ const UI = ({ title, value }: { title: string, value: string }) => {
 }
 const Statistical = () => {
   const { statistical } = useContext(StateContext)
+  useEffect(() => {
+    //xem dữ liệu trả về tại dev tool trên web
+
+    statistical && console.log(statistical)
+  }, [statistical])
   return <div className="dashboard-statistical w-full h-auto min-h-[100px] flex flex-wrap justify-around items-center pt-2 px-2 mb-2">
     <div className="w-full md:w-[49%] xl:w-[35%] h-[200px] bg-zinc-900 rounded-md flex items-center my-1 p-2">
       {statistical.product && <>
@@ -30,18 +34,24 @@ const Statistical = () => {
       <UI title="New User" value="1" />
     </>}
     {statistical.revenue && <UI title="Revenue" value={`$ ${statistical.revenue.length > 0 ? statistical.revenue.map((r: any) => r.total)?.reduce((a: number, b: number) => a + b) : 0}`} />}
+    {/* Làm các phần dưới đây */}
+    {/* Phần này của Quang Huy, và làm ui theo dạng bảng hiển thị hết tất cả các key từ data */}
     <div className="w-[98%] xl:w-[32.8%] h-auto min-h-[250px] bg-zinc-900 rounded-md flex items-center my-1 p-2">
       <h1 className="text-[30px] font-bold font-mono">Top sold product</h1>
     </div>
+    {/* Phần này của Ngọc Hiếu, và làm ui theo dạng bảng hiển thị hết các key từ data  */}
     <div className="w-[98%] xl:w-[32.8%] h-auto min-h-[250px] bg-zinc-900 rounded-md flex items-center my-1 p-2">
       <h1 className="text-[30px] font-bold font-mono">Top view product</h1>
     </div>
+    {/*  */}
     <div className="w-[98%] xl:w-[32.8%] h-auto min-h-[250px] bg-zinc-900 rounded-md flex items-center my-1 p-2">
       <h1 className="text-[30px] font-bold font-mono">??</h1>
     </div>
+    {/*Phần này của Nhâm Ngọ, làm ui theo dạng chart cột  keyword cho phần này : bar chart in react  */}
     <div className="w-[98%] xl:w-[49.5%] h-auto min-h-[400px] bg-zinc-900 rounded-md flex items-center my-1 p-2">
       <h1 className="text-[30px] font-bold font-mono">Chart Revenue</h1>
     </div>
+    {/* cái này chưa cần làm */}
     <div className="w-[98%] xl:w-[49.5%] h-auto min-h-[400px] bg-zinc-900 rounded-md flex items-center my-1 p-2">
       <h1 className="text-[30px] font-bold font-mono">Chart Order success and order fail</h1>
     </div>
