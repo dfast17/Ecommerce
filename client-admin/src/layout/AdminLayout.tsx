@@ -133,7 +133,7 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
               <p
                 className={classNames("text-sm", {
                   "text-[#C0BFBD]": isDark,
-                  "text-[#1F1F22]": isDark,
+                  "text-[#1F1F22]": !isDark,
                 })}
               >
                 Duckui@demo.com
