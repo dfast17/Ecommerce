@@ -27,7 +27,6 @@ interface NavContent {
   content: string;
   icon: IconType;
   url: string;
-  delay: string;
 }
 
 const navArr: NavContent[] = [
@@ -35,50 +34,43 @@ const navArr: NavContent[] = [
     idNav: 1,
     content: "Dashboard",
     icon: TfiDashboard,
-    url: "/",
-    delay: "0",
+    url: "/"
   },
   {
     idNav: 2,
     content: "Product",
     icon: FaLaptopCode,
-    url: "/product",
-    delay: "5",
+    url: "/product"
   },
   {
     idNav: 3,
     content: "Account",
     icon: FaUserCog,
-    url: "/account",
-    delay: "10",
+    url: "/account"
   },
   {
     idNav: 4,
     content: "Post/Blog",
     icon: BsFillPostcardFill,
-    url: "/post",
-    delay: "15",
+    url: "/post"
   },
   {
     idNav: 5,
     content: "Order",
     icon: FaLuggageCart,
-    url: "/order",
-    delay: "20",
+    url: "/order"
   },
   {
     idNav: 6,
     content: "Event",
     icon: MdOutlineDiscount,
-    url: "/event",
-    delay: "25",
+    url: "/event"
   },
   {
     idNav: 7,
     content: "Warehouse",
     icon: MdOutlineWarehouse,
-    url: "/warehouse",
-    delay: "30",
+    url: "/warehouse"
   },
 ];
 
