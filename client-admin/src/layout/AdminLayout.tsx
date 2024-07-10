@@ -35,42 +35,56 @@ const navArr: NavContent[] = [
     content: "Dashboard",
     icon: TfiDashboard,
     url: "/"
+    url: "/",
+    delay: "0",
   },
   {
     idNav: 2,
     content: "Product",
     icon: FaLaptopCode,
     url: "/product"
+    url: "/product",
+    delay: "5",
   },
   {
     idNav: 3,
     content: "Account",
     icon: FaUserCog,
     url: "/account"
+    url: "/account",
+    delay: "10",
   },
   {
     idNav: 4,
     content: "Post/Blog",
     icon: BsFillPostcardFill,
     url: "/post"
+    url: "/post",
+    delay: "15",
   },
   {
     idNav: 5,
     content: "Order",
     icon: FaLuggageCart,
     url: "/order"
+    url: "/order",
+    delay: "20",
   },
   {
     idNav: 6,
     content: "Event",
     icon: MdOutlineDiscount,
     url: "/event"
+    url: "/event",
+    delay: "25",
   },
   {
     idNav: 7,
     content: "Warehouse",
     icon: MdOutlineWarehouse,
     url: "/warehouse"
+    url: "/warehouse",
+    delay: "30",
   },
 ];
 
