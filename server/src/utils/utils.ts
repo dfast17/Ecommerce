@@ -27,10 +27,10 @@ export const handleFindData = async (res: any, handle: any,) => {
     };
   }
 };
-export const handleChangeData = async(res: any, handle: any,method:"add" | "update"| "delete") => {
+export const handleChangeData = async (res: any, handle: any, method: "add" | "update" | "delete") => {
   try {
     const result = await handle;
-    if(!result){
+    if (!result) {
       return responseMessageData(res, 401, `${method.toUpperCase()} is failed`);
     }
     responseMessageData(res, method === "add" ? 201 : 200, `${method.toUpperCase()} is success`);

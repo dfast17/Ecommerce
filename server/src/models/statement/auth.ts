@@ -1,35 +1,28 @@
 import { db } from "models/connect";
-export default class AuthStatement{
-    public getAuth = async(username:string) => {
+export default class AuthStatement {
+    public getAuth = async (username: string) => {
         return await db.selectFrom('auth')
-        .select(["idUser","username","password_hash","role"])
-        .where('username','=',`${username}`)
-        .execute()
+            .select(["idUser", "username", "password_hash", "role"])
+            .where('username', '=', `${username}`)
+            .execute()
     }
-    public getAuthAdmin = async(username:string) => {
-        console.log(
-            db.selectFrom('auth')
-        .select(["idUser","username","password_hash","role"])
-        .where('username','=',`${username}`)
-        .where('role','!=',2)
-        .compile()
-        )
+    public getAuthAdmin = async (username: string) => {
         return await db.selectFrom('auth')
-        .select(["idUser","username","password_hash","role"])
-        .where('username','=',`${username}`)
-        .where('role','!=',2)
-        .execute()
+            .select(["idUser", "username", "password_hash", "role"])
+            .where('username', '=', `${username}`)
+            .where('role', '!=', 2)
+            .execute()
     }
-    public getMail = async(email:string) => {
+    public getMail = async (email: string) => {
         return await db.selectFrom('users')
-        .select(["idUser","email"])
-        .where('email','=',email)
-        .execute()
+            .select(["idUser", "email"])
+            .where('email', '=', email)
+            .execute()
     }
-    public getPassword = async(idUser:string) => {
+    public getPassword = async (idUser: string) => {
         return await db.selectFrom('auth')
-        .select(["idUser","password_hash"])
-        .where("idUser","=",`${idUser}`)
-        .execute()
+            .select(["idUser", "password_hash"])
+            .where("idUser", "=", `${idUser}`)
+            .execute()
     }
 }
