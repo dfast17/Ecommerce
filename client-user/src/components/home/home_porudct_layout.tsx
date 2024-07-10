@@ -6,14 +6,20 @@ import { useNavigate } from "react-router-dom";
 import { ProductType } from "types/type";
 import { CartContext } from "../../context/cartContext";
 import { percentDiscount } from "../../utils/utils";
-const Product_Layout_01 = ({ data }: { data: ProductType }) => {
+const Home_Product_Layout = ({ data }: { data: ProductType }) => {
     const { addItemCart } = useContext(CartContext)
     const navigate = useNavigate()
     const navigateDetail = () => {
         navigate(`/product/detail/${data.nameType}/${data.idProduct}/${data.nameProduct.split(" ").join("-")}`)
     }
-    return <Fade triggerOnce fraction={0.6} className="w-1/5 h-auto min-w-[120px] my-1 mx-4 overflow-hidden shadow-lg" delay={1}>
+    return <Fade triggerOnce fraction={0.6} className="w-[15%] h-auto min-w-[200px] my-1 mx-4 overflow-hidden " delay={1}>
         <Card className="w-full h-auto min-h-[150px] rounded-md border border-solid border-transparent hover:border-cyan-500 transition-all"
+            style={{
+                backgroundImage: 'url(https://i.pinimg.com/564x/9b/a1/31/9ba131f9534f5023bf00fc2b2851a2ce.jpg)',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '105% 105%',
+                backgroundPosition: 'center',
+            }}
         >
             <CardBody className="relative w-full h-auto flex flex-col items-center justify-center cursor-pointer">
                 {data.discount !== 0 && <div className="absolute w-[50px] h-[25px] flex items-center justify-center text-white rounded-md bg-red-500 top-1 left-1">
@@ -30,7 +36,7 @@ const Product_Layout_01 = ({ data }: { data: ProductType }) => {
                 <div className="product-info flex flex-wrap justify-center overflow-hidden py-1 rounded-lg w-[calc(100%_-_8px)]">
                     <div
                         onClick={navigateDetail}
-                        className="w-[90%] h-[25px] flex items-center justify-start text-zinc-950 font-bold text-[18px] truncate cursor-pointer"
+                        className="w-[90%] h-[25px] flex items-center justify-start text-white font-bold text-[18px] truncate cursor-pointer"
                     >
                         <span className="truncate">{data?.nameProduct}</span>
                     </div>
@@ -55,4 +61,4 @@ const Product_Layout_01 = ({ data }: { data: ProductType }) => {
     </Fade>
 }
 
-export default Product_Layout_01
+export default Home_Product_Layout
