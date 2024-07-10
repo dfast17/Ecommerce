@@ -33,20 +33,20 @@ const Auth = () => {
           SaveToken('rTk', res.data.refreshToken, res.data.expiredR)
           setLocalStorage('isLogs', true)
           setIsLogin(true)
-          SaveToken('login','true',res.data.expiredR)
+          SaveToken('login', 'true', res.data.expiredR)
           navigate('/')
         }
         (typeAuth === "register" || typeAuth === "forgot") && setFormName("signIn")
-        
+
       }
 
     })
   }
   return <div className="auth w-full h-screen flex flex-wrap">
-    <div className="background-auth w-2/4 h-full flex items-center justify-center">
-      <img src="https://raw.githubusercontent.com/dphasst17/techWEB/main/src/Pages/Login/ImageLogin/icon_login.png" />
+    <div className="background-auth w-full lg:w-2/5 xl:w-2/4 h-1/5 sm:h-2/5 lg:h-full flex items-center justify-center">
+      <img className="w-full xl:w-4/5 h-full xl:h-4/5 object-contain" src="https://raw.githubusercontent.com/dphasst17/techWEB/main/src/Pages/Login/ImageLogin/icon_login.png" />
     </div>
-    <div className="authForm w-2/4 h-full flex items-center justify-center">
+    <div className="authForm w-full lg:w-3/5 xl:w-2/4 h-4/5 sm:h-3/5 lg:h-full flex items-center justify-center">
       {formName === "signIn" && <SignIn handleAuth={handleAuth} setFormName={setFormName} />}
       {formName === "signUp" && <SignUp handleAuth={handleAuth} setFormName={setFormName} />}
       {formName === "forgot" && <Forgot handleAuth={handleAuth} setFormName={setFormName} />}

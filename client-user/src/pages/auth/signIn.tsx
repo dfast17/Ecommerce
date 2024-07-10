@@ -41,23 +41,23 @@ const SignIn = ({ handleAuth, setFormName }: { handleAuth: any, setFormName: Rea
     const onSubmit = (data: Auth) => {
         handleAuth('login', { username: data.username, password: data.password })
     }
-    return <div className='formSignIn w-4/5 h-4/5 flex flex-col justify-center items-center'>
+    return <div className='formSignIn w-[99%] lg:w-4/5 h-4/5 flex flex-col justify-center items-center'>
         <div className="btnLogin w-full flex flex-wrap justify-center items-center">
             {listSignIn.map((b: any) => <Button size="sm" radius="sm" key={b.id}
-                className={`w-[150px] mx-1 bg-transparent border border-solid border-zinc-500`} onClick={b.handleClick}>
+                className={`w-[150px] mx-1 bg-transparent border border-solid border-zinc-500 my-1`} onClick={b.handleClick}>
                 <b.icon />
                 <span>{b.name}</span>
             </Button>)}
         </div>
         <h1 className="text-zinc-700 text-[30px] font-bold font-ps-2 my-6">SIGN IN</h1>
-        <form className="w-3/5">
+        <form className="w-full sm:w-4/5 lg:w-3/5">
             <Input {...register('username', { required: true })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Username" type="text" />
             <Input {...register('password', { required: true })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Password"
                 type={isShow ? 'text' : 'password'}
                 onKeyDown={(e: any) => { e.key === "Enter" && handleSubmit(onSubmit)() }}
             />
         </form>
-        <div className="w-3/5 h-[30px] text-blue-500 flex justify-between">
+        <div className="w-full sm:w-3/5 h-[60px] sm:h-[30px] text-blue-500 flex flex-wrap justify-between my-1">
             <button onClick={() => { setIsShow(!isShow) }}>{isShow ? 'Hide' : 'Show'} password</button>
             <button onClick={() => { setFormName("forgot") }}>Forgot password?</button>
         </div>
