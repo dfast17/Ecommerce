@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick"
 import { ProductType } from "types/type";
+import Home_Product_Layout from "./home_porudct_layout";
 
 interface HomeLayout01Type {
     data: ProductType[] | null
@@ -102,6 +103,7 @@ const Home_layout_01 = ({ data, k, title, subTitle, link, banner }: HomeLayout01
             style={{ backgroundImage: 'url(https://i.pinimg.com/564x/ff/c6/6e/ffc66ec482e6e9c7e2f8f46236a5ae14.jpg)' }}>
             <div className='slider-container w-full h-auto flex justify-center'>
                 <Slider className='w-full sm:w-[99%] lg:w-[95%] flex justify-around ' ref={sliderRef} {...settings} >
+                    {data?.map((d: any) => <Home_Product_Layout data={d} key={`${k}-${d.idProduct}`} />)}
                     {data?.map((d: any) => <Product_Layout_01 data={d} key={`${k}-${d.idProduct}`} name={k} />)}
                 </Slider>
             </div>
