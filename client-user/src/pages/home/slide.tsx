@@ -89,18 +89,18 @@ const Slideshow = () => {
         {data !== null &&
           data.map((items, s) => (
             <div
-              className={`slide${index === s ? " active" : ""
-                } inline-flex flex-col md:flex-row`}
+              className={`slide${index === s ? " active inline-flex " : ""
+                } inline-flex  flex-col md:flex-row`}
               key={items.idProduct}
             >
-              <div className="image w-full relative md:w-[35%] h-[30%] md:h-full">
+              <div className="image w-full relative xl:w-[35%] h-[30%] xl:h-full">
                 <img
                   src={items.imgProduct}
                   alt=""
                   className="imgProduct w-1/2 md:w-[500px] h-full md:h-[500px] object-contain flex justify-center items-center"
                 />
               </div>
-              <div className="content relative w-full md:w-2/5 h-full flex items-start justify-center">
+              <div className="content relative w-full xl:w-2/5 h-full flex items-start justify-center">
                 <div className="w-full h-full absolute top-0 left-0 backdrop-blur-sm bg-white bg-opacity-40">
                   <div className="bg-detail relative w-full h-full border-[3px] border-dashed border-gray-300">
                     <div className="absolute -top-[3px] -left-[3px] w-[32px] h-[32px] border-t-[3px] border-l-[3px] border-solid border-cyan-500"></div>

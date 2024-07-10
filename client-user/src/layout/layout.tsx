@@ -8,7 +8,7 @@ import ScrollToTop from "./scrollToTop"
 import Footer from "./footer"
 
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const location = useLocation()
   const { isLoading } = useContext(StateContext)
   return location.pathname !== "/auth" ?
