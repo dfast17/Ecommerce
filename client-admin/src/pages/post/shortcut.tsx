@@ -1,16 +1,18 @@
 import { Kbd } from "@nextui-org/react"
 import { KbdKey } from "../../types/quill-short-key-type"
+import { StateContext } from "../../context/state"
+import { useContext } from "react"
 interface IShortKey {
     name: string
-    detail: { 
-        first: KbdKey 
-        second: KbdKey | string, 
-        third: string, 
-        result: string 
+    detail: {
+        first: KbdKey
+        second: KbdKey | string,
+        third: string,
+        result: string
     }[]
 }
 const ShortKey = () => {
-    const shortKey:IShortKey[] = [
+    const shortKey: IShortKey[] = [
         {
             name: 'heading',
             detail: [
@@ -140,6 +142,7 @@ const ShortKey = () => {
             ]
         }
     ]
+    const { isDark } = useContext(StateContext)
     return <div className="shortKey-container md:w-[90%] h-auto flex flex-wrap justify-around rounded-lg px-2">
         <div className="w-[98%] h-auto">
             <Kbd className="rounded-md cursor-pointer mx-1" keys={["command"]}>: Command Key</Kbd>
@@ -147,13 +150,13 @@ const ShortKey = () => {
             <Kbd className="rounded-md cursor-pointer mx-1" keys={["shift"]}>:Shift Key</Kbd>
         </div>
         {shortKey.map(e => <div className={`${e.name}  w-[98%] lg:w-[23%] h-auto flex flex-col flex-wrap`} key={e.name}>
-            {e.detail.map(d => <span className="w-full flex flex-wrap items-center text-white font-semibold my-2" key={d.result}>
+            {e.detail.map(d => <span className={`w-full flex flex-wrap items-center ${isDark ? "text-white" : "text-zinc-950"} font-semibold my-2`} key={d.result}>
                 <Kbd keys={d.third !== "" && d.second === "shift" ? [d.first, d.second] : [d.first]}>{d.third !== "" ? d.third : d.second}</Kbd>
                 : {d.result}
             </span>)}
 
         </div>)}
-        
+
     </div>
 }
 export default ShortKey

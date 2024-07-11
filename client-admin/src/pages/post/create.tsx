@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useContext } from 'react';
+import { useState, useEffect, useRef, useMemo, useContext, ChangeEvent } from 'react';
 import ReactQuill, { Quill, Range } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';// import styles
 import { formats, tollBars } from './toolBar';
@@ -8,6 +8,10 @@ import "highlight.js/styles/monokai-sublime.min.css";
 import { useForm } from 'react-hook-form';
 import ImageResize from 'quill-image-resize-module-react';
 import { StateContext } from '../../context/state';
+import { uploadImagePostToS3 } from '../../api/image';
+import { GetToken } from '../../utils/token';
+import { postCreate } from '../../api/post';
+import { Input } from '@nextui-org/react';
 // import styles
 hljs.configure({
   languages: ['typescript', 'javascript', 'php', 'html', 'css', 'java', 'ruby', 'python', 'rust', 'sql'],
@@ -24,8 +28,10 @@ const CreatePosts = () => {
   const [value, setValue] = useState('');
   const [resultValue, setResultValue] = useState(null);
   const [imgFile, setImgFile] = useState<File[]>([]);
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [title, setTitle] = useState<string | null>(null)
   const [typePosts, setTypePosts] = useState(null)
-  const [imgUrl, setImgUrl] = useState('');
+  const [imgUrl, setImgUrl] = useState<string[]>([]);
   const [isPost, setIsPost] = useState(false)
   const quillRef = useRef<ReactQuill | null>(null);
   useEffect(() => {
@@ -181,63 +187,83 @@ const CreatePosts = () => {
     }
   }, []);
   useEffect(() => {
-    if (value !== "" && imgUrl !== "") {
+    if (value !== "" && imgUrl.length !== 0) {
       let parser = new DOMParser();
       let doc: any = parser.parseFromString(value, 'text/html');
-
       let images = doc.getElementsByTagName('img');
       for (let i = 0; i < images.length; i++) {
+        console.log(imgUrl)
         images[i].src = imgUrl[i];
       }
-
       setResultValue(doc.body.innerHTML);
     }
   }, [value, imgUrl])
   useEffect(() => {
-    if (imgFile.length !== 0) {
-      imgFile && setImgUrl(imgFile.map(e => `${import.meta.env.VITE_REACT_APP_URL_IMG}/${e.name}`).join(","))
-    }
+    console.log(resultValue)
+  }, [resultValue])
+  useEffect(() => {
+    imgFile && setImgUrl(imgFile.map(e => `${import.meta.env.VITE_REACT_APP_URL_IMG}/posts/${e.name}`))
   }, [imgFile])
   //To fixed it
   const onSubmit = (data: any) => {
     resultValue === null && alert("Null")
-    if (resultValue !== null) {
+    !title && alert("Title is Null")
+    !thumbnail && alert("Thumbnail is Null")
+    if (resultValue !== null && title && thumbnail) {
       setTypePosts(data.type)
       setIsPost(true);
     }
   }
   useEffect(() => {
-    if (isPost === true) {
-      if (imgFile.length !== 0) {
-        //Upload img is here
-        const data = new FormData()
-        for (let i = 0; i < imgFile.length; i++) {
-          data.append(`file${[i]}`, imgFile[i])
-        }
-        /* uploadImagePostToS3(data)
-          .then(res => console.log(res))
-          .catch(err => console.log(err)) */
+    if (imgFile.length !== 0) {
+      //Upload img is here
+      const data = new FormData()
+      for (let i = 0; i < imgFile.length; i++) {
+        data.append(`file${[i]}`, imgFile[i])
       }
-      //Upload a new posts is here
-      const fetchData = async () => {
-        /* const token = await handleGetToken()
-        const dataPost = {
-          date: new Date().toISOString().split('T')[0],
-          type: typePosts,
-          value: resultValue.replaceAll("'", '"')
-        }
-        insertPosts(token, dataPost)
-          .then(res => {
-            alert(res.message)
-            window.location.reload();
-          })
-          .catch(err => console.log(err)) */
-      }
-      fetchData()
+      uploadImagePostToS3(data)
+        .then(res => console.log(res))
+        .catch((err: any) => console.log(err))
     }
+    const dataThumbnail = new FormData()
+    thumbnail && dataThumbnail.append('file', thumbnail)
+    thumbnail && uploadImagePostToS3(dataThumbnail)
+      .then(res => console.log(res))
+      .catch((err: any) => console.log(err))
+    //Upload a new posts is here
+    const fetchData = async () => {
+      const token = await GetToken()
+      const dataPost = {
+        title: title,
+        thumbnail: thumbnail ? thumbnail.name : "",
+        dateAdded: new Date().toISOString().split('T')[0],
+        idType: Number(typePosts),
+        valuesPosts: resultValue && (resultValue as string).replaceAll("'", '"')
+      }
+      token && postCreate(dataPost, token)
+        .then((res: any) => {
+          alert(res.message)
+        })
+        .catch((err: any) => console.log(err))
+    }
+    isPost && fetchData()
   }, [isPost, resultValue, typePosts])
+  //Hàm set thumbnail
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // Lấy tệp tin đầu tiên từ input
+    if (file) {
+      setThumbnail(file)
+    }
+  };
+
   return (
     <>
+      <div className='title-post w-full h-auto flex flex-wrap justify-around mt-10'>
+        <Input type='text' placeholder='Title' variant='bordered' className='w-2/5' onChange={(e) => setTitle(e.target.value)} />
+        <input type="file" onChange={handleFileChange}
+          className="w-[55%] h-[37px] flex content-center text-gray-500 font-medium text-sm bg-gray-100 file:cursor-pointer cursor-pointer file:border-0 file:py-2 file:px-4 file:mr-4 file:bg-gray-800 file:hover:bg-gray-700 file:text-white rounded" />
+      </div>
+
       <div className="w-full h-[800px] my-4 bg-slate-100">
         <ReactQuill
           ref={quillRef}
@@ -258,7 +284,6 @@ const CreatePosts = () => {
       >
         Create Post
       </button>
-      {/* <div className="ql-snow bg-slate-100"><div className="ql-editor" dangerouslySetInnerHTML={{ __html: value }} /></div> */}
     </>
   );
 };

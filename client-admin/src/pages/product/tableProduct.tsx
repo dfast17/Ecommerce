@@ -32,7 +32,7 @@ const TableProduct = () => {
     useEffect(() => {
         product && setData(product)
     }, [product])
-    return <div className="table_product w-[90%] h-auto flex flex-wrap justify-center items-center">
+    return <div className="table_product w-[90%] h-auto flex flex-wrap justify-center items-center my-2">
         <Table aria-label="Product table" className="relative  min-h-[1000px] mb-2">
             <TableHeader>
                 <TableColumn>ID</TableColumn>
@@ -71,7 +71,7 @@ const TableProduct = () => {
                                     </Tooltip>
                                     <Tooltip color="danger" content={p.action === "hide" ? "Show" : "Hide"}>
                                         <span className="text-lg text-zinc-500 cursor-pointer active:opacity-50">
-                                            {p.action === "show" ?  <EyeSlashFilledIcon /> : <EyeFilledIcon />}
+                                            {p.action === "show" ? <EyeSlashFilledIcon /> : <EyeFilledIcon />}
                                         </span>
                                     </Tooltip>
                                     <Tooltip color="danger" content="Delete product">
@@ -95,7 +95,7 @@ const TableProduct = () => {
             placement="center"
             size="5xl"
             className="h-full xl:h-[90%]"
-            classNames={{wrapper:"overflow-hidden"}}
+            classNames={{ wrapper: "overflow-hidden" }}
         >
             {listModal.filter((f: any) => f.displayName === modalName).map((m: any) =>
                 <m.modalDetail setModalName={setModalName} id={dataSelect.id} nameType={dataSelect.nameType} key={`Modal-${m.displayName}`} />
