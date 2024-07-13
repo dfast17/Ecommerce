@@ -246,7 +246,6 @@ const CreatePosts = () => {
     thumbnail && uploadImagePostToS3(dataThumbnail)
       .then(res => console.log(res))
       .catch((err: any) => console.log(err))
-    //Upload a new posts is here
     const fetchData = async () => {
       const token = await GetToken()
       const dataPost = {
