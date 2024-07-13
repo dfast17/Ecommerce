@@ -13,6 +13,7 @@ import { GetToken } from '../../utils/token';
 import { postCreate } from '../../api/post';
 import { Input, Select, SelectItem } from '@nextui-org/react';
 import { CategoryPostType } from '../../types/types';
+import { Input } from '@nextui-org/react';
 // import styles
 hljs.configure({
   languages: ['typescript', 'javascript', 'php', 'html', 'css', 'java', 'ruby', 'python', 'rust', 'sql'],
@@ -32,6 +33,9 @@ const CreatePosts = () => {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [title, setTitle] = useState<string | null>(null)
   const [imgUrl, setImgUrl] = useState<string[]>([]);
+  const [typePosts, setTypePosts] = useState(null)
+  const [imgUrl, setImgUrl] = useState<string[]>([]);
+  const [isPost, setIsPost] = useState(false)
   const quillRef = useRef<ReactQuill | null>(null);
   useEffect(() => {
     // Highlight code blocks when the component mounts or updates
@@ -210,6 +214,7 @@ const CreatePosts = () => {
       let doc: any = parser.parseFromString(value, 'text/html');
       let images = doc.getElementsByTagName('img');
       for (let i = 0; i < images.length; i++) {
+        console.log(imgUrl)
         images[i].src = imgUrl[i];
       }
       // Gán giá trị nội dung HTML từ phần tử `<body>` của HTML đã parser thành `resultValue`
@@ -217,6 +222,9 @@ const CreatePosts = () => {
     }
   }, [value, imgUrl]);
 
+  useEffect(() => {
+    console.log(resultValue)
+  }, [resultValue])
   useEffect(() => {
     imgFile && setImgUrl(imgFile.map(e => `${import.meta.env.VITE_REACT_APP_URL_IMG}/posts/${e.name}`))
   }, [imgFile])
@@ -231,6 +239,12 @@ const CreatePosts = () => {
     !title && alert("Title is Null")
     !thumbnail && alert("Thumbnail is Null")
     !resultValue && alert("Content is Null")
+    if (resultValue !== null && title && thumbnail) {
+      setTypePosts(data.type)
+      setIsPost(true);
+    }
+  }
+  useEffect(() => {
     if (imgFile.length !== 0) {
       //Upload img is here
       const data = new FormData()
@@ -257,6 +271,12 @@ const CreatePosts = () => {
         valuesPosts: resultValue && (resultValue as string).replaceAll("'", '"')
       }
       token && resultValue && postCreate(dataPost, token)
+        thumbnail: thumbnail ? thumbnail.name : "",
+        dateAdded: new Date().toISOString().split('T')[0],
+        idType: Number(typePosts),
+        valuesPosts: resultValue && (resultValue as string).replaceAll("'", '"')
+      }
+      token && postCreate(dataPost, token)
         .then((res: any) => {
           alert(res.message)
         })
@@ -265,6 +285,15 @@ const CreatePosts = () => {
     fetchData()
   }
   //Hàm set thumbnail
+    isPost && fetchData()
+  }, [isPost, resultValue, typePosts])
+  //Hàm set thumbnail
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // Lấy tệp tin đầu tiên từ input
+    if (file) {
+      setThumbnail(file)
+    }
+  };
 
   return (
     <>
@@ -273,6 +302,7 @@ const CreatePosts = () => {
           classNames={{ inputWrapper: `border border-solid ${isDark ? "border-white text-white" : "border-zinc-800 text-black"}` }}
           className='w-2/5'
           onChange={(e) => setTitle(e.target.value)} />
+        <Input type='text' placeholder='Title' variant='bordered' className='w-2/5' onChange={(e) => setTitle(e.target.value)} />
         <input type="file" onChange={handleFileChange}
           className="w-[55%] h-[37px] flex content-center text-gray-500 font-medium text-sm bg-gray-100 file:cursor-pointer cursor-pointer file:border-0 file:py-2 file:px-4 file:mr-4 file:bg-gray-800 file:hover:bg-gray-700 file:text-white rounded" />
       </div>
