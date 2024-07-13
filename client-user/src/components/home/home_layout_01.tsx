@@ -74,7 +74,6 @@ const Home_layout_01 = ({ data, k, title, subTitle, link, banner }: HomeLayout01
             <div className="overlay absolute top-0 left-0 w-full h-full flex items-center justify-center bg-zinc-950 bg-opacity-60 rounded-md cursor-pointer z-0"></div>
             <div className="relative w-full h-auto flex items-center justify-center text-[35px] text-center font-bold font-tech-shark text-white z-10">
                 {title}
-
             </div>
             <div className="relative text-[15px] font-bold font-tech-shark text-red-500 z-10 my-1">{subTitle}</div>
             <div className='relative w-[150px] h-[50px]'>
