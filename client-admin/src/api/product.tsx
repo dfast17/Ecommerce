@@ -24,6 +24,39 @@ export const getAllCategoryProduct = async () => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/types`)
         .then(res => res.json())
 }
+export const createEvent = async (data: any, token: string) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/sale`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+}
+export const updateEvent = async (data: { idSale?: number, idDetail?: number, sale: { [x: string]: string }[], detail?: { discount: number }[] }, token: string) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/sale`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+}
+export const deleteEvent = async (id: number, token: string) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/sale/`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ idSale: id })
+    })
+        .then(res => res.json())
+}
 export const getSaleEvent = async () => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/sale/all`)
         .then(res => res.json())

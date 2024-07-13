@@ -76,7 +76,7 @@ interface IAdminLayoutProps {
 
 const AdminLayout = ({ children }: IAdminLayoutProps) => {
   const { isDark, setIsDark, setIsLogin } = useContext(StateContext);
-  const [isHeader, setIsHeader] = useState(true)
+  const [isHeader, setIsHeader] = useState(false)
   const handleSetDarkMode = () => {
     setIsDark(!isDark);
     localStorage.setItem("isDark", JSON.stringify(!isDark));
@@ -87,7 +87,6 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
     RemoveToken("aTk");
     RemoveToken("rTk");
     RemoveToken("a-Log");
-    handleSetDarkMode();
   };
 
   return (
@@ -170,7 +169,7 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
           <div
             onClick={handleLogout}
             className={classNames(
-              "flex items-center gap-x-4 p-4 rounded-2xl cursor-pointer text-[#EFEFEF] hover:text-zinc-50"
+              "flex items-center gap-x-4 p-4 rounded-2xl cursor-pointer text-[#EFEFEF] hover:text-zinc-50 mb-3"
             )}
           >
             <div className="text-2xl">
@@ -207,9 +206,9 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
         </div>
       </aside>
       <main className="flex-1 overflow-y-auto">
-        <div className={`relative top-0 left-0 w-[99.2vw] h-[40px] flex content-start justify-start ${isDark ? "bg-[#3d3d3d]" : "bg-[#F5F5F5]"} p-1`}>
-          <Button isIconOnly size="sm" onClick={() => setIsHeader(!isHeader)} className="bg-blue-500">
-            <FaAngleRight />
+        <div className={`relative top-0 left-0 w-full h-[40px] flex content-start justify-start ${isDark ? "bg-[#3d3d3d]" : "bg-[#F5F5F5]"} p-1`}>
+          <Button isIconOnly size="sm" onClick={() => setIsHeader(!isHeader)} className={`bg-blue-500 ${isHeader ? "opacity-0" : "opacity-100"} transition-all`}>
+            <FaAngleRight className="text-white" />
           </Button>
         </div>
         {children}

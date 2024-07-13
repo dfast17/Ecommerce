@@ -66,11 +66,11 @@ const Statistical = () => {
     </>}
     {/*Phần này của Nhâm Ngọ, làm ui theo dạng chart cột  keyword cho phần này : bar chart in react  */}
     <div className="w-[98%] xl:w-[49.5%] h-auto min-h-[400px] bg-zinc-900 rounded-md flex items-center my-1 p-2">
-      <h1 className="text-[30px] font-bold font-mono">Chart Revenue</h1>
+      <h1 className="text-[30px] font-bold font-mono">Chart User by month</h1>
     </div>
     {/* cái này chưa cần làm */}
     <div className="w-[98%] xl:w-[49.5%] h-auto min-h-[400px] bg-zinc-900 rounded-md flex items-center my-1 p-2">
-      <h1 className="text-[30px] font-bold font-mono">Chart Order success and order fail</h1>
+      <h1 className="text-[30px] font-bold font-mono">Chart Order by month</h1>
     </div>
 
   </div>

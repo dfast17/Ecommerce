@@ -18,21 +18,21 @@ export interface UserType {
     phone?: string,
     created_at?: string,
     updated_at?: string,
-    action?:string
+    action?: string
 }
-export interface UserAddressType{
+export interface UserAddressType {
     idAddress: number,
     idUser: string,
     typeAddress: string,
     detail: string,
-    nameUser:string
+    nameUser: string
 }
 export interface PositionType {
-    position_id ?: number,
+    position_id?: number,
     idStaff?: string,
     position_name?: string
 }
-export interface StaffType extends PositionType{
+export interface StaffType extends PositionType {
     idStaff: string,
     name: string,
     avatar?: string,
@@ -42,7 +42,7 @@ export interface StaffType extends PositionType{
     address: string,
     created_at?: string,
     updated_at?: string,
-    action?:string
+    action?: string
 }
 
 export interface PostType {

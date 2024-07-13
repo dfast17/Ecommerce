@@ -18,22 +18,23 @@ const Auth = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<FieldValues>();
-  const {setIsLogin} = useContext(StateContext)
+  const { setIsLogin } = useContext(StateContext)
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate()
   const onSubmit = (data: FieldValues) => {
     login(data)
-    .then(res => {
-      if(res.status !== 200){
-        toast.error(res.message)
-      }else{
-        SetToken('aTk', res.data.accessToken, res.data.expiredA)
-        SetToken('rTk', res.data.refreshToken, res.data.expiredR)
-        SetToken('a-Log', 'true',res.data.expiredR)
-        setIsLogin(true)
-        navigate('/')
-      }
-    })
+      .then(res => {
+        if (res.status !== 200) {
+          toast.error(res.message)
+        } else {
+          SetToken('aTk', res.data.accessToken, res.data.expiredA)
+          SetToken('rTk', res.data.refreshToken, res.data.expiredR)
+          SetToken('role', res.data.role, res.data.expiredR)
+          SetToken('a-Log', 'true', res.data.expiredR)
+          setIsLogin(true)
+          navigate('/')
+        }
+      })
   }
 
   return <div className="bg-white dark:bg-gray-900">
@@ -54,15 +55,15 @@ const Auth = () => {
           <div className="mt-8">
             <div>
               <div>
-                <Input {...register('username',{required:true})} variant="bordered" type="text" label="Username" placeholder="Enter your username" />
+                <Input {...register('username', { required: true })} variant="bordered" type="text" label="Username" placeholder="Enter your username" />
                 {errors.username && <p className="text-red-500">This field is required</p>}
               </div>
 
               <div className="mt-6">
-                <Input 
-                {...register('password',{required:true})} variant="bordered" type={showPassword ? "text" : "password"} 
-                onKeyDown={(e) => e.key === "Enter" && handleSubmit(onSubmit)()}
-                label="Password" placeholder="Enter your password" />
+                <Input
+                  {...register('password', { required: true })} variant="bordered" type={showPassword ? "text" : "password"}
+                  onKeyDown={(e) => e.key === "Enter" && handleSubmit(onSubmit)()}
+                  label="Password" placeholder="Enter your password" />
                 {errors.password && <p className="text-red-500">This field is required</p>}
               </div>
               <div>
@@ -75,7 +76,7 @@ const Auth = () => {
               </div>
               <div className="mt-6">
                 <button
-                  onClick={() => {handleSubmit(onSubmit)()}}
+                  onClick={() => { handleSubmit(onSubmit)() }}
                   className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                   Sign in
                 </button>
