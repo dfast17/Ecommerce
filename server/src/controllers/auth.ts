@@ -70,10 +70,10 @@ export default class AuthController {
     const data = req.body
     const username = data.username
     const password = data.password
-    let isPassword:boolean | string = "";
-    try{
+    let isPassword: boolean | string = "";
+    try {
       const result = await authStatement.getAuthAdmin(username)
-      if(!result || result.length === 0){
+      if (!result || result.length === 0) {
         return responseMessage(res, 401, "Username does not exist");
       }
       const password_hash = result[0].password_hash;
@@ -89,9 +89,9 @@ export default class AuthController {
         value: result[0].idUser,
       };
       await statement.updateDataByCondition("auth", [{ nameCol: "rfToken", value: refreshToken }, { nameCol: "status", value: "login" }], condition);
-      responseData(res, 200, { accessToken, refreshToken, expiredA, expiredR });
+      responseData(res, 200, { role: result[0].role, accessToken, refreshToken, expiredA, expiredR });
     }
-    catch{
+    catch {
       (errors: any) => {
         responseMessageData(res, 500, "Server errors", errors);
       };
@@ -248,24 +248,24 @@ export default class AuthController {
       }
       const newPass = createPass(10);
       const pass_hash = encodePass(newPass);
-      const dataUpdate=convertData([{
-        password_hash:pass_hash
+      const dataUpdate = convertData([{
+        password_hash: pass_hash
       }])
-      const condition:ConditionType = {
-        conditionName:"username",
-        conditionMethod:"=",
-        value:data.username
+      const condition: ConditionType = {
+        conditionName: "username",
+        conditionMethod: "=",
+        value: data.username
       }
-      const updatePassword = await statement.updateDataByCondition("auth",dataUpdate,condition)
-      if(!updatePassword){
-        return responseMessage(res,401,"")
+      const updatePassword = await statement.updateDataByCondition("auth", dataUpdate, condition)
+      if (!updatePassword) {
+        return responseMessage(res, 401, "")
       }
       const dataSendMail = {
-        toMail:data.mail,
-        subject:"New password",
-        content:`New password is ${newPass}`
+        toMail: data.mail,
+        subject: "New password",
+        content: `New password is ${newPass}`
       }
-      handleSendMail(res,dataSendMail)
+      handleSendMail(res, dataSendMail)
     }
     catch {
       (errors: any) => {

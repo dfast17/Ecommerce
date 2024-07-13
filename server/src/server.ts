@@ -11,11 +11,18 @@ import cartRoute from "./routes/cart"
 import wareRoute from "./routes/warehouse"
 import postRoute from "./routes/posts"
 import commentRoute from "./routes/comment"
-import statisticalRoute from "./routes/statistical" 
+import statisticalRoute from "./routes/statistical"
 import tableRoute from "./routes/table"
 
+import * as db from "models/connect_mongo"
+
+import AWS from "aws-sdk";
+import fs from "fs";
+import fileUpload from "express-fileupload";
+
+
 const app = express();
-const port = process.env.PORT ||3030;
+const port = process.env.PORT || 3030;
 /*const redis = new Redis({
   host: process.env.HOST_REDIS,
   port: Number(process.env.PORT_REDIS),
@@ -42,7 +49,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
-
+db.connectDB()
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minutes
   max: Number(process.env.LIMIT_REQ),
@@ -56,7 +63,7 @@ const apiLimiter = rateLimit({
 
 app.use((req, res, next) => {
   const start = Date.now();
-  res.on('finish', () => { 
+  res.on('finish', () => {
     const duration = Date.now() - start;
     const date = new Date().toISOString();
     const status = res.statusCode;
@@ -68,24 +75,62 @@ app.use((req, res, next) => {
 
 
 app.use(express.json());
-app.use(compression())
+app.use(compression());
+
+AWS.config.update({ region: "ap-southeast-1" });
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
+const s3 = new AWS.S3({
+  credentials: {
+    accessKeyId: process.env.AWS_KEY!,
+    secretAccessKey: process.env.AWS_SKEY!,
+  },
+});
+app.post("/upload/:folder", async (req, res) => {
+  const files: any = req.files;
+  const folder = req.params["folder"];
+
+  for (let fileKey in files) {
+    let file = files[fileKey];
+    const fileData = fs.readFileSync(file.tempFilePath);
+    const uploadParams = {
+      Bucket: "express-image-upload",
+      Key: folder + "/" + file.name,
+      Body: fileData,
+      ContentType: file.mimetype,
+      ACL: "public-read",
+    };
+    try {
+      const data = await s3.upload(uploadParams).promise();
+      console.log("Upload Success", file.name);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
+
+  res.status(201).json({ message: "All files uploaded successfully" });
+});
 
 
 app.get("/", (req, res) => {
-  res.status(200).json({status:200,message:"Hello World!"});
+  res.status(200).json({ status: 200, message: "Hello World!" });
 });
-app.use('/api/product',productRoute)
-app.use('/auth',authRoute)
-app.use('/user',userRoute)
-app.use('/order',orderRoute)
-app.use('/cart',cartRoute)
-app.use('/ware',wareRoute)
-app.use('/post',postRoute)
-app.use('/comment',commentRoute)
-app.use('/api/statistical',statisticalRoute)
-app.use('/api/table',tableRoute)
+app.use('/api/product', productRoute)
+app.use('/auth', authRoute)
+app.use('/user', userRoute)
+app.use('/order', orderRoute)
+app.use('/cart', cartRoute)
+app.use('/ware', wareRoute)
+app.use('/post', postRoute)
+app.use('/comment', commentRoute)
+app.use('/api/statistical', statisticalRoute)
+app.use('/api/table', tableRoute)
 
-app.get('/api/test',(req,res) => {
+app.get('/api/test', (req, res) => {
   res.json("test")
 })
 app.listen(port, () => {

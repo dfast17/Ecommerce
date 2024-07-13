@@ -1,3 +1,4 @@
+import { LogsType } from "types/types";
 import { responseData, responseMessageData } from "./response";
 
 export const convertData = (arr: any[]) => {
@@ -38,5 +39,12 @@ export const handleChangeData = async (res: any, handle: any, method: "add" | "u
     (errors: any) => {
       responseMessageData(res, 500, "Server errors", errors);
     };
+  }
+}
+export const logData = (idUser: string, content: string): LogsType => {
+  return {
+    idUser: idUser,
+    content: content,
+    timestamp: new Date().toLocaleString()
   }
 }

@@ -94,14 +94,14 @@ export default class Statements {
   //update table : add column or drop column
   public columnChange = async (method: "add" | "remove", table: string, column: columnAddType[] | string) => {
     try {
-      let query:any = db.schema.alterTable(table)
+      let query: any = db.schema.alterTable(table)
       typeof (column) !== "string" && column.map((d: columnAddType) =>
         query = query.addColumn(d.name, d.datatypes === "varchar" ? `varchar(${d.limit})` : d.datatypes, (col: any) => d.isNull ? col : col.notNull())
       )
-      return method === "remove" && typeof(column) === "string" ? await query.dropColumn(column).execute() :
+      return method === "remove" && typeof (column) === "string" ? await query.dropColumn(column).execute() :
         query && await query.execute()
     }
-    catch (error){
+    catch (error) {
       console.error('Error executing query:', error);
       throw error;
     }
