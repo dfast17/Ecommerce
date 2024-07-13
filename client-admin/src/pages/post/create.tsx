@@ -264,7 +264,6 @@ const CreatePosts = () => {
     }
     fetchData()
   }
-  //Hàm set thumbnail
 
   return (
     <>
