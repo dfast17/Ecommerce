@@ -21,6 +21,13 @@ export default class PostStatement {
             .orderBy("dateAdded desc")
             .execute()
     }
+    public getAll = async () => {
+        return await db.selectFrom("posts as p")
+            .select(["idPost", "p.idType", "t.nameType", "dateAdded", "p.title", "p.thumbnails", "poster"])
+            .innerJoin("typePost as t", "p.idType", "t.idType")
+            .orderBy("dateAdded desc")
+            .execute()
+    }
     public getCategory = async () => {
         return await db.selectFrom("typePost")
             .selectAll()

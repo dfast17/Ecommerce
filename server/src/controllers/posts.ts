@@ -14,14 +14,7 @@ const commentStatement = new CommentStatement();
 const logs = new LogsStatement()
 export default class PostsController {
   public getAll = async (req: Request, res: Response) => {
-    try {
-      const result = await postStatement.getAll();
-      responseData(res, 200, result);
-    } catch {
-      (errors: any) => {
-        responseMessageData(res, 500, "Server errors", errors);
-      };
-    }
+    handleFindData(res, postStatement.getAll());
   };
   public getCategory = async (req: Request, res: Response) => {
     handleFindData(res, postStatement.getCategory());
@@ -40,8 +33,12 @@ export default class PostsController {
     }
     const logsData = logData(idUser, "Create new post")
     try {
+<<<<<<< HEAD
       const result = await postStatement.createPost(dataInsert);
       const resultLog = await logs.create(logsData)
+=======
+      const result = await statement.insertData("posts", changeData);
+>>>>>>> 489f295aa8119c8e274453efb68600594ac2f1cd
       if (!result) {
         return responseMessageData(res, 401, `Post created is failed`);
       }
@@ -89,6 +86,7 @@ export default class PostsController {
     const resultLog = await logs.create(logsData)
     handleChangeData(res, statement.updateDataByCondition("posts", changeData, condition), "update");
   };
+<<<<<<< HEAD
   public removePost = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser
@@ -102,6 +100,8 @@ export default class PostsController {
     const resultLog = await logs.create(logsData)
     handleChangeData(res, statement.removeData("posts", condition), "delete");
   }
+=======
+>>>>>>> 489f295aa8119c8e274453efb68600594ac2f1cd
   public getCommentPost = async (req: Request, res: Response) => {
     const idPost = req.params['id']
     const current_page = req.params["page"] ? Number(req.params["page"]) : 1
