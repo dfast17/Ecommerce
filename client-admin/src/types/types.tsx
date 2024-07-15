@@ -47,11 +47,13 @@ export interface StaffType extends PositionType {
 
 export interface PostType {
     idPost: number,
-    titlePost: string,
-    detailPost: string,
-    imgPost: string,
-    created_at?: Date,
-    updated_at?: Date
+    idType: number,
+    nameType: string,
+    title: string,
+    thumbnails: string,
+    dateAdded: string,
+    poster: string,
+    valuesPosts?: string
 }
 export interface CommentProductType {
     idComment: number,

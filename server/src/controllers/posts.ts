@@ -12,14 +12,7 @@ const postStatement = new PostStatement();
 const commentStatement = new CommentStatement();
 export default class PostsController {
   public getAll = async (req: Request, res: Response) => {
-    try {
-      const result = await postStatement.getAll();
-      responseData(res, 200, result);
-    } catch {
-      (errors: any) => {
-        responseMessageData(res, 500, "Server errors", errors);
-      };
-    }
+    handleFindData(res, postStatement.getAll());
   };
   public getCategory = async (req: Request, res: Response) => {
     handleFindData(res, postStatement.getCategory());
@@ -33,10 +26,10 @@ export default class PostsController {
     const changeData = convertData(data);
     try {
       const result = await statement.insertData("posts", changeData);
-      if(!result){
+      if (!result) {
         return responseMessageData(res, 401, `Post created is failed`);
       }
-      responseMessageData(res, 201, `Post created is success`,{id:Number(result.insertId)});
+      responseMessageData(res, 201, `Post created is success`, { id: Number(result.insertId) });
     } catch {
       (errors: any) => {
         responseMessageData(res, 500, "Server errors", errors);
@@ -57,10 +50,10 @@ export default class PostsController {
     const changeData = convertData(addData);
     try {
       const result = await statement.insertData("commentPost", changeData);
-      if(!result){
+      if (!result) {
         return responseMessageData(res, 401, `Comment for post is failed`);
       }
-      responseMessageData(res, 201, `Comment for post is success`,{id:Number(result.insertId)});
+      responseMessageData(res, 201, `Comment for post is success`, { id: Number(result.insertId) });
     } catch {
       (errors: any) => {
         responseMessageData(res, 500, "Server errors", errors);
@@ -78,19 +71,19 @@ export default class PostsController {
     };
     handleChangeData(res, statement.updateDataByCondition("posts", changeData, condition), "update");
   };
-  public getCommentPost = async (req:Request,res:Response) => {
+  public getCommentPost = async (req: Request, res: Response) => {
     const idPost = req.params['id']
     const current_page = req.params["page"] ? Number(req.params["page"]) : 1
     try {
-      const getCount = await commentStatement.getCountComment(Number(idPost),"commentPost");
-      const getData = await commentStatement.getByPost(Number(idPost),Number(current_page))
-      const total_p = Math.ceil((getCount.flatMap((t:any) => t.total)[0]/4))
-      
+      const getCount = await commentStatement.getCountComment(Number(idPost), "commentPost");
+      const getData = await commentStatement.getByPost(Number(idPost), Number(current_page))
+      const total_p = Math.ceil((getCount.flatMap((t: any) => t.total)[0] / 4))
+
       const resultData = {
-          total:getCount.flatMap((t:any) => t.total)[0],
-          total_page:total_p === 0 ? 1 : total_p,
-          page:current_page,
-          detail:getData
+        total: getCount.flatMap((t: any) => t.total)[0],
+        total_page: total_p === 0 ? 1 : total_p,
+        page: current_page,
+        detail: getData
       }
       responseData(res, 200, resultData);
     } catch {

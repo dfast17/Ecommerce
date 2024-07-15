@@ -1,23 +1,23 @@
 import { db } from "models/connect"
 
-export default class PostStatement{
-    public getAll = async() => {
+export default class PostStatement {
+    public getAll = async () => {
         return await db.selectFrom("posts as p")
-        .select(["idPost","p.idType","t.nameType","dateAdded","p.title","p.thumbnails","valuesPosts","poster"])
-        .innerJoin("typePost as t","p.idType","t.idType")
-        .orderBy("dateAdded desc")
-        .execute()
+            .select(["idPost", "p.idType", "t.nameType", "dateAdded", "p.title", "p.thumbnails", "poster"])
+            .innerJoin("typePost as t", "p.idType", "t.idType")
+            .orderBy("dateAdded desc")
+            .execute()
     }
-    public getCategory = async() => {
+    public getCategory = async () => {
         return await db.selectFrom("typePost")
-        .selectAll()
-        .execute()
+            .selectAll()
+            .execute()
     }
-    public getDetail = async(id:number) => {
+    public getDetail = async (id: number) => {
         return await db.selectFrom("posts as p")
-        .innerJoin("typePost as t","p.idType","t.idType")
-        .select(["idPost","p.idType","t.nameType","dateAdded","p.title","p.thumbnails","valuesPosts","poster"])
-        .where("idPost","=",id)
-        .execute()
+            .innerJoin("typePost as t", "p.idType", "t.idType")
+            .select(["idPost", "p.idType", "t.nameType", "dateAdded", "p.title", "p.thumbnails", "valuesPosts", "poster"])
+            .where("idPost", "=", id)
+            .execute()
     }
 }

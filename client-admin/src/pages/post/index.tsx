@@ -2,6 +2,7 @@ import { useContext } from "react"
 import { StateContext } from "../../context/state"
 import CreatePosts from "./create"
 import ShortKey from "./shortcut"
+import Post_data from "./post"
 
 const Post = () => {
   const { isDark } = useContext(StateContext)
@@ -10,6 +11,7 @@ const Post = () => {
       <h1 className="text-blue-500 text-[25px] text-center font-bold my-4">Create a new Posts</h1>
       <ShortKey />
       <CreatePosts />
+      <Post_data />
     </div>
   </div>
 }
