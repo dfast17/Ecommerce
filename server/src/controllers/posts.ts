@@ -35,7 +35,6 @@ export default class PostsController {
     try {
       const result = await postStatement.createPost(dataInsert);
       const resultLog = await logs.create(logsData)
-      const result = await statement.insertData("posts", changeData);
       if (!result) {
         return responseMessageData(res, 401, `Post created is failed`);
       }
