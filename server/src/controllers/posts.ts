@@ -2,14 +2,16 @@ import type { Request, Response } from "express";
 import PostStatement from "models/statement/posts";
 import Statements, { type ConditionType } from "models/statement/statement";
 import { responseData, responseMessageData } from "utils/response";
-import { convertData, handleChangeData, handleFindData } from "utils/utils";
+import { convertData, handleChangeData, handleFindData, logData } from "utils/utils";
 import type { RequestCustom } from "types/types";
 import CommentStatement from "models/statement/comment";
+import LogsStatement from "models/statement/logs";
 
 
 const statement = new Statements();
 const postStatement = new PostStatement();
 const commentStatement = new CommentStatement();
+const logs = new LogsStatement()
 export default class PostsController {
   public getAll = async (req: Request, res: Response) => {
     handleFindData(res, postStatement.getAll());
@@ -21,10 +23,18 @@ export default class PostsController {
     const idPosts = req.params["id"];
     handleFindData(res, postStatement.getDetail(Number(idPosts)));
   };
-  public insertPost = async (req: Request, res: Response) => {
+  public insertPost = async (request: Request, res: Response) => {
+    const req = request as RequestCustom;
     const data = req.body;
-    const changeData = convertData(data);
+    const idUser = req.idUser
+    const dataInsert = {
+      ...data,
+      poster: idUser
+    }
+    const logsData = logData(idUser, "Create new post")
     try {
+      const result = await postStatement.createPost(dataInsert);
+      const resultLog = await logs.create(logsData)
       const result = await statement.insertData("posts", changeData);
       if (!result) {
         return responseMessageData(res, 401, `Post created is failed`);
@@ -69,8 +79,23 @@ export default class PostsController {
       conditionMethod: "=",
       value: data.id,
     };
+    const logsData = logData(data.idUser, "Update post")
+    const resultLog = await logs.create(logsData)
     handleChangeData(res, statement.updateDataByCondition("posts", changeData, condition), "update");
   };
+  public removePost = async (request: Request, res: Response) => {
+    const req = request as RequestCustom;
+    const idUser = req.idUser
+    const data = req.body;
+    const condition: ConditionType = {
+      conditionName: "idPosts",
+      conditionMethod: "=",
+      value: data.id,
+    };
+    const logsData = logData(idUser, "Delete post")
+    const resultLog = await logs.create(logsData)
+    handleChangeData(res, statement.removeData("posts", condition), "delete");
+  }
   public getCommentPost = async (req: Request, res: Response) => {
     const idPost = req.params['id']
     const current_page = req.params["page"] ? Number(req.params["page"]) : 1

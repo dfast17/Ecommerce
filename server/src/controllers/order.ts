@@ -1,15 +1,17 @@
 import type { Request, Response } from "express";
 import Statements, { type ConditionType } from "models/statement/statement";
 import OrderStatement from "models/statement/order";
-import type { RequestCustom } from "types/types";
+import type { LogsType, RequestCustom } from "types/types";
 import { responseData, responseMessage, responseMessageData } from "utils/response";
-import { convertData, handleFindData } from "utils/utils";
+import { convertData, handleFindData, logData } from "utils/utils";
 import crypto from "crypto";
 import { sql } from "kysely";
 import { db } from "models/connect";
+import LogsStatement from "models/statement/logs";
 
 const order = new OrderStatement();
 const statement = new Statements();
+const logs = new LogsStatement()
 let dateObj = new Date();
 let month = dateObj.getUTCMonth() + 1;
 let year = dateObj.getUTCFullYear();
@@ -103,7 +105,8 @@ export default class OrderController {
       };
     }
   };
-  public updateOrder = async (req: Request, res: Response) => {
+  public updateOrder = async (request: Request, res: Response) => {
+    const req = request as RequestCustom;
     const data = req.body;
     const valueUpdate = {
       nameCol: "status",
@@ -114,54 +117,13 @@ export default class OrderController {
       conditionMethod: "=",
       value: data.id,
     };
+    const logsData = logData(req.idUser, `Update order status to ${data.status}`)
     try {
       const updateStatus = await statement.updateDataByCondition("ord", [valueUpdate], condition);
       if (!updateStatus) {
         return responseMessage(res, 401, "Status update failed");
       }
-      if (data.status === "Thành công" || data.status === "Thất bại") {
-        const colInsertDetail = ["idOrder", "idProduct", "countProduct", "discount"];
-        const tableSelect = "ord";
-        const tableSelectDetail = "ordDetail";
-        const colSelectDetail = ["idTrans", "idProduct", "countProduct", "discount"]
-        const condition: ConditionType = {
-          conditionName: "idTrans",
-          conditionMethod: "=",
-          value: data.id,
-        };
-        if (data.status === "Thành công") {
-          const tableInsert = "ords";
-          const tableInsertDetail = "ordsDetail";
-          const colInsert = ["idBill", "idUser", "idShipper", "infoOrder", "costs", "dateBuy"]
-          const colSelect = [
-            "idTrans",
-            "idUser",
-            "idShipper",
-            sql`CONCAT('name:',fullName,' - phone: ',phone,' - address: ',address)`.as("infoOrder"),
-            "costs",
-            sql`${new Date().toISOString().split("T")[0]}`.as("dateBuy"),
-          ];
-          await statement.insertSubQuery(tableInsert, colInsert, tableSelect, colSelect, condition);
-          await statement.insertSubQuery(tableInsertDetail, colInsertDetail, tableSelectDetail, colSelectDetail, condition);
-        }
-        if (data.status === "Thất bại") {
-          const tableInsert = "ordf";
-          const tableInsertDetail = "ordfDetail";
-          const colInsert = ["idFail", "idUser", "infoOrder", "note"]
-          const colSelect = [
-            "idTrans",
-            "idUser",
-            sql`CONCAT('name:',fullName,' - phone: ',phone,' - address: ',address)`.as("infoOrder"),
-            sql`${data.note ? data.note : ""}`.as("note"),
-          ];
-          const insertOrderF = await statement.insertSubQuery(tableInsert, colInsert, tableSelect, colSelect, condition);
-          const insertOrderFDetail = await statement.insertSubQuery(tableInsertDetail, colInsertDetail, tableSelectDetail, colSelectDetail, condition);
-        }
-        sql`SET FOREIGN_KEY_CHECKS=0`.execute(db);
-        await statement.removeData("ordDetail", condition)
-        await statement.removeData("ord", condition)
-        sql`SET FOREIGN_KEY_CHECKS=1`.execute(db);
-      }
+      const insertLogs = await logs.create(logsData)
       responseMessage(res, 200, "Update status success");
     } catch {
       (errors: any) => {
