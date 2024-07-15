@@ -50,6 +50,7 @@ app.use(function (req, res, next) {
   next();
 });
 /* connected mongodb */
+
 db.connectDB()
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minutes

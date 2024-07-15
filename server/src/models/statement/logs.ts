@@ -26,5 +26,4 @@ export default class LogsStatement {
             return error;
         }
     };
-    updateLogs = () => { }
 }
