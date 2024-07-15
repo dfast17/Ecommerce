@@ -37,40 +37,30 @@ const navArr: NavContent[] = [
     content: "Dashboard",
     icon: TfiDashboard,
     url: "/"
-    url: "/",
-    delay: "0",
   },
   {
     idNav: 2,
     content: "Product",
     icon: FaLaptopCode,
     url: "/product"
-    url: "/product",
-    delay: "5",
   },
   {
     idNav: 3,
     content: "Account",
     icon: FaUserCog,
     url: "/account"
-    url: "/account",
-    delay: "10",
   },
   {
     idNav: 4,
     content: "Post/Blog",
     icon: BsFillPostcardFill,
     url: "/post"
-    url: "/post",
-    delay: "15",
   },
   {
     idNav: 5,
     content: "Order",
     icon: FaLuggageCart,
     url: "/order"
-    url: "/order",
-    delay: "20",
   },
   {
     idNav: 6,
@@ -78,17 +68,6 @@ const navArr: NavContent[] = [
     icon: MdOutlineDiscount,
     url: "/event"
   }
-    url: "/event",
-    delay: "25",
-  },
-  {
-    idNav: 7,
-    content: "Warehouse",
-    icon: MdOutlineWarehouse,
-    url: "/warehouse"
-    url: "/warehouse",
-    delay: "30",
-  },
 ];
 
 interface IAdminLayoutProps {
@@ -98,7 +77,6 @@ interface IAdminLayoutProps {
 const AdminLayout = ({ children }: IAdminLayoutProps) => {
   const { isDark, setIsDark, setIsLogin } = useContext(StateContext);
   const [isHeader, setIsHeader] = useState(false)
-  const [isHeader, setIsHeader] = useState(true)
   const handleSetDarkMode = () => {
     setIsDark(!isDark);
     localStorage.setItem("isDark", JSON.stringify(!isDark));
@@ -192,7 +170,6 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
             onClick={handleLogout}
             className={classNames(
               "flex items-center gap-x-4 p-4 rounded-2xl cursor-pointer text-[#EFEFEF] hover:text-zinc-50 mb-3"
-              "flex items-center gap-x-4 p-4 rounded-2xl cursor-pointer text-[#EFEFEF] hover:text-zinc-50"
             )}
           >
             <div className="text-2xl">
@@ -232,9 +209,6 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
         <div className={`relative top-0 left-0 w-full h-[40px] flex content-start justify-start ${isDark ? "bg-[#3d3d3d]" : "bg-[#F5F5F5]"} p-1`}>
           <Button isIconOnly size="sm" onClick={() => setIsHeader(!isHeader)} className={`bg-blue-500 ${isHeader ? "opacity-0" : "opacity-100"} transition-all`}>
             <FaAngleRight className="text-white" />
-        <div className={`relative top-0 left-0 w-[99.2vw] h-[40px] flex content-start justify-start ${isDark ? "bg-[#3d3d3d]" : "bg-[#F5F5F5]"} p-1`}>
-          <Button isIconOnly size="sm" onClick={() => setIsHeader(!isHeader)} className="bg-blue-500">
-            <FaAngleRight />
           </Button>
         </div>
         {children}

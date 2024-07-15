@@ -10,7 +10,6 @@ import { userStore } from "../store/user";
 export const ApiContext = createContext<any>({});
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
     const { isLogin, setPost, setTypePost, setStatistical, setSale } = useContext(StateContext)
-    const { isLogin, setStatistical, setSale } = useContext(StateContext)
     const { setCategory, setProduct } = productStore()
     const { setUser, setStaff, setCurrentUser, setAddress } = userStore()
     useEffect(() => {
@@ -42,7 +41,6 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
         dataPost && setPost(dataPost.data)
         postCategory && setTypePost(postCategory.data)
     }, [dataProduct, categoryData, SaleData, dataPost, postCategory])
-    }, [dataProduct, categoryData, SaleData])
 
     useEffect(() => {
         const fetchData = async () => {

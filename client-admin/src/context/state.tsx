@@ -15,11 +15,9 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLogin, setIsLogin] = useState<boolean>(true)
     const [isDark, setIsDark] = useState<boolean>(false)
     const [statistical, setStatistical] = useState<statisticalType>({ product: null, user: null, revenue: null })
-    const [sale, setSale] = useState<any>(null)
     const [role, setRole] = useState<number | null>(null)
     const [post, setPost] = useState<PostType[] | null>(null)
     const [typePost, setTypePost] = useState<CategoryPostType[] | null>(null)
-    const [product, setProduct] = useState<any[] | null>(null)
     const [sale, setSale] = useState<any>(null)
     useEffect(() => {
         document.body.classList.remove(!isDark ? 'dark' : 'light')
@@ -41,8 +39,6 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
             role, setRole,
             post, setPost,
             typePost, setTypePost
-            product, setProduct,
-            sale, setSale
         }}>
             {children}
         </StateContext.Provider>
