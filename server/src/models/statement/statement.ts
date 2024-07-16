@@ -12,7 +12,6 @@ export interface ConditionType {
 export interface columnAddType {
   name: string,
   datatypes: DataTypes,
-  isNull: boolean,
   limit: number
 }
 type columnDelType = string[]
@@ -27,13 +26,8 @@ export default class Statements {
       .executeTakeFirst();
   };
   //insert multi data
-  public insertDataMulti = async (table: string, data: ValueType[][]) => {
-    const resultLengthMulti = data.map((d) =>
-      eval(`({
-      ${d.map((c) => `${c.nameCol}:${typeof c.value === "string" ? `"${c.value}"` : c.value}`)}
-    })`)
-    );
-    return await db.insertInto(table).values(resultLengthMulti).executeTakeFirst();
+  public insertDataMulti = async (table: string, data: { [x: string]: string | number }[]) => {
+    return await db.insertInto(table).values(data).execute();
   };
 
   //insert data with select from table
@@ -80,23 +74,24 @@ export default class Statements {
     return await db.schema.dropIndex(indexName)
       .execute()
   }
-  //this is code sql for create table or drop table
+  //this is code sql for create table or drop table detail product
   public table = async (method: "add" | "remove", table: string, column?: columnAddType[]) => {
     let query = db.schema.createTable(table)
-      .addColumn('id', 'integer', col => col.primaryKey().autoIncrement());
+      .addColumn('id', 'integer', col => col.primaryKey().autoIncrement())
+      .addColumn('idProduct', 'integer', col => col.notNull());
 
     column && column.map((d: columnAddType) => (
-      query = query.addColumn(d.name, d.datatypes === "varchar" ? `varchar(${d.limit})` : d.datatypes, col => d.isNull ? col : col.notNull())
+      query = query.addColumn(d.name, d.datatypes === "varchar" ? `varchar(${d.limit})` : d.datatypes, col => col.notNull())
     ))
     return method === "remove" ? await db.schema.dropTable(table).execute()
-      : await query.execute()
+      : await query.addForeignKeyConstraint(`${table}`, ['idProduct'], 'products', ['idProduct']).execute()
   };
   //update table : add column or drop column
   public columnChange = async (method: "add" | "remove", table: string, column: columnAddType[] | string) => {
     try {
       let query: any = db.schema.alterTable(table)
       typeof (column) !== "string" && column.map((d: columnAddType) =>
-        query = query.addColumn(d.name, d.datatypes === "varchar" ? `varchar(${d.limit})` : d.datatypes, (col: any) => d.isNull ? col : col.notNull())
+        query = query.addColumn(d.name, d.datatypes === "varchar" ? `varchar(${d.limit})` : d.datatypes, (col: any) => col.notNull())
       )
       return method === "remove" && typeof (column) === "string" ? await query.dropColumn(column).execute() :
         query && await query.execute()

@@ -82,6 +82,37 @@ export default class ProductController {
     const idSale = req.params["idSale"];
     handleFindData(res, products.findSaleDetail(Number(idSale)));
   };
+
+
+  public insertCategory = async (request: Request, res: Response) => {
+    const req = request as RequestCustom
+    const data = req.body;
+    const type = convertData([{ nameType: data.nameType }])
+
+    const dataTypeDetail = data.table.map((x: any) => ({
+      id: `${data.nameType}${x.name}`,
+      name: x.name,
+      type: data.nameType,
+      datatypes: x.datatypes === "varchar" ? "text" : (x.datatypes === "int" ? "number" : "longtext"),
+      displayorder: Number(x.displayorder),
+      displayname: x.displayname,
+    }))
+
+    const logsData = logData(req.idUser, 'Add new category')
+    try {
+      const insertType = await statement.insertData('type', type);
+      const createTableDetail = await statement.table('add', data.nameType, data.table);
+      const insertTypeDetail = await statement.insertDataMulti('typedetail', dataTypeDetail);
+      const resultLog = await logs.create(logsData)
+      insertTypeDetail ?
+        responseMessageData(res, 201, 'Add new category is success', { id: Number(insertType.insertId) })
+        : responseMessage(res, 500, "Server errors");
+    } catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
   public insertProduct = async (request: Request, res: Response) => {
     const req = request as RequestCustom
     const data = req.body;
@@ -90,6 +121,8 @@ export default class ProductController {
     const logsData = logData(req.idUser, 'Add new product')
     try {
       const insertProduct = await statement.insertData('products', product);
+      const dataImges = data.images.map((i: any) => ({ idProduct: Number(insertProduct.insertId), ...i }))
+      const insertImges = await products.insertImages(dataImges)
       const convertDetail = [...detail, { nameCol: 'idProduct', value: Number(insertProduct.insertId) }]
       const insertDetail = await statement.insertData(data.tableName, convertDetail)
       const resultLog = await logs.create(logsData)
@@ -136,9 +169,7 @@ export default class ProductController {
       const dataDetail = data.detail.map((e: any) => {
         return { ...e, idSale: Number(insertSale.insertId) }
       })
-      const saleDetail = convertMultiData(dataDetail)
-      const insertDetail = await statement.insertDataMulti('saleDetail', saleDetail)
-      console.log("success 2")
+      const insertDetail = await statement.insertDataMulti('saleDetail', dataDetail)
       const resultLog = await logs.create(logsData)
       insertSale && insertDetail ?
         responseMessageData(res, 201, 'Add new sale event is success', { id: Number(insertSale.insertId) })
@@ -150,12 +181,6 @@ export default class ProductController {
       };
     }
   }
-  /* {
-    idSale ?: number,
-    idDetail?: number,
-    sale?: [{data}],
-    detail?: [{data}]
-  } */
   public updateSaleEvent = async (request: Request, res: Response) => {
     const req = request as RequestCustom
     const data = req.body;

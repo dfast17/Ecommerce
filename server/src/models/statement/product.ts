@@ -10,7 +10,12 @@ export default class ProductStatement {
       .orderBy("displayorder asc")
       .execute();
   };
-
+  public insertImages = async (data: { idProduct: number, img: string }[]) => {
+    return await db
+      .insertInto("imgProduct")
+      .values(data)
+      .execute();
+  }
   public findAllType = async () => {
     return await db
       .selectFrom("type")
@@ -101,7 +106,7 @@ export default class ProductStatement {
         jsonArrayFrom(
           eb.selectFrom("imageProduct as i").select(["type", "img"]).whereRef(`i.idProduct`, "=", "p.idProduct")
         ).as("img"),
-        jsonArrayFrom(eb.selectFrom(type).select(["id",...colDetail]).whereRef(`${type}.idProduct`, "=", "p.idProduct")).as(
+        jsonArrayFrom(eb.selectFrom(type).select(["id", ...colDetail]).whereRef(`${type}.idProduct`, "=", "p.idProduct")).as(
           "detail"
         ),
       ])
@@ -178,31 +183,31 @@ export default class ProductStatement {
   };
   public findSale = async (date: string) => {
     return db
-    .selectFrom("sale")
-    .select<string | any>((eb: any) => [
-      "sale.idSale",
-      "sale.start_date",
-      "sale.end_date",
-      "sale.title",
-      jsonArrayFrom(
-        eb
-          .selectFrom("saleDetail as sd")
-          .select((s: any) => [
-            "sd.id",
-            "sd.idProduct",
-            "sd.discount",
-            "p.nameProduct",
-            "p.price",
-            "p.imgProduct",
-            "type.nameType",
-            "p.brand"
-          ])
-          .leftJoin("products as p", "p.idProduct", "sd.idProduct")
-          .leftJoin("type", "p.idType", "type.idType")
-          .whereRef("sd.idSale", "=", "sale.idSale")
-      ).as("detail"),
-    ])
-    .where((eb: any) => eb("sale.start_date", "<=", date).or("sale.end_date", ">=", date))
+      .selectFrom("sale")
+      .select<string | any>((eb: any) => [
+        "sale.idSale",
+        "sale.start_date",
+        "sale.end_date",
+        "sale.title",
+        jsonArrayFrom(
+          eb
+            .selectFrom("saleDetail as sd")
+            .select((s: any) => [
+              "sd.id",
+              "sd.idProduct",
+              "sd.discount",
+              "p.nameProduct",
+              "p.price",
+              "p.imgProduct",
+              "type.nameType",
+              "p.brand"
+            ])
+            .leftJoin("products as p", "p.idProduct", "sd.idProduct")
+            .leftJoin("type", "p.idType", "type.idType")
+            .whereRef("sd.idSale", "=", "sale.idSale")
+        ).as("detail"),
+      ])
+      .where((eb: any) => eb("sale.start_date", "<=", date).or("sale.end_date", ">=", date))
       .execute();
   };
 
