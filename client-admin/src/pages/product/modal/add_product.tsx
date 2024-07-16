@@ -4,7 +4,6 @@ import { StateContext } from "../../../context/state";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { productStore } from "../../../store/product";
-import classNames from 'classnames';
 import { uploadImageProductToS3 } from "../../../api/image";
 import { createProduct } from "../../../api/product";
 import { GetToken } from "../../../utils/token";

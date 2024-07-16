@@ -1,11 +1,9 @@
-import { Button, DatePicker, Input, ModalBody, ModalContent, ModalFooter, Select, SelectItem } from "@nextui-org/react";
-import fileUpload from "../../../assets/fileUpload.png"
+import { Button, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react";
 import { StateContext } from "../../../context/state";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { productStore } from "../../../store/product";
-import { uploadImageProductToS3 } from "../../../api/image";
-import { createCategory, createProduct } from "../../../api/product";
+import { createCategory } from "../../../api/product";
 import { GetToken } from "../../../utils/token";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { PiColumnsPlusLeft } from "react-icons/pi";
@@ -14,7 +12,7 @@ interface KeyDetailType {
     id: string,
     name: string,
     type: string,
-    datatypes: "text" | "number",
+    datatypes: "text" | "number" | "longtext",
     displayorder: number,
     displayname: string,
 
@@ -48,17 +46,16 @@ const AddCategory = ({ setModalName }: { setModalName: React.Dispatch<React.SetS
         }
         const token = await GetToken()
         token && createCategory(dataInsert, token).then((res) => {
-            console.log(res)
             if (res.status === 201) {
                 const newData = {
                     idType: res.data.id,
                     nameType: data.tbName.toLowerCase(),
-                    detail: arrayObj.map((d: any) => ({
+                    detail: arrayObj.map((d: any): KeyDetailType => ({
                         id: `${data.tbName.toLowerCase()}${d.name}`,
                         type: data.tbName.toLowerCase(),
                         name: d.name,
                         datatypes: d.datatypes,
-                        displayorder: d.displayorder,
+                        displayorder: Number(d.displayorder),
                         displayname: d.displayname
                     }))
                 }
