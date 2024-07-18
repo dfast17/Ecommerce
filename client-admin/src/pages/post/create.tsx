@@ -14,6 +14,7 @@ import { postCreate } from '../../api/post';
 import { Input, Select, SelectItem } from '@nextui-org/react';
 import { CategoryPostType } from '../../types/types';
 // import styles
+//Config màu cho code block
 hljs.configure({
   languages: ['typescript', 'javascript', 'php', 'html', 'css', 'java', 'ruby', 'python', 'rust', 'sql'],
 })
@@ -226,13 +227,14 @@ const CreatePosts = () => {
       setThumbnail(file)
     }
   };
+  //Hàm tạo bài viết
   const onSubmit = (data: any) => {
     resultValue === null && alert("Null")
     !title && alert("Title is Null")
     !thumbnail && alert("Thumbnail is Null")
     !resultValue && alert("Content is Null")
     if (imgFile.length !== 0) {
-      //Upload img is here
+      //Upload hình ảnh trong bài viết lên S3 Storage
       const data = new FormData()
       for (let i = 0; i < imgFile.length; i++) {
         data.append(`file${[i]}`, imgFile[i])
@@ -241,12 +243,16 @@ const CreatePosts = () => {
         .then(res => console.log(res))
         .catch((err: any) => console.log(err))
     }
+    //Upload hình ảnh thumbnail lên S3 Storage
     const dataThumbnail = new FormData()
     thumbnail && dataThumbnail.append('file', thumbnail)
     thumbnail && uploadImagePostToS3(dataThumbnail)
       .then(res => console.log(res))
       .catch((err: any) => console.log(err))
+
+    //Tạo bài viết
     const fetchData = async () => {
+      //Lấy token
       const token = await GetToken()
       const dataPost = {
         title: title,
@@ -255,6 +261,7 @@ const CreatePosts = () => {
         idType: Number(data.type),
         valuesPosts: resultValue && (resultValue as string).replaceAll("'", '"')
       }
+      //Gửi dữ liệu tạo bài viết
       token && resultValue && postCreate(dataPost, token)
         .then((res: any) => {
           alert(res.message)

@@ -11,6 +11,7 @@ interface IShortKey {
         result: string
     }[]
 }
+// UI SHORT KEY
 const ShortKey = () => {
     const shortKey: IShortKey[] = [
         {

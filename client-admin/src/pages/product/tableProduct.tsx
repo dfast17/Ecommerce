@@ -11,6 +11,8 @@ import ModalEdit from "./modal/edit";
 import { EyeSlashFilledIcon } from "../../components/icon/eyeSlashFilledIcon";
 import { EyeFilledIcon } from "../../components/icon/eyeFilledIcon";
 import { productStore } from "../../store/product";
+import { GetToken } from "../../utils/token";
+import { productUpdate } from "../../api/product";
 const TableProduct = () => {
     const { isDark } = useContext(StateContext)
     const { product } = productStore()
@@ -32,6 +34,23 @@ const TableProduct = () => {
     useEffect(() => {
         product && setData(product)
     }, [product])
+    const handleChangeStatus = async (id: number, status: "show" | "hide") => {
+        const table = "products"
+        const condition = {
+            name: "idProduct",
+            value: Number(id)
+        }
+        const dataUpdate = [{
+            status: status
+        }]
+        const token = await GetToken()
+        token && productUpdate(token, { tableName: table, condition: condition, data_update: dataUpdate })
+            .then(res => {
+                alert(res.message)
+                res.status === 200 && product && setData(product.map((p: ProductType) => p.idProduct === id ? { ...p, action: status } : p))
+            })
+            .catch(err => console.log(err))
+    }
     return <div className="table_product w-[90%] h-auto flex flex-wrap justify-center items-center my-2">
         <Table aria-label="Product table" className="relative  min-h-[1000px] mb-2">
             <TableHeader>
@@ -43,7 +62,7 @@ const TableProduct = () => {
                 <TableColumn>BRAND</TableColumn>
                 <TableColumn>DISCOUNT</TableColumn>
                 <TableColumn>QUANTITY</TableColumn>
-                <TableColumn>STATUS</TableColumn>
+                <TableColumn>ACTION</TableColumn>
             </TableHeader>
             <TableBody className="!z-0">
                 {
@@ -70,15 +89,15 @@ const TableProduct = () => {
                                         </span>
                                     </Tooltip>
                                     <Tooltip color="danger" content={p.action === "hide" ? "Show" : "Hide"}>
-                                        <span className="text-lg text-zinc-500 cursor-pointer active:opacity-50">
+                                        <span onClick={() => { handleChangeStatus(p.idProduct, p.action === "hide" ? "show" : "hide") }} className="text-lg text-zinc-500 cursor-pointer active:opacity-50">
                                             {p.action === "show" ? <EyeSlashFilledIcon /> : <EyeFilledIcon />}
                                         </span>
                                     </Tooltip>
-                                    <Tooltip color="danger" content="Delete product">
+                                    {/*                                     <Tooltip color="danger" content="Delete product">
                                         <span className="text-lg text-danger cursor-pointer active:opacity-50">
                                             <DeleteIcon />
                                         </span>
-                                    </Tooltip>
+                                    </Tooltip> */}
                                 </div>
                             </TableCell>
                         </TableRow>

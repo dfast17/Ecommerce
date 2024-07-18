@@ -13,13 +13,15 @@ const PostsDetail = () => {
     const { register, handleSubmit } = useForm()
     const { user } = userStore()
     const param = useParams()
+    //Hàm gọi data bài viết và data bình luận
     const { data } = useFetchDataByKey('posts', 'postGetDetail', Number(param.idPost))
     const { data: commentPost } = useFetchDataByKey('posts', 'getCommentByPost', Number(param.idPost))
+    //
     const [value, setValue] = useState("")
     const [activePage, setActivePage] = useState(1)
     const [dComment, setDComment] = useState<CommentResType | null>(null)
     const [comment, setComment] = useState<CommentType[] | null>(null)
-    const [firstPage,setFirstPage] = useState<CommentType[] | []>([])
+    const [firstPage, setFirstPage] = useState<CommentType[] | []>([])
     useEffect(() => {
         document.title = `${param.name}`
     }, [param])
@@ -31,6 +33,7 @@ const PostsDetail = () => {
             setActivePage(commentPost.data.page)
         )
     }, [commentPost])
+    //Hàm thêm bình luận
     const onSubmit = async (data: any) => {
         const token = await GetToken()
         const dataInsert = [{
@@ -46,31 +49,38 @@ const PostsDetail = () => {
                         total_page: Math.ceil((dComment.total + 1) / 4),
                         page: 1
                     }
-                    const appendData = [{ ...dataInsert[0], nameUser: user ? user[0].nameUser : '', img: '', idComment: res.data.id }, ...firstPage.slice(0,3)]
+                    const appendData = [{ ...dataInsert[0], nameUser: user ? user[0].nameUser : '', img: '', idComment: res.data.id }, ...firstPage.slice(0, 3)]
+                    //Thêm bình luận vào state
                     setFirstPage(appendData)
+
                     setComment(appendData)
+                    // Thay đổi state lưu thông tin bình luận: set lại total bình luận, total page, tactive page
                     setDComment(newDComment)
+                    // Thay đổi trang hien thi bình luận
                     setActivePage(1)
                     setValue("")
                 }
             })
     }
+    //Hàm thay đổi trang hien thi bình luận
     const handleChange = (e: any) => {
         setActivePage(e)
         getCommentByPost(Number(param.idPost), e)
-                .then(res => {
-                    if(res.status === 200 && comment) {
-                        setDComment(res.data),
+            .then(res => {
+                if (res.status === 200 && comment) {
+                    setDComment(res.data),
                         setComment(res.data.detail)
-                    }
-                })
+                }
+            })
     }
     return <div className="PostsDetail w-full h-auto min-h-[90vh] flex flex-col xl:flex-row items-start justify-evenly">
+        {/* Nội dung bài viết */}
         <div className="w-[99%] xl:w-3/5 h-auto py-10">
             {data !== null && data.data.map((e: any) => <div className="ql-snow" key={e.idPost}>
                 <div className={`ql-editor text-slate-700 bg-transparent`} dangerouslySetInnerHTML={{ __html: e.valuesPosts }} />
             </div>)}
         </div>
+        {/* Bình luận bài viết */}
         <div className="w-3/5 xl:w-1/4 h-auto min-h-screen flex flex-col justify-start">
             <div className="form-comment w-full flex flex-col justify-start pt-10">
                 <textarea {...register('message', { required: true })} rows={5}
@@ -78,8 +88,8 @@ const PostsDetail = () => {
                     onChange={(e) => setValue(e.target.value)}
                     className="rounded-md p-6 w-full text-sm outline-none border-0 bg-zinc-700 text-white placeholder-gray-400"
                     placeholder="Write a comment..." required />
-                <Button className="w-[200px] h-[40px] my-2 bg-zinc-800 text-zinc-100" size="sm" 
-                onClick={() => handleSubmit(onSubmit)()}>Send</Button>
+                <Button className="w-[200px] h-[40px] my-2 bg-zinc-800 text-zinc-100" size="sm"
+                    onClick={() => handleSubmit(onSubmit)()}>Send</Button>
             </div>
             <Code radius="sm" className="flex items-center justify-center my-2 font-bold cursor-pointer bg-zinc-600 text-zinc-50">Comment for post</Code>
             <div className="comment-detail w-full flex flex-wrap items-center justify-center">
@@ -95,6 +105,7 @@ const PostsDetail = () => {
                         </div>
                     </div>)}
                 </div>
+                {/* Phân trang bình luận*/}
                 {dComment && comment && comment.length !== 0 && <Pagination isCompact size="lg" showControls page={activePage}
                     total={dComment.total_page} initialPage={1} onChange={(e) => handleChange(e)} />}
             </div>

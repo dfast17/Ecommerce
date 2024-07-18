@@ -1,3 +1,8 @@
+export interface StatusValueType {
+    current: string,
+    next: string,
+}
+
 export interface ProductType {
     idProduct: number,
     nameProduct: string,
@@ -44,7 +49,11 @@ export interface StaffType extends PositionType {
     updated_at?: string,
     action?: string
 }
-
+export interface ShipperType {
+    idStaff: string,
+    position_name: string,
+    name: string
+}
 export interface PostType {
     idPost: number,
     idType: number,
@@ -83,20 +92,23 @@ export interface SaleType {
     end_date: Date,
 }
 export interface OrderType {
-    idSale: number,
-    idUser: string | null,
-    idShipper: string,
+    idOrder: string,
+    idUser: string,
+    idShipper: string | null,
+    created_at: string,
     fullName: string,
     phone: string,
     address: string,
     costs: number,
     method: string,
     edd: Date,
-    created_at?: Date
+    paymentStatus: 'paid' | 'unpaid',
+    orderStatus: string,
+    note: string,
 }
 export interface OrderDetailType {
     idOrdDetail: number,
-    idOrder: number,
+    idOrder: string,
     idProduct: number,
     countProduct: number,
     discount: number,

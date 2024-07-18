@@ -1,4 +1,4 @@
-export const getInfo = async (token:string) => {
+export const getInfo = async (token: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user/admin`, {
         method: "GET",
         headers: {
@@ -28,7 +28,16 @@ export const getStaff = async (token: string) => {
     })
         .then(res => res.json())
 }
-
+export const getShipper = async (token: string) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user/admin/shipper`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(res => res.json())
+}
 export const getAddress = async () => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user/address`, {
         method: "GET",

@@ -19,7 +19,19 @@ const randomText = (length: number) => {
   return crypto.randomBytes(length).toString("hex");
 };
 export default class OrderController {
-  public getAll = async () => { };
+  public getAll = async (req: Request, res: Response) => {
+    handleFindData(res, order.getAllOrder());
+  };
+  public getDetail = async (req: Request, res: Response) => {
+    const idOrder = req.params["id"];
+    handleFindData(res, order.getDetailOrder(idOrder));
+  };
+  public getOrderByRoleShipper = async (request: Request, res: Response) => {
+    const req = request as RequestCustom
+    const idUser = req.idUser
+    handleFindData(res, order.getOrderByRoleShipper(idUser));
+
+  }
   public getByUser = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;
@@ -35,6 +47,7 @@ export default class OrderController {
         ...c,
         idOrder: idOrder,
         idUser: idUser,
+        create_at: new Date().toISOString().split("T")[0]
       };
     });
     const insertData = await db.transaction().execute(async (trx) => {
@@ -108,18 +121,17 @@ export default class OrderController {
   public updateOrder = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const data = req.body;
-    const valueUpdate = {
-      nameCol: "status",
-      value: data.status,
-    };
+    const valueUpdate = convertData(data.data_update)
     const condition: ConditionType = {
-      conditionName: "idTrans",
+      conditionName: "idOrder",
       conditionMethod: "=",
       value: data.id,
     };
     const logsData = logData(req.idUser, `Update order status to ${data.status}`)
     try {
-      const updateStatus = await statement.updateDataByCondition("ord", [valueUpdate], condition);
+      console.log("Start update status")
+      const updateStatus = await statement.updateDataByCondition("order", valueUpdate, condition);
+      console.log("End update status")
       if (!updateStatus) {
         return responseMessage(res, 401, "Status update failed");
       }

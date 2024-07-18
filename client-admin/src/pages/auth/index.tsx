@@ -18,7 +18,7 @@ const Auth = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<FieldValues>();
-  const { setIsLogin } = useContext(StateContext)
+  const { setIsLogin, setRole } = useContext(StateContext)
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate()
   const onSubmit = (data: FieldValues) => {
@@ -32,6 +32,7 @@ const Auth = () => {
           SetToken('role', res.data.role, res.data.expiredR)
           SetToken('a-Log', 'true', res.data.expiredR)
           setIsLogin(true)
+          setRole(res.data.role)
           navigate('/')
         }
       })

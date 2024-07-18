@@ -6,11 +6,12 @@ export const productGetDetail = async (obj: { nameType: string, idProduct: strin
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/detail/${obj.nameType}/${obj.idProduct}`)
         .then(res => res.json())
 }
-export const productUpdate = async (data: { tableName: string, condition: { name: string, value: string | number }, data_update: any }) => {
+export const productUpdate = async (token: string, data: { tableName: string, condition: { name: string, value: string | number }, data_update: any }) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/`, {
         method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(data)
     })

@@ -46,7 +46,11 @@ export default class StatisticalStatement {
             .execute()
     }
     public order = async () => {
-
+        return await db.selectFrom("order")
+            .selectAll()
+            .orderBy("created_at", "desc")
+            .limit(5)
+            .execute()
     }
     public revenue = async () => {
         return await db.selectFrom("order_Detail as od")

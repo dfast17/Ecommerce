@@ -4,12 +4,13 @@ import { StateContext } from "./state";
 import { useFetchData } from "../hooks/useFetchData";
 import { productStore } from "../store/product";
 import { GetToken } from "../utils/token";
-import { getAddress, getInfo, getStaff, getUser } from "../api/user";
+import { getAddress, getInfo, getShipper, getStaff, getUser } from "../api/user";
 import { userStore } from "../store/user";
+import { getOrder, getOrderByRoleShipper } from "../api/order";
 
 export const ApiContext = createContext<any>({});
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
-    const { isLogin, setPost, setTypePost, setStatistical, setSale } = useContext(StateContext)
+    const { position, role, isLogin, setPosition, setPost, setTypePost, setStatistical, setSale, setOrder, setShipper } = useContext(StateContext)
     const { setCategory, setProduct } = productStore()
     const { setUser, setStaff, setCurrentUser, setAddress } = userStore()
     useEffect(() => {
@@ -49,11 +50,17 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
                 getInfo(token).then(res => {
                     if (res.status === 200) {
                         setCurrentUser(res.data)
+                        setPosition(res.data[0].position_name ? res.data[0].position_name : "admin")
                     }
                 }),
                 getStaff(token).then(res => {
                     if (res.status === 200) {
                         setStaff(res.data)
+                    }
+                }),
+                getShipper(token).then(res => {
+                    if (res.status === 200) {
+                        setShipper(res.data)
                     }
                 }),
                 getUser().then(res => {
@@ -71,7 +78,22 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
 
         }
         isLogin && fetchData()
-    }, [isLogin, setCurrentUser, setStaff, setUser, setAddress])
+    }, [isLogin, role])
+    //Fetch Order
+    useEffect(() => {
+        const fetchOrder = async () => {
+            const token = await GetToken();
+            if (token) {
+                const fetchFunction = role === 1 && position === "shipper" ? getOrderByRoleShipper : getOrder
+                const res = await fetchFunction(token);
+                if (res.status === 200) {
+                    setOrder(res.data);
+                }
+            }
+        };
+        isLogin && fetchOrder();
+    }, [isLogin, role, position]);
+
     return (
         <ApiContext.Provider value={{
         }}>

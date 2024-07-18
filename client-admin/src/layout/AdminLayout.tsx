@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { TfiDashboard } from "react-icons/tfi";
 import {
   FaLaptopCode,
@@ -30,7 +30,6 @@ interface NavContent {
   icon: IconType;
   url: string;
 }
-
 const navArr: NavContent[] = [
   {
     idNav: 1,
@@ -52,7 +51,7 @@ const navArr: NavContent[] = [
   },
   {
     idNav: 4,
-    content: "Post/Blog",
+    content: "Post",
     icon: BsFillPostcardFill,
     url: "/post"
   },
@@ -75,8 +74,15 @@ interface IAdminLayoutProps {
 }
 
 const AdminLayout = ({ children }: IAdminLayoutProps) => {
-  const { isDark, setIsDark, setIsLogin } = useContext(StateContext);
+  const { role, position, isDark, setIsDark, setIsLogin } = useContext(StateContext);
   const [isHeader, setIsHeader] = useState(false)
+  const [navResult, setNavResult] = useState<NavContent[] | null>(null)
+  useEffect(() => {
+    const filterNav = role && role !== 0 ? navArr.filter((item: NavContent) =>
+      role === 1 && position !== "shipper" ? item.idNav !== 3 : item.idNav === 5
+    ) : navArr
+    setNavResult(filterNav)
+  }, [role, position])
   const handleSetDarkMode = () => {
     setIsDark(!isDark);
     localStorage.setItem("isDark", JSON.stringify(!isDark));
@@ -144,9 +150,8 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
           </div>
 
           <div>
-            {navArr.map((it) => {
+            {navResult && navResult.map((it) => {
               const NavIcon = it.icon;
-
               return (
                 <NavLink
                   to={it.url}

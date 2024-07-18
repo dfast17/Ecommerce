@@ -19,6 +19,9 @@ export default class UserController {
     const idUser = req.idUser;
     handleFindData(res, userStatement.adminGetInfo(idUser))
   }
+  public admingetShipper = async (request: Request, res: Response) => {
+    handleFindData(res, userStatement.getShipper())
+  }
   public userUpdate = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;
@@ -37,9 +40,9 @@ export default class UserController {
       }
       const date = new Date().toISOString().split("T")[0]
       const dataUpdate = convertData([{
-        'updated_at':date
+        'updated_at': date
       }])
-      await statement.updateDataByCondition(table,dataUpdate,condition)
+      await statement.updateDataByCondition(table, dataUpdate, condition)
       responseMessage(res, 200, 'Update is success')
     } catch {
       (errors: any) => {

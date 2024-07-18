@@ -5,6 +5,7 @@ import { StateContext } from "../../../context/state"
 import { RxUpdate } from "react-icons/rx";
 import { useForm } from "react-hook-form";
 import { productUpdate } from "../../../api/product";
+import { GetToken } from "../../../utils/token";
 interface ObjectKeys {
   [key: string]: string | number | undefined;
 }
@@ -20,14 +21,14 @@ const ModalEdit = ({ id, nameType, setModalName }: { id: number | string, nameTy
   const { data: col } = useFetchDataByKey('product', 'getColByType', nameType)
   const { register: regisInfo, handleSubmit: submitInfo } = useForm()
   const { register: regisDetail, handleSubmit: submitDetail } = useForm()
-  const { isDark,setProduct,product } = useContext(StateContext)
+  const { isDark, setProduct, product } = useContext(StateContext)
   const [detailData, setDetailData] = useState<any[] | null>(null)
   const [column, setColumn] = useState<any[] | null>(null);
   useEffect(() => {
     data && setDetailData(data.data)
     col && setColumn(col.data)
   }, [data, col])
-  const onSubmitInfo = (data: ObjectKeys) => {
+  const onSubmitInfo = async (data: ObjectKeys) => {
     const formatData: ObjectKeys = { ...data, price: Number(data.price) }
     const currentData = detailData?.map((e: ProductEditType) => ({
       nameProduct: e.nameProduct,
@@ -39,26 +40,27 @@ const ModalEdit = ({ id, nameType, setModalName }: { id: number | string, nameTy
     const changedKeys = currentData && keys.filter((key) => {
       return currentData[0][key] !== formatData[key];
     });
-    const dataUpdate = currentData && changedKeys?.reduce((k:any,key:string) => {
-      return {...k,[key]:formatData[key]}
-    },{})
+    const dataUpdate = currentData && changedKeys?.reduce((k: any, key: string) => {
+      return { ...k, [key]: formatData[key] }
+    }, {})
     const table = "products"
     const condition = {
       name: "idProduct",
       value: Number(id)
     }
-    changedKeys && changedKeys.length!==0 && productUpdate({ tableName: table, condition: condition, data_update: [dataUpdate] })
+    const token = await GetToken()
+    token && changedKeys && changedKeys.length !== 0 && productUpdate(token, { tableName: table, condition: condition, data_update: [dataUpdate] })
       .then(res => {
-        if(res.status !== 200 ){
+        if (res.status !== 200) {
           return console.log(res.message)
         }
         alert(res.message)
-        setProduct(product.map((prevP:any) => {
-          return prevP.idProduct === id ? {...prevP,...dataUpdate} : {...prevP}
+        setProduct(product.map((prevP: any) => {
+          return prevP.idProduct === id ? { ...prevP, ...dataUpdate } : { ...prevP }
         }))
       })
   }
-  const onSubmitDetail = (data: ObjectKeys) => {
+  const onSubmitDetail = async (data: ObjectKeys) => {
     const { id, ...d } = data
     const table = detailData && detailData[0].nameType
     const currentData = detailData && detailData[0].detail.filter((d: any) => d.id === Number(data.id))
@@ -74,7 +76,8 @@ const ModalEdit = ({ id, nameType, setModalName }: { id: number | string, nameTy
       name: "id",
       value: Number(id)
     }
-    changedKeys.length !== 0 && productUpdate({ tableName: table, condition: condition, data_update: [dataUpdate] })
+    const token = await GetToken()
+    token && changedKeys.length !== 0 && productUpdate(token, { tableName: table, condition: condition, data_update: [dataUpdate] })
       .then(res => res.status === 200 ? alert(res.message) : console.log(res.message))
   }
   return <ModalContent>

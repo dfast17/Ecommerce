@@ -78,9 +78,10 @@ export interface TypeDetail {
   displayorder: number
 }
 export interface OrderType {
-  idTrans: number,
+  idOrder: string,
   idUser: string | null,
   idShipper: string,
+  created_at: string,
   fullName: string,
   phone: string,
   address: string,
@@ -88,11 +89,12 @@ export interface OrderType {
   method: string,
   edd: Date,
   paymentStatus: 'paid' | 'unpaid',
-  orderStatus: string
+  orderStatus: string,
+  note: string
 }
 export interface OrderDetailType {
   idOrdDetail: number,
-  idOrder: number,
+  idOrder: string,
   idProduct: number,
   countProduct: number,
   discount: number,

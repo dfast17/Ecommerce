@@ -49,14 +49,15 @@ export default class UserStatement {
   public adminGetInfo = async (idStaff: string) => {
     return await db
       .selectFrom("staff")
-      .select(["staff.idStaff", "name", "phone", "email", "birthday", "address", "avatar", "created_at", "updated_at"])
+      .select<any>(["staff.idStaff", "name", "phone", "email", "birthday", "address", "avatar", "created_at", "updated_at", "position.position_name"])
+      .leftJoin("position", "staff.idStaff", "position.idStaff")
       .where("staff.idStaff", "=", idStaff)
       .execute();
   }
   public getAllUser = async () => {
     return await db
       .selectFrom("users")
-      .select<any>(["users.idUser", "nameUser", "phone", "email", "created_at", "updated_at","auth.action"])
+      .select<any>(["users.idUser", "nameUser", "phone", "email", "created_at", "updated_at", "auth.action"])
       .leftJoin("auth", "users.idUser", "auth.idUser")
       .where("auth.role", "=", 2)
       .execute();
@@ -83,11 +84,19 @@ export default class UserStatement {
       .where("auth.role", "=", 1)
       .execute();
   }
+  public getShipper = async () => {
+    return await db
+      .selectFrom("position")
+      .select<any>(["position.idStaff", "position_name", "staff.name"])
+      .leftJoin("staff", "position.idStaff", "staff.idStaff")
+      .where("position.position_name", "=", "shipper")
+      .execute()
+  }
   public getAllAddress = async () => {
     return await db
       .selectFrom("userAddress")
       .select<any>([
-        "userAddress.idAddress", "userAddress.idUser", "userAddress.typeAddress", "userAddress.detail","users.nameUser"
+        "userAddress.idAddress", "userAddress.idUser", "userAddress.typeAddress", "userAddress.detail", "users.nameUser"
       ])
       .leftJoin("users", "userAddress.idUser", "users.idUser")
       .execute();
