@@ -2,7 +2,6 @@ import { useContext, useState } from "react"
 import SignIn from "./signIn"
 import { authForgot, authLogin, authRegister } from "../../api/auth"
 import { SaveToken } from "../../utils/token"
-import { setLocalStorage } from "../../utils/localStorage"
 import { useNavigate } from "react-router-dom"
 import { StateContext } from "../../context/stateContext"
 import SignUp from "./signUp"
@@ -29,11 +28,10 @@ const Auth = () => {
       res.message && alert(res.message)
       if (res.status === 200 || res.status === 201) {
         if (typeAuth === "login") {
-          SaveToken('aTk', res.data.accessToken, res.data.expiredA)
-          SaveToken('rTk', res.data.refreshToken, res.data.expiredR)
-          setLocalStorage('isLogs', true)
+          SaveToken('u-aTk', res.data.accessToken, res.data.expiredA)
+          SaveToken('u-rTk', res.data.refreshToken, res.data.expiredR)
           setIsLogin(true)
-          SaveToken('login', 'true', res.data.expiredR)
+          SaveToken('u-login', 'true', res.data.expiredR)
           navigate('/')
         }
         (typeAuth === "register" || typeAuth === "forgot") && setFormName("signIn")

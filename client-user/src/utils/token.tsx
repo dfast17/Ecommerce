@@ -2,8 +2,8 @@ import Cookies from "js-cookie"
 import { removeLocalStorage } from "./localStorage"
 import { authToken } from "../api/auth"
 export const GetToken = async () => {
-    const access = Cookies.get('aTk')
-    const refresh = Cookies.get('rTk')
+    const access = Cookies.get('u-aTk')
+    const refresh = Cookies.get('u-rTk')
     if (!access) {
         if (!refresh) {
             removeLocalStorage('isLogs')
@@ -11,7 +11,7 @@ export const GetToken = async () => {
         }
         const response = await authToken(refresh)
         const res = await response.json()
-        SaveToken('aTk', res.data.accessToken, res.data.expiredA)
+        SaveToken('u-aTk', res.data.accessToken, res.data.expiredA)
         return res.data.accessToken
 
     }

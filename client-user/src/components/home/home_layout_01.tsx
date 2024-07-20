@@ -103,7 +103,6 @@ const Home_layout_01 = ({ data, k, title, subTitle, link, banner }: HomeLayout01
             <div className='slider-container w-full h-auto flex justify-center'>
                 <Slider className='w-full sm:w-[99%] lg:w-[95%] flex justify-around ' ref={sliderRef} {...settings} >
                     {data?.map((d: any) => <Home_Product_Layout data={d} key={`${k}-${d.idProduct}`} />)}
-                    {data?.map((d: any) => <Product_Layout_01 data={d} key={`${k}-${d.idProduct}`} name={k} />)}
                 </Slider>
             </div>
         </div>
