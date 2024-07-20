@@ -2,7 +2,12 @@ export interface StatusValueType {
     current: string,
     next: string,
 }
-
+export interface LogsType {
+    _id: string,
+    idUser: string,
+    content: string,
+    timestamp: string
+}
 export interface ProductType {
     idProduct: number,
     nameProduct: string,

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { StateContext } from "../../context/state"
-import { Button, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react"
+import { Button, Modal, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
 import { OrderType, ShipperType, StatusValueType } from "../../types/types"
 //Import Icon
 import { FcViewDetails } from "react-icons/fc";
@@ -16,6 +16,7 @@ import { HiOutlineDuplicate } from "react-icons/hi";
 import { GetToken } from "../../utils/token";
 import { getOrderById, updateStatusOrder } from "../../api/order";
 import { ShipperNextValue, statusNextValue } from "../../utils/utils";
+import ModalOrder from "./order.modal";
 interface OrderStatusType {
   value: string,
   label: string
@@ -23,6 +24,7 @@ interface OrderStatusType {
 
 const Order = () => {
   const { shipper, position, order, setOrder, isDark } = useContext(StateContext)
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [id, setId] = useState<string>("")
   const [detail, setDetail] = useState<any[] | null>(null)
   const [info, setInfo] = useState<any>([])
@@ -110,8 +112,12 @@ const Order = () => {
   }
 
   return <div className={`w-full h-auto min-h-[95.6vh] grid grid-cols-3 gap-1 ${isDark ? "bg-[#3d3d3d] text-white" : "bg-[#F5F5F5] text-zinc-950"} p-2`}>
-    <div className="order-data h-full col-span-2 pt-10">
-      <Table classNames={{ th: ["bg-zinc-950 text-white text-[16px]"], wrapper: "bg-transparent !shadow-none", tr: ["!my-2"], td: ["!h-[60px]"] }} aria-label="Table Order Manager">
+    <div className="order-data h-full col-span-2">
+      <div className="w-full h-[80px] col-span-3 row-span-1 flex items-center justify-start">
+        <Button onClick={onOpen} color="primary" radius="sm" size="sm">Create Order</Button>
+      </div>
+      <Table classNames={{ th: ["bg-zinc-950 text-white text-[16px]"], wrapper: "bg-transparent !shadow-none", tr: ["!my-2"], td: ["!h-[60px]"] }}
+        aria-label="Table Order Manager">
         <TableHeader>
           <TableColumn>ID</TableColumn>
           <TableColumn>NAME</TableColumn>
@@ -174,7 +180,7 @@ const Order = () => {
             <div className="w-full text-zinc-950 font-bold ">Order Items</div>
             <div className="w-full h-auto min-h-[230px] flex flex-col border-b border-t border-solid border-zinc-300">
               {detail && detail.map((d: any) => <div className="relative w-full h-auto flex flex-wrap justify-center content-start p-1">
-                {d.discount !== 0 && <div className="absolute w-[60px] h-[20px] top-1 right-1 bg-red-600 rounded-sm flex justify-center items-center">-{d.discount}%</div>}
+                {d.discount !== 0 && <div className="absolute w-[60px] h-[20px] top-1 right-1 text-white bg-red-600 rounded-sm flex justify-center items-center">-{d.discount}%</div>}
                 <div className="images w-[60px] h-[60px] flex items-center justify-center">
                   <img src={d.imgProduct} className="w-full h-full object-contain" />
                 </div>
@@ -245,6 +251,9 @@ const Order = () => {
         </div>
       </div>
     </div>
+    <Modal size="4xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <ModalOrder />
+    </Modal>
   </div >
 }
 

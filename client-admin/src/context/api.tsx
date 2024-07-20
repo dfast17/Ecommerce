@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect } from "react";
-import { statisticalProduct, statisticalRevenue, statisticalUser } from "../api/statistical";
+import { statisticalCommentPost, statisticalCommentProduct, statisticalOrder, statisticalProduct, statisticalRevenue, statisticalUser } from "../api/statistical";
 import { StateContext } from "./state";
 import { useFetchData } from "../hooks/useFetchData";
 import { productStore } from "../store/product";
@@ -7,24 +7,33 @@ import { GetToken } from "../utils/token";
 import { getAddress, getInfo, getShipper, getStaff, getUser } from "../api/user";
 import { userStore } from "../store/user";
 import { getOrder, getOrderByRoleShipper } from "../api/order";
+import { getLogs } from "../api/logs";
 
 export const ApiContext = createContext<any>({});
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
-    const { position, role, isLogin, setPosition, setPost, setTypePost, setStatistical, setSale, setOrder, setShipper } = useContext(StateContext)
+    const { position, role, isLogin, setPosition, setPost, setTypePost, setStatistical, setSale, setOrder, setShipper, setLog } = useContext(StateContext)
     const { setCategory, setProduct } = productStore()
     const { setUser, setStaff, setCurrentUser, setAddress } = userStore()
     useEffect(() => {
         const fetchStatistical = async () => {
-            const [productData, userData, revenueData] = await Promise.all([
+            //cPostdata is comment_post_data and cProductData is comment_product_data
+            const [productData, userData, revenueData, orderData, cPostData, cProductData] = await Promise.all([
                 statisticalProduct(),
                 statisticalUser(),
-                statisticalRevenue()
+                statisticalRevenue(),
+                statisticalOrder(),
+                statisticalCommentPost(),
+                statisticalCommentProduct()
+
             ])
-            if (productData.status === 200 && userData.status === 200 && revenueData.status === 200) {
+            if (productData.status === 200 && userData.status === 200 && revenueData.status === 200 && orderData.status === 200, cPostData.status === 200 && cProductData.status === 200) {
                 setStatistical({
                     product: productData.data,
                     user: userData.data,
-                    revenue: revenueData.data
+                    revenue: revenueData.data,
+                    order: orderData.data,
+                    commentPost: cPostData.data,
+                    commentProduct: cProductData.data
                 });
             }
         }
@@ -89,6 +98,12 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
                 if (res.status === 200) {
                     setOrder(res.data);
                 }
+                role === 0 && getLogs(token)
+                    .then(res => {
+                        if (res.status === 200) {
+                            setLog(res.data);
+                        }
+                    })
             }
         };
         isLogin && fetchOrder();

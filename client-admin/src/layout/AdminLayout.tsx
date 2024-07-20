@@ -9,6 +9,7 @@ import {
   FaAngleLeft,
   FaAngleRight
 } from "react-icons/fa";
+import { ImProfile } from "react-icons/im";
 import { BsFillPostcardFill } from "react-icons/bs";
 import {
   MdOutlineDiscount,
@@ -18,11 +19,12 @@ import { IconType } from "react-icons";
 import { CiSearch } from "react-icons/ci";
 import { NavLink } from "react-router-dom";
 import { LuLogOut } from "react-icons/lu";
-import { Button, Switch } from "@nextui-org/react";
+import { Button, Modal, ModalContent, Switch, useDisclosure } from "@nextui-org/react";
 import { StateContext } from "../context/state";
 import { RemoveToken } from "../utils/token";
 import Logo from "../assets/Logomark.png"
 import classNames from "classnames";
+import CurrentUser from "../pages/account/current";
 
 interface NavContent {
   idNav: number;
@@ -45,7 +47,7 @@ const navArr: NavContent[] = [
   },
   {
     idNav: 3,
-    content: "Account",
+    content: "Customer",
     icon: FaUserCog,
     url: "/account"
   },
@@ -75,6 +77,7 @@ interface IAdminLayoutProps {
 
 const AdminLayout = ({ children }: IAdminLayoutProps) => {
   const { role, position, isDark, setIsDark, setIsLogin } = useContext(StateContext);
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [isHeader, setIsHeader] = useState(false)
   const [navResult, setNavResult] = useState<NavContent[] | null>(null)
   useEffect(() => {
@@ -172,6 +175,18 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
 
         <div className="mt-auto">
           <div
+            onClick={onOpen}
+            className={classNames(
+              "flex items-center gap-x-4 p-4 rounded-2xl cursor-pointer text-[#EFEFEF] hover:text-zinc-50 mb-3"
+            )}
+          >
+            <div className="text-2xl">
+              <ImProfile />
+            </div>
+
+            <p>Profile</p>
+          </div>
+          <div
             onClick={handleLogout}
             className={classNames(
               "flex items-center gap-x-4 p-4 rounded-2xl cursor-pointer text-[#EFEFEF] hover:text-zinc-50 mb-3"
@@ -218,6 +233,13 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
         </div>
         {children}
       </main>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalContent >
+          {(onClose) => <>
+            <CurrentUser />
+          </>}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
