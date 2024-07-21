@@ -28,7 +28,13 @@ const Order = () => {
                         <TableCell>{o.price * o.countProduct}</TableCell>
                         <TableCell>{o.paymentStatus}</TableCell>
                         <TableCell>{o.orderStatus}</TableCell>
-                        <TableCell>""</TableCell>
+                        <TableCell>
+                            {o.orderStatus === "pending" || o.orderStatus === "prepare" && <Tooltip radius="sm" content="Cancel Order" classNames={{ content: "text-zinc-950" }}>
+                                <Button size="sm" isIconOnly color="danger">
+                                    <MdCancelPresentation className="text-xl" />
+                                </Button>
+                            </Tooltip>}
+                        </TableCell>
                     </TableRow>)
                         :
                         <TableRow key="#not_order_yet">
@@ -54,7 +60,7 @@ const Order = () => {
             {order && order.length > 5 && <Pagination isCompact size="lg" showControls page={activePage}
                 total={pagination(5, order.length)} initialPage={1} onChange={(e) => { setActivePage(e) }} />}
         </div>
-    </div>
+    </div >
 }
 
 export default Order

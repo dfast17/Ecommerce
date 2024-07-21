@@ -1,38 +1,39 @@
 import { Code } from "@nextui-org/react"
 import { useFetchDataByKey } from "../../../hooks/useFetchData"
 import { useEffect, useState } from "react"
+import CommentProduct from "./comment"
 
 const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number }) => {
   const [currentImage, setCurrentImage] = useState("")
-  const [column,setColumn] = useState<any[] | null>(null);
-  const [option,setOption] = useState<number>(1)
+  const [column, setColumn] = useState<any[] | null>(null);
+  const [option, setOption] = useState<number>(1)
   const { data } = useFetchDataByKey('product', 'productGetDetail', { type: nameType, idProduct: idProduct })
-  const { data:col } = useFetchDataByKey('product', 'getColByType', nameType)
+  const { data: col } = useFetchDataByKey('product', 'getColByType', nameType)
   useEffect(() => {
     data && setCurrentImage(data.data[0].imgProduct[0].img)
     data && (document.title = data.data[0].nameProduct)
     col && setColumn(col.data)
-  }, [data,col])
+  }, [data, col])
   return <section className="text-zinc-900">
     <div className="container mx-auto px-4">
       {data && data.data.map((d: any) => <div className="lg:col-gap-12 xl:col-gap-16 mt-8 grid grid-cols-1 gap-12 lg:mt-12 lg:grid-cols-5 lg:gap-16" key={`detail-${d.idProduct}`}>
-        <div className="lg:col-span-3 lg:row-end-1">
-          <div className="lg:flex lg:items-start">
-            <div className="lg:order-2 lg:ml-5">
+        <div className="lg:col-span-3 lg:row-end-1 flex items-center justify-center">
+          <div className="flex flex-col">
+            <div className="w-full h-3/5">
               {/* current images */}
-              <div className="max-w-xl overflow-hidden rounded-lg">
-                <img className="h-full w-full max-w-full max-h-[320px] object-cover" src={currentImage} alt="" />
+              <div className="w-full h-full flex justify-center items-center overflow-hidden rounded-lg">
+                <img className="size-4/5 min-h-[400px] max-h-[400px] object-contain" src={currentImage} alt="" />
               </div>
             </div>
 
-            <div className="mt-2 w-full lg:order-1 lg:w-32 lg:flex-shrink-0">
+            <div className="mt-2 w-full">
               {/* Sub images */}
-              <div className="flex flex-row items-start lg:flex-col">
+              <div className="flex flex-row items-center justify-evenly">
                 {d.imgProduct.map((i: { img: string, type: string }) =>
                   <button
                     key={i.img}
                     onClick={() => { setCurrentImage(i.img) }}
-                    className={`flex-0 aspect-square mb-3 h-20 overflow-hidden rounded-lg border-2 hover:border-blue-500 ${currentImage === i.img ? "border-blue-500" : "border-gray-300"} transition-all text-center`}>
+                    className={`flex-0 aspect-square mx-3 size-28 overflow-hidden rounded-lg border-2 hover:border-blue-500 ${currentImage === i.img ? "border-blue-500" : "border-gray-300"} transition-all text-center`}>
                     <img className="h-full w-full object-contain" src={i.img} alt="" />
                   </button>
                 )}
@@ -46,14 +47,14 @@ const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number
           <h1 className="sm: text-2xl font-bold text-gray-900 sm:text-3xl">{d.nameProduct}</h1>
           {/* Detail product */}
           <div className="detail-product w-full h-auto flex flex-wrap justify-start items-center">
-            {d.detail.map((d: any, i: number) => <div 
-            onClick={() => {setOption(i+1)}}
-            className="w-[200px] h-auto bg-zinc-50 rounded-md p-2 mx-2 cursor-pointer" 
-            key={`detail-info-${i}`}>
+            {d.detail.map((d: any, i: number) => <div
+              onClick={() => { setOption(i + 1) }}
+              className="w-[200px] h-auto bg-zinc-50 rounded-md p-2 mx-2 cursor-pointer"
+              key={`detail-info-${i}`}>
               <Code className="bg-zinc-950 text-zinc-50">Option {i + 1}</Code>
-              {i+1 === option && <Code radius="sm" className="mx-1 bg-blue-500 text-zinc-50">Default</Code>}
-              {column?.map((k: any) => <Code radius="sm"  className="w-full h-[25px] flex text-zinc-900 truncate my-1" key={k.id}>
-                <span className="truncate">{k.displayname.toUpperCase()}: {k.datatypes === "number" ? d[k.name].toFixed(2): d[k.name]}</span>
+              {i + 1 === option && <Code radius="sm" className="mx-1 bg-blue-500 text-zinc-50">Default</Code>}
+              {column?.map((k: any) => <Code radius="sm" className="w-full h-[25px] flex text-zinc-900 truncate my-1" key={k.id}>
+                <span className="truncate">{k.displayname.toUpperCase()}: {k.datatypes === "number" ? d[k.name].toFixed(2) : d[k.name]}</span>
               </Code>)}
             </div>)}
           </div>
@@ -86,6 +87,7 @@ const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number
               Cancel Anytime
             </li>
           </ul>
+          <CommentProduct idProduct={Number(idProduct)} />
         </div>
         {/* Description product */}
         <div className="lg:col-span-3">

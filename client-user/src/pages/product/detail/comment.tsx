@@ -17,7 +17,7 @@ const CommentProduct = ({ idProduct }: { idProduct: number }) => {
   const [activePage, setActivePage] = useState(1)
   const [dComment, setDComment] = useState<CommentResType | null>(null)
   const [comment, setComment] = useState<CommentType[] | null>(null)
-  const [firstPage,setFirstPage] = useState<CommentType[] | []>([])
+  const [firstPage, setFirstPage] = useState<CommentType[] | []>([])
   const { data } = useFetchDataByKey('comment', 'getCommentByProduct', idProduct)
   useEffect(() => {
     data && (
@@ -53,7 +53,7 @@ const CommentProduct = ({ idProduct }: { idProduct: number }) => {
             total_page: Math.ceil((dComment.total + 1) / 4),
             page: 1
           }
-          const appendData = [{ ...data[0], nameUser: user ? user[0].nameUser : '', img: '', idComment: res.data.id }, ...firstPage.slice(0,3)]
+          const appendData = [{ ...data[0], nameUser: user ? user[0].nameUser : '', img: '', idComment: res.data.id }, ...firstPage.slice(0, 3)]
           setFirstPage(appendData)
           setComment(appendData)
           setDComment(newDComment)
@@ -61,11 +61,11 @@ const CommentProduct = ({ idProduct }: { idProduct: number }) => {
         }
       })
   }
-  return <div className="w-full h-auto flex flex-wrap justify-between p-6">
-    <div className={`w-full lg:w-2/4 xl:w-2/4 flex flex-wrap ${isLogin ? 'justify-end' : 'justify-center'}`}>
+  return <div className="w-full h-auto flex flex-wrap justify-between p-6 border-t border-solid border-zinc-300 mt-6">
+    <div className={`w-full flex flex-wrap ${isLogin ? 'justify-end' : 'justify-center'}`}>
       {isLogin && <>
-        <div className="mb-4 w-full rounded-lg border border-gray-200 bg-zinc-900 dark:border-gray-600">
-          <div className="flex justify-between items-center py-2 px-3 border-b border-gray-600">
+        <div className="mb-4 w-full">
+          <div className="flex justify-between items-center py-2 px-3 bg-zinc-950 border-b border-gray-600 rounded-t-lg">
             <div className="flex flex-wrap items-center divide-gray-200">
               <div className="flex items-center space-x-1 sm:pr-4">
                 <button type="button" className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
@@ -93,23 +93,23 @@ const CommentProduct = ({ idProduct }: { idProduct: number }) => {
               <div className="tooltip-arrow" data-popper-arrow></div>
             </div>
           </div>
-          <div className="py-2 px-4  rounded-b-lg bg-zinc-700">
+          <div className="py-2 px-4  rounded-b-lg shadow-lg text-black">
             <textarea id="editor" rows={6} value={value} onChange={(e) => { setValue(e.target.value) }}
               onKeyDown={(e) => { e.key === "Enter" && !e.shiftKey && postComment() }}
-              className="block px-0 w-full text-sm text-gray-800 outline-none border-0 bg-zinc-700 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a comment..." required />
+              className="block px-0 w-full text-sm text-gray-800 outline-none border-0 focus:ring-0 ieruyqweir dark:placeholder-gray-400" placeholder="Write a comment..." required />
           </div>
         </div>
         <button
           onClick={() => { postComment() }}
           className="h-[50px] cursor-pointer inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-1 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800">
-          Publish post
+          Comment
         </button>
       </>}
       {!isLogin && <p className="text-zinc-900">
         <Code radius="sm" size="sm" className="cursor-pointer" color="danger" onClick={() => navigate('/auth')}>Login</Code> to comment
       </p>}
     </div>
-    <div className="comment-detail w-full lg:w-2/4 xl:w-2/5 flex flex-wrap items-center justify-center">
+    <div className="comment-detail w-full flex flex-wrap items-center justify-center">
       <div className="comment-list w-full flex flex-wrap items-center justify-center">
         {comment && comment.map((d: CommentType) => <div className="w-4/5 text-zinc-900 flex items-center justify-center my-2 !-z-0" key={d.idComment}>
           <Avatar isBordered radius="sm" src={d.img !== "" ? d.img : "https://static.vecteezy.com/system/resources/previews/008/442/086/non_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"} />

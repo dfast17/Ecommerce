@@ -30,8 +30,7 @@ const Address = () => {
           <div className="address-detail w-[98%] my-2 !text-zic-100 flex" key={a.idAddress}>
             <Code
               radius="sm"
-              style={{ color: "white" }}
-              className={`flex items-center text-wrap ${a.type === "default" ? "bg-blue-500" : "bg-[#0E1422]"
+              className={`flex items-center text-wrap ${a.type === "default" ? "bg-blue-500 text-white" : "bg-white shadow-lg text-black"
                 } w-4/5 min-h-[45px] text-[18px] cursor-pointer`}
             >
               {a.detail}
@@ -39,8 +38,8 @@ const Address = () => {
             <Button
               size="sm"
               radius="sm"
-              className={`w-[120px] h-[45px] text-[18px] flex items-center  text-center ${a.type === "extra" ? "bg-[#0E1422]" : "bg-blue-500"
-                } text-zinc-100 mx-1 cursor-pointer`}
+              className={`w-[120px] h-[45px] text-[18px] flex items-center  text-center ${a.type === "extra" ? "bg-white shadow-lg text-black" : "bg-blue-500 text-white"
+                }  mx-1 cursor-pointer`}
               onClick={() => {
                 handleChangeAddress("update", {
                   listId: [a.idAddress],
@@ -56,7 +55,7 @@ const Address = () => {
               radius="sm"
               className="h-[45px] text-[18px] bg-blue-500"
             >
-              <MdEditLocationAlt className="text-white"/>
+              <MdEditLocationAlt className="text-white" />
             </Button>
             <Button
               isIconOnly

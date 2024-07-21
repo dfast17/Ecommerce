@@ -6,7 +6,7 @@ export const StateContext = createContext<any>({});
 export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     const [order, setOrder] = useState<OrderType | null>(null);
     const [purchase, setPurchase] = useState<OrderDetailType[] | null>(null)
-    const [isLogin, setIsLogin] = useState<boolean>(false)
+    const [isLogin, setIsLogin] = useState<boolean>(JSON.parse(Cookies.get('u-login') || 'false'))
     const [product, setProduct] = useState<any[] | null>(null)
     const [sale, setSale] = useState<any[] | null>(null)
     const [type, setType] = useState<CategoryType[] | null>(null)
@@ -17,7 +17,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const userLogin = JSON.parse(Cookies.get('u-login') || 'false')
         setIsLogin(userLogin)
-    })
+    }, [])
     return (
         <StateContext.Provider value={{
             order, setOrder,
