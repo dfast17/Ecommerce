@@ -22,18 +22,14 @@ import type {
 } from "types/types";
 
 export interface Database {
-  ordsDetail: OrderDetailType;
-  ords: OrderType;
   carts: CartType;
   comments: CommentType;
-  commentPost:CommentPostType,
-  ordf: OrderType;
-  ordfDetail: OrderDetailType;
+  commentPost: CommentPostType,
   imageProduct: ImageProductType;
   auth: AuthDB;
   posts: PostsType;
-  typePost:CategoryPostsType;
-  payment:PaymentType;
+  typePost: CategoryPostsType;
+  payment: PaymentType;
   products: ProductType;
   sale: SaleType;
   saleDetail: SaleDetailType;
@@ -43,8 +39,8 @@ export interface Database {
   typedetail: TypeDetail;
   userAddress: UserAddressType;
   users: UserType;
-  staff:StaffType;
-  position:PositionType;
+  staff: StaffType;
+  position: PositionType;
   warehouse: WarehouseType;
 
   [anyTable: string]: any;

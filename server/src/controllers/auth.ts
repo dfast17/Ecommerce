@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
-import AuthStatement from "models/statement/auth";
-import Statements, { type ConditionType } from "models/statement/statement";
+import AuthStatement from "service/auth";
+import Statements, { type ConditionType } from "service/statement";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { responseData, responseMessage, responseMessageData } from "utils/response";

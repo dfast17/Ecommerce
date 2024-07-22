@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import type { columnAddType } from "models/statement/statement";
-import Statements from "models/statement/statement";
+import type { columnAddType } from "service/statement";
+import Statements from "service/statement";
 import { responseMessageData } from "utils/response";
 
 const statement = new Statements()
@@ -28,7 +28,7 @@ export default class TableController {
     const table = data.table
     const column: columnAddType[] | string = data.method === "add" ? data.colAdd : data.colDel
     try {
-      const result = await statement.columnChange(method,table,column)
+      const result = await statement.columnChange(method, table, column)
       if (result) {
         return responseMessageData(res, 401, `Update data is failed`);
       }

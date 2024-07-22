@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import CommentStatement from "models/statement/comment";
-import LogsStatement from "models/statement/logs";
-import Statements, { ConditionType } from "models/statement/statement";
+import CommentStatement from "service/comment";
+import LogsStatement from "service/logs";
+import Statements, { ConditionType } from "service/statement";
 import type { RequestCustom } from "types/types";
 import { responseData, responseMessageData } from "utils/response";
 import { convertData, handleChangeData, handleFindData, logData } from "utils/utils";
@@ -11,7 +11,8 @@ const commentStatement = new CommentStatement()
 const logs = new LogsStatement()
 export default class CommentController {
   public getAll = async (req: Request, res: Response) => {
-    handleFindData(res, commentStatement.getAll())
+    const name = req.params["name"]
+    handleFindData(res, name === "product" ? commentStatement.getAllCommentProduct() : commentStatement.getAllCommentPost())
   }
   public getByProduct = async (req: Request, res: Response) => {
     const idProduct = req.params["id"]
@@ -62,14 +63,15 @@ export default class CommentController {
   public removeComment = async (request: Request, res: Response) => {
     const req = request as RequestCustom
     const idUser = req.idUser
-    const idComment = req.params["id"]
+    const nameTable: string = req.params["name"]
+    const id = req.params["id"]
     const condition: ConditionType = {
-      conditionName: "idComment",
+      conditionName: nameTable === "product" ? "idComment" : "id",
       conditionMethod: "=",
-      value: idComment
+      value: id
     }
-    const logsData = logData(idUser, "Delete comment")
+    const logsData = logData(idUser, `Delete comment ${nameTable}`)
     const resultLogs = await logs.create(logsData)
-    handleChangeData(res, statement.removeData('comments', condition), 'delete')
+    handleChangeData(res, statement.removeData(nameTable === "product" ? 'comments' : "commentPost", condition), 'delete')
   }
 }

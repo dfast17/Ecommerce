@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import LogsStatement from "models/statement/logs";
-import ProductStatement from "models/statement/product";
-import Statement, { type ConditionType } from "models/statement/statement"
+import LogsStatement from "service/logs";
+import ProductStatement from "service/product";
+import Statement, { type ConditionType } from "service/statement"
 import type { LogsType, ProductType, RequestCustom, TypeDetail } from "types/types";
 import { responseData, responseMessage, responseMessageData } from "utils/response";
 import { convertData, convertMultiData, handleFindData, logData } from "utils/utils";

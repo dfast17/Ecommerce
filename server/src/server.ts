@@ -13,6 +13,7 @@ import postRoute from "./routes/posts"
 import commentRoute from "./routes/comment"
 import statisticalRoute from "./routes/statistical"
 import tableRoute from "./routes/table"
+import logRoute from "./routes/log"
 
 import * as db from "models/connect_mongo"
 
@@ -50,8 +51,8 @@ app.use(function (req, res, next) {
   next();
 });
 /* connected mongodb */
-
 db.connectDB()
+
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minutes
   max: Number(process.env.LIMIT_REQ),
@@ -131,6 +132,7 @@ app.use('/post', postRoute)
 app.use('/comment', commentRoute)
 app.use('/api/statistical', statisticalRoute)
 app.use('/api/table', tableRoute)
+app.use('/api/logs', logRoute)
 
 app.get('/api/test', (req, res) => {
   res.json("test")

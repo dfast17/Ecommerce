@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
-import PostStatement from "models/statement/posts";
-import Statements, { type ConditionType } from "models/statement/statement";
+import PostStatement from "service/posts";
+import Statements, { type ConditionType } from "service/statement";
 import { responseData, responseMessageData } from "utils/response";
 import { convertData, handleChangeData, handleFindData, logData } from "utils/utils";
 import type { RequestCustom } from "types/types";
-import CommentStatement from "models/statement/comment";
-import LogsStatement from "models/statement/logs";
+import CommentStatement from "service/comment";
+import LogsStatement from "service/logs";
 
 
 const statement = new Statements();

@@ -156,7 +156,8 @@ export interface CommentPostType {
   idUser: string,
   idPost: number,
   created_date: Date,
-  commentValue: string
+  commentValue: string,
+  [x: string]: string | Date | number
 }
 export interface PaymentType {
   id: number,

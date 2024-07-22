@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import type { RequestCustom } from "types/types";
-import UserStatement from "models/statement/user";
-import Statements, { type ConditionType } from "models/statement/statement";
+import UserStatement from "service/user";
+import Statements, { type ConditionType } from "service/statement";
 import { responseData, responseMessage, responseMessageData } from "utils/response";
 import { convertData, handleFindData } from "utils/utils";
 import { db } from "models/connect";

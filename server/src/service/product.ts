@@ -182,7 +182,7 @@ export default class ProductStatement {
     return await db.selectFrom("sale").selectAll("sale").execute();
   };
   public findSale = async (date: string) => {
-    return db
+    return await db
       .selectFrom("sale")
       .select<string | any>((eb: any) => [
         "sale.idSale",
@@ -207,7 +207,7 @@ export default class ProductStatement {
             .whereRef("sd.idSale", "=", "sale.idSale")
         ).as("detail"),
       ])
-      .where((eb: any) => eb("sale.start_date", "<=", date).or("sale.end_date", ">=", date))
+      .where((eb: any) => eb("sale.start_date", "<=", date).and("sale.end_date", ">=", date))
       .execute();
   };
 

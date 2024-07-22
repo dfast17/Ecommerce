@@ -47,8 +47,26 @@ export default class StatisticalStatement {
     }
     public order = async () => {
         return await db.selectFrom("order")
-            .selectAll()
+            .select(["idOrder", "orderStatus", "paymentStatus", "created_at", "method"])
             .orderBy("created_at", "desc")
+            .limit(5)
+            .execute()
+    }
+    public commentPost = async () => {
+        return await db.selectFrom("commentPost")
+            .select<any>(["id", "u.idUser", "u.nameUser", "commentValue", "created_date"])
+            .leftJoin("users as u", "u.idUser", "commentPost.idUser")
+            .orderBy("created_date", "desc")
+            .orderBy("id", "desc")
+            .limit(5)
+            .execute()
+    }
+    public commentProduct = async () => {
+        return await db.selectFrom("comments")
+            .select<any>(["idComment as id", "u.idUser", "u.nameUser", "commentValue", "dateComment as created_date"])
+            .leftJoin("users as u", "u.idUser", "comments.idUser")
+            .orderBy("dateComment", "desc")
+            .orderBy("idComment", "desc")
             .limit(5)
             .execute()
     }

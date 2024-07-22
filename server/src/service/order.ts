@@ -1,4 +1,4 @@
-import { db } from "models/connect";
+import { db } from "../models/connect";
 
 export default class OrderStatement {
   public getAllOrder = async () => {

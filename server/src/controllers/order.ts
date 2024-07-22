@@ -1,13 +1,13 @@
 import type { Request, Response } from "express";
-import Statements, { type ConditionType } from "models/statement/statement";
-import OrderStatement from "models/statement/order";
-import type { LogsType, RequestCustom } from "types/types";
+import Statements, { type ConditionType } from "service/statement";
+import OrderStatement from "../service/order";
+import type { RequestCustom } from "types/types";
 import { responseData, responseMessage, responseMessageData } from "utils/response";
 import { convertData, handleFindData, logData } from "utils/utils";
 import crypto from "crypto";
 import { sql } from "kysely";
 import { db } from "models/connect";
-import LogsStatement from "models/statement/logs";
+import LogsStatement from "service/logs";
 
 const order = new OrderStatement();
 const statement = new Statements();
@@ -47,14 +47,15 @@ export default class OrderController {
         ...c,
         idOrder: idOrder,
         idUser: idUser,
-        create_at: new Date().toISOString().split("T")[0]
+        created_at: new Date().toISOString().split("T")[0],
+        note: ''
       };
     });
     const insertData = await db.transaction().execute(async (trx) => {
       const formatData = convertData(addData)
-      const insert = await statement.insertData("ord", formatData)
+      const insert = await statement.insertData("order", formatData)
       const setFk = sql`SET FOREIGN_KEY_CHECKS=0`.execute(trx);
-      const tableInsert = "ordDetail";
+      const tableInsert = "order_Detail";
       const colInsert = ["idOrder", "idProduct", "countProduct", "discount"]
       const tableSelect = "carts"
       const colSelect = [
@@ -127,11 +128,9 @@ export default class OrderController {
       conditionMethod: "=",
       value: data.id,
     };
-    const logsData = logData(req.idUser, `Update order status to ${data.status}`)
+    const logsData = logData(req.idUser, `Update order status to ${data.data_update.orderStatus}`)
     try {
-      console.log("Start update status")
       const updateStatus = await statement.updateDataByCondition("order", valueUpdate, condition);
-      console.log("End update status")
       if (!updateStatus) {
         return responseMessage(res, 401, "Status update failed");
       }
