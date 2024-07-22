@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect } from "react";
 import { statisticalCommentPost, statisticalCommentProduct, statisticalOrder, statisticalProduct, statisticalRevenue, statisticalUser } from "../api/statistical";
 import { StateContext } from "./state";
-import { useFetchData } from "../hooks/useFetchData";
+import { useFetchData, useFetchDataByKey } from "../hooks/useFetchData";
 import { productStore } from "../store/product";
 import { GetToken } from "../utils/token";
 import { getAddress, getInfo, getShipper, getStaff, getUser } from "../api/user";
@@ -11,7 +11,7 @@ import { getLogs } from "../api/logs";
 
 export const ApiContext = createContext<any>({});
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
-    const { position, role, isLogin, setPosition, setPost, setTypePost, setStatistical, setSale, setOrder, setShipper, setLog } = useContext(StateContext)
+    const { position, role, isLogin, setPosition, setPost, setTypePost, setStatistical, setSale, setOrder, setShipper, setLog, setComment } = useContext(StateContext)
     const { setCategory, setProduct } = productStore()
     const { setUser, setStaff, setCurrentUser, setAddress } = userStore()
     useEffect(() => {
@@ -44,13 +44,18 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: SaleData } = useFetchData('product', 'getSaleEvent')
     const { data: dataPost } = useFetchData('post', 'postGetAll')
     const { data: postCategory } = useFetchData('post', 'getCategory')
+    const { data: commentProductData } = useFetchDataByKey('comment', 'getAllComment', 'product')
+    const { data: commentPost } = useFetchDataByKey('comment', 'getAllComment', 'post')
+
     useEffect(() => {
         dataProduct && setProduct(dataProduct.data)
         categoryData && setCategory(categoryData.data)
         SaleData && setSale(SaleData.data)
         dataPost && setPost(dataPost.data)
         postCategory && setTypePost(postCategory.data)
-    }, [dataProduct, categoryData, SaleData, dataPost, postCategory])
+        commentProductData && setComment((prevState: any) => ({ ...prevState, product: commentProductData.data }))
+        commentPost && setComment((prevState: any) => ({ ...prevState, post: commentPost.data }))
+    }, [dataProduct, categoryData, SaleData, dataPost, postCategory, commentProductData, commentPost])
 
     useEffect(() => {
         const fetchData = async () => {

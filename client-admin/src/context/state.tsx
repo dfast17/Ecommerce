@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { getLocalStorage } from "../utils/localStorage";
 import Cookies from "js-cookie";
 import { Product_sold_type, Product_view_type } from "../types/layout_type";
-import { CategoryPostType, LogsType, OrderType, PostType, ShipperType } from "../types/types";
+import { CategoryPostType, CommentType, LogsType, OrderType, PostType, ShipperType } from "../types/types";
 interface statisticalType {
     product: [{ total: number, view: Product_view_type[], sold: Product_sold_type[] }] | null,
     user: any[] | null,
@@ -10,6 +10,11 @@ interface statisticalType {
     order: any[] | null,
     commentPost: any[] | null,
     commentProduct: any[] | null
+}
+
+interface StateCommentType {
+    product: CommentType[] | null,
+    post: CommentType[] | null
 }
 
 export const StateContext = createContext<any>({});
@@ -26,6 +31,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     const [order, setOrder] = useState<OrderType[] | null>(null)
     const [shipper, setShipper] = useState<ShipperType[] | null>()
     const [log, setLog] = useState<LogsType[] | null>(null)
+    const [comment, setComment] = useState<StateCommentType>({ product: null, post: null })
     useEffect(() => {
         document.body.classList.remove(!isDark ? 'dark' : 'light')
         document.body.classList.add(isDark ? 'dark' : 'light')
@@ -51,7 +57,8 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
             order, setOrder,
             position, setPosition,
             shipper, setShipper,
-            log, setLog
+            log, setLog,
+            comment, setComment
         }}>
             {children}
         </StateContext.Provider>

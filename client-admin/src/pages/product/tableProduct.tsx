@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react"
 import { StateContext } from "../../context/state"
 import { Image, Modal, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, useDisclosure } from "@nextui-org/react"
 import { EditIcon } from "../../components/icon/edit";
-import { DeleteIcon } from "../../components/icon/delete";
 import { BiDetail } from "react-icons/bi";
 import { ProductType } from "../../types/types";
 import { pagination } from "../../utils/utils";

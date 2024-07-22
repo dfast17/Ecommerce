@@ -32,10 +32,6 @@ const UI = ({ title, value, width, Icon }: { title: string, value: string, width
 
 const Statistical = () => {
   const { log, role, isDark, statistical } = useContext(StateContext)
-  useEffect(() => {
-    //xem dữ liệu trả về tại dev tool trên web
-    statistical && console.log(statistical)
-  }, [statistical])
   return <div className="dashboard-statistical w-full h-auto min-h-[100px] flex flex-wrap justify-around items-center pt-2 px-2 mb-2">
     <div className={`w-full md:w-[49%] xl:w-[35%] h-[150px] ${isDark ? "" : "shadow-md"} text-white rounded-md flex items-center my-1 p-2`}
       style={{

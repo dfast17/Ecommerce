@@ -69,19 +69,14 @@ export interface PostType {
     poster: string,
     valuesPosts?: string
 }
-export interface CommentProductType {
-    idComment: number,
-    idProduct: number,
+export interface CommentType {
+    id: number,
     idUser: string,
-    commentValue: string,
-    created_at?: Date
-}
-export interface CommentPostType {
-    idComment: number,
-    idPost: number,
-    idUser: string,
-    commentValue: string,
-    created_at?: Date
+    name: string,
+    nameUser: string,
+    img: string,
+    created_date: string,
+    value: string
 }
 export interface SaleDetailType {
     idSaleDetail: number,

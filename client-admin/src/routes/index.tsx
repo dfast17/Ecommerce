@@ -5,6 +5,7 @@ import Post from "../pages/post";
 import Product from "../pages/product";
 import Account from "../pages/account";
 import Event from "../pages/event";
+import Comment from "../pages/comment";
 
 
 const publicRoutes: any = [
@@ -18,6 +19,7 @@ const privateRoutes: any = [
     { path: "/order", component: Order },
     { path: "/event", component: Event },
     { path: "/post", component: Post },
+    { path: "/comment", component: Comment }
 
 ]
 export { publicRoutes, privateRoutes };

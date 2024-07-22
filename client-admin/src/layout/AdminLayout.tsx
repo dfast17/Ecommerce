@@ -15,6 +15,7 @@ import {
   MdOutlineDiscount,
   MdOutlineLightMode,
 } from "react-icons/md";
+import { BiSolidCommentDetail } from "react-icons/bi";
 import { IconType } from "react-icons";
 import { CiSearch } from "react-icons/ci";
 import { NavLink } from "react-router-dom";
@@ -68,6 +69,12 @@ const navArr: NavContent[] = [
     content: "Event",
     icon: MdOutlineDiscount,
     url: "/event"
+  },
+  {
+    idNav: 7,
+    content: "Comment",
+    icon: BiSolidCommentDetail,
+    url: "/comment"
   }
 ];
 

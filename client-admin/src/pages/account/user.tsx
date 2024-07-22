@@ -12,8 +12,8 @@ const User = () => {
         <div className="title w-full h-[50px] flex justify-between items-center px-2">
             <span className={`text-[25px] font-bold ${isDark ? "text-white" : "text-zinc-950"}`}>User</span>
         </div>
-        <div className="staff-content w-full grid grid-cols-2 gap-2 px-2">
-            {user && user.map((s: UserType) => <div key={s.idUser} className="rounded-md bg-zinc-50 h-[150px] grid grid-cols-3 shadow-md">
+        <div className="staff-content w-full grid grid-cols-2 gap-y-2 gap-x-4 px-2">
+            {user && user.map((s: UserType) => <div key={s.idUser} className="rounded-md bg-zinc-50 h-[150px] grid grid-cols-3 shadow-md cursor-pointer hover:scale-105 transition-all">
                 <div className="avatar h-full flex flex-wrap content-center items-center justify-center col-span-1">
                     <Avatar className="" src={s.img} size="lg" radius="sm" color="primary" />
                     <p className="w-full text-center text-zinc-950 font-bold">#{s.idUser}</p>
