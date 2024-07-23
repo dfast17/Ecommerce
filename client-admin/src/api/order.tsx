@@ -8,6 +8,17 @@ export const getOrder = async (token: string) => {
     })
         .then(res => res.json())
 };
+export const createOrder = async (token: string, data: { order: any[], detail: { idProduct: number, discount: number, countProduct: number }[] }) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/order/admin`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+}
 export const getOrderByRoleShipper = async (token: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/order/shipper`, {
         method: "GET",

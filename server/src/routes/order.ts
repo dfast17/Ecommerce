@@ -9,7 +9,7 @@ router.get('/detail/:id', verifyTokenAdmin, orderController.getDetail)
 router.get('/user', verifyToken, orderController.getByUser)
 router.get('/purchase', verifyToken, orderController.getPurchaseOrderByUser)
 router.post('/', verifyToken, orderController.insertOrder)
-router.post('/payment', verifyToken, orderController.insertPayment)
+router.post('/admin', verifyTokenAdmin, orderController.adminInsertOrder)
 router.patch('/', orderController.updateOrder)
 
 export default router

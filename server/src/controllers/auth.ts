@@ -5,12 +5,14 @@ import Statements, { type ConditionType } from "service/statement";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { responseData, responseMessage, responseMessageData } from "utils/response";
-import { convertData, convertMultiData, handleFindData } from "utils/utils";
+import { convertData, convertMultiData, handleChangeData, handleFindData, logData } from "utils/utils";
 import type { RequestCustom } from "types/types";
 import { handleSendMail } from "utils/mail";
+import LogsStatement from "service/logs";
 
 const authStatement = new AuthStatement();
 const statement = new Statements();
+const logs = new LogsStatement()
 
 const createToken = (idUser: string, expired: string) => {
   const token = jwt.sign({ id: idUser }, process.env.SECRET_KEY as string, { expiresIn: expired });
@@ -97,6 +99,35 @@ export default class AuthController {
       };
     }
   }
+
+  public adminRegister = async (request: Request, res: Response) => {
+    const req = request as RequestCustom
+    const idUser = req.idUser
+    const data = req.body
+    const list_staff = data.staff.map((p: any) => ({
+      ...p,
+      password_hash: encodePass(p.password_hash),
+    }))
+    const list_info_staff = data.info
+    const list_position = data.position
+    const logsData = logData(idUser, `${idUser} Create staff`)
+    try {
+      const resultAuth = await statement.insertDataMulti("auth", list_staff);
+      const resultInfo = await statement.insertDataMulti("staff", list_info_staff);
+      const resultPosition = await statement.insertDataMulti("position", list_position);
+      const resultLog = await logs.create(logsData)
+      if (!resultAuth || !resultInfo || !resultPosition) {
+        return responseMessageData(res, 401, `Create staff is failed`);
+      }
+      responseMessageData(res, 201, `Create staff is success`);
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
+
   public login = async (req: Request, res: Response) => {
     const data = req.body;
     const username = data.username ? data.username : data.email;
@@ -135,6 +166,7 @@ export default class AuthController {
       };
     }
   };
+
   public logout = async (request: Request, res: Response) => {
     const req = request as RequestCustom
     const idUser = req.idUser
@@ -191,6 +223,7 @@ export default class AuthController {
       };
     }
   };
+
   public password = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;
@@ -226,12 +259,14 @@ export default class AuthController {
       };
     }
   };
+
   public newToken = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;
     const { token: accessToken, expiredToken: expiredA } = createToken(idUser, "600s");
     responseData(res, 200, { accessToken, expiredA });
   };
+
   public forgot = async (req: Request, res: Response) => {
     const data = req.body
     try {

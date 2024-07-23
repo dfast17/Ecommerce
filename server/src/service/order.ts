@@ -4,7 +4,7 @@ export default class OrderStatement {
   public getAllOrder = async () => {
     return await db
       .selectFrom("order")
-      .selectAll()
+      .select(["idOrder", "created_at", "fullName", "phone", "address", "method", "paymentStatus", "orderStatus"])
       .execute();
   };
   public getDetailOrder = async (idOrder: string) => {

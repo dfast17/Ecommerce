@@ -95,30 +95,39 @@ export default class OrderController {
     }
     responseMessage(res, 201, "Order success");
   };
-  public insertPayment = async (request: Request, res: Response) => {
-    const req = request as RequestCustom
-    const idUser = req.idUser
-    const data = req.body
-    const appendId = data.map((d: any) => {
+  public adminInsertOrder = async (request: Request, res: Response) => {
+    const req = request as RequestCustom;
+    const idUser = req.idUser;
+    const data = req.body;
+    const idOrder = `${idUser}${month}${year}-${randomText(4)}`;
+    const dataOrder = data.order.map((c: any) => {
       return {
-        ...d,
-        idUser: idUser
-      }
-    })
-    const dataInsert = convertData(appendId)
+        ...c,
+        idOrder: idOrder,
+        created_at: new Date().toISOString().split("T")[0],
+      };
+    });
+    const dataOrderDetail = data.detail.map((c: any) => ({
+      ...c,
+      idOrder: idOrder
+    }))
+    const logsData = logData(req.idUser, `${idUser} create order with id ${idOrder}`)
     try {
-      const insert = await statement.insertData("payment", dataInsert)
-      if (!insert) {
-        return responseMessage(res, 401, "Insert payment is unsuccessful")
+      console.log("Start order")
+      const insertData = await statement.insertData("order", convertData(dataOrder));
+      const insertDataDetail = await statement.insertDataMulti("order_Detail", dataOrderDetail);
+      const insertLogs = await logs.create(logsData)
+      if (!insertData || !insertDataDetail) {
+        return responseMessage(res, 401, "Order failed");
       }
-      responseMessage(res, 201, "Insert payment is success")
+      responseMessageData(res, 201, "Order success", { id: idOrder, date: new Date().toISOString().split("T")[0] });
     }
     catch {
       (errors: any) => {
         responseMessageData(res, 500, "Server errors", errors);
       };
     }
-  };
+  }
   public updateOrder = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const data = req.body;
