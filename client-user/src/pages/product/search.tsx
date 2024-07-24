@@ -8,6 +8,7 @@ import FilterPrice from './layout/filterPrice';
 import { SortedData } from '../../utils/handle';
 import { useParams } from 'react-router-dom';
 import { useFetchDataByKey } from '../../hooks/useFetchData';
+import Empty_Data from '../../components/error/empty';
 
 const SearchProduct = () => {
     const param = useParams()
@@ -29,7 +30,7 @@ const SearchProduct = () => {
         FilterData()
     }, [filter])
     SortedData(currentData, filter.price, setCurrentData, setActivePage)
-    return <div className='product w-full h-auto flex flex-col items-center justify-center'>
+    return data && data.data.length !== 0 ? <div className='product w-full h-auto flex flex-col items-center justify-center'>
         <div className='filter w-[90%] flex flex-wrap my-4 text-zinc-900'>
             {data && <FilterBrand listBrand={listBrand} setFilter={setFilter} filterData={filter} />}
             <FilterPrice setFilter={setFilter} filterData={filter} />
@@ -40,7 +41,7 @@ const SearchProduct = () => {
                 <Product_Layout_01 data={d} key={`search-${d.idProduct}`} />)}
         </div>
         {currentData && <Pagination isCompact size="lg" showControls page={activePage} total={pagination(12, currentData.length)} initialPage={1} onChange={(e) => { setActivePage(e) }} />}
-    </div>
+    </div> : <Empty_Data />
 }
 
 export default SearchProduct

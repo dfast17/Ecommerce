@@ -9,15 +9,18 @@ import Cart from "../pages/cart";
 import User from "../pages/user";
 import Checkout from "../pages/checkout";
 import Contact from "../pages/contact";
+import ProductSale from "../pages/sale/sale";
 const publicRoutes = [
     { path: "/", component: Home },
     { path: "/auth", component: Auth },
     { path: "/product", component: Product },
+    { path: "/sale", component: ProductSale },
     { path: "/search/:key", component: SearchProduct },
     { path: "/post/detail/:idPost/:name", component: PostsDetail },
     { path: "/product/detail/:nameType/:idProduct/:nameProduct", component: DetailProduct },
     { path: "/post", component: Post },
     { path: "/contact", component: Contact },
+
 ];
 const privateRoutes: any = [
     { path: "/cart", component: Cart },
