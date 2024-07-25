@@ -8,7 +8,6 @@ import authRoute from "./routes/auth";
 import userRoute from "./routes/user";
 import orderRoute from "./routes/order"
 import cartRoute from "./routes/cart"
-import wareRoute from "./routes/warehouse"
 import postRoute from "./routes/posts"
 import commentRoute from "./routes/comment"
 import statisticalRoute from "./routes/statistical"
@@ -127,16 +126,12 @@ app.use('/auth', authRoute)
 app.use('/user', userRoute)
 app.use('/order', orderRoute)
 app.use('/cart', cartRoute)
-app.use('/ware', wareRoute)
 app.use('/post', postRoute)
 app.use('/comment', commentRoute)
 app.use('/api/statistical', statisticalRoute)
 app.use('/api/table', tableRoute)
 app.use('/api/logs', logRoute)
 
-app.get('/api/test', (req, res) => {
-  res.json("test")
-})
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

@@ -7,6 +7,7 @@ import { GetToken } from "../../../utils/token"
 import { StateContext } from "../../../context/stateContext"
 import { useNavigate } from "react-router-dom"
 import { userStore } from "../../../store/user"
+import { formatDate } from "../../../utils/utils"
 
 
 const CommentProduct = ({ idProduct }: { idProduct: number }) => {
@@ -116,7 +117,7 @@ const CommentProduct = ({ idProduct }: { idProduct: number }) => {
           <div className="w-4/5 h-auto min-h-[50px] mx-2">
             <div className="w-full flex justify-between">
               <p className="font-semibold font-mono">{d.nameUser}</p>
-              <p>{new Date(d.dateComment!).toLocaleDateString()}</p>
+              <p>{formatDate(d.dateComment!)}</p>
             </div>
             <Code className="w-full bg-zinc-900 text-zinc-50 z-10" radius="sm">{d.commentValue}</Code>
           </div>

@@ -101,14 +101,6 @@ export interface OrderDetailType {
   status: string
 }
 
-export interface WarehouseType {
-  id: number,
-  idProduct: number,
-  idpersonIOX: string,
-  dateIOX: Date,
-  countProduct: number,
-  statusWare: 'import' | 'export'
-}
 export interface SaleType {
   idSale: number,
   start_date: Date,

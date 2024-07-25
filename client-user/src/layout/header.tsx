@@ -78,9 +78,9 @@ const Header = (): JSX.Element => {
       .then(res => {
         if (res.status === 200) {
           setListCheckOut([])
-          RemoveToken('aTk')
-          RemoveToken('rTk')
-          removeLocalStorage('isLogs')
+          RemoveToken('u-aTk')
+          RemoveToken('u-rTk')
+          RemoveToken('u-login')
           setIsLogin(false)
           navigate('/auth')
         }

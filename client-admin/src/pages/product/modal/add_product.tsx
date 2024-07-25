@@ -20,7 +20,7 @@ interface KeyDetailType {
 
 const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetStateAction<string>> }) => {
     const { isDark } = useContext(StateContext)
-    const { category } = productStore()
+    const { product, category, setProduct } = productStore()
     const { register: registerProduct, handleSubmit, formState: { errors: err } } = useForm();
     const [date, setDate] = useState<string | null>(null)
     const [selectValue, setSelectValue] = useState<string | null>(null);
@@ -45,7 +45,7 @@ const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetSt
         setSubImages(Array.from(e.target.files))
     }
     const onSubmit = async (data: any) => {
-        const listKeyDetail = detail?.map((m: any) => m.name)
+
         const subImage = new FormData()
         const defaultImage = new FormData()
         for (let i = 0; i < subImages.length; i++) {
@@ -76,12 +76,13 @@ const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetSt
                     view: 0
                 }
             ],
-            detail: [detail && listKeyDetail?.reduce((acc, key) => {
-                if (data[key] !== undefined) {
-                    acc[key] = data[key];
+            detail: [detail && detail?.reduce((acc, key) => {
+                if (data[key.name] !== undefined) {
+                    acc[key.name] = key.datatypes === "text" ? data[key.name] : Number(data[key.name]);
                 }
                 return acc;
             }, {})],
+            tableName: category?.filter((f: any) => f.idType === Number(selectValue))[0].nameType,
             images: subImages && subImages.map((m: any) => ({ img: `${import.meta.env.VITE_REACT_APP_URL_IMG}/product/${m.name}`, type: "extra" }))
 
         }
@@ -89,6 +90,10 @@ const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetSt
         token && createProduct(dataInsert, token)
             .then((res: any) => {
                 alert(res.message)
+                product && setProduct([...product, {
+                    ...dataInsert.product[0],
+                    idProduct: res.insertId,
+                }])
                 setModalName("")
             })
             .catch((err: any) => console.log(err))
@@ -146,7 +151,7 @@ const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetSt
                                     classNames={{ trigger: "h-[50px]" }}
                                     placeholder="Select type product"
                                     className={`w-[32%] h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err.type ? 'border-red-500' : 'border-transparent'} px-1`}
-                                    {...registerProduct("type", { required: true })} onChange={handleSelectChange}>
+                                    onChange={handleSelectChange}>
                                     {category.map((e: any) => <SelectItem key={e.idType}>{e.nameType.toUpperCase()}</SelectItem>)}
                                 </Select>}
                                 <input className={`w-[32%] h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err.brand ? 'border-red-500' : 'border-transparent'} px-1`}

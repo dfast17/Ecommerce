@@ -117,14 +117,16 @@ export default class ProductController {
     const req = request as RequestCustom
     const data = req.body;
     const product = convertData(data.product)
-    const detail = convertData(data.detail)
+
     const logsData = logData(req.idUser, 'Add new product')
     try {
       const insertProduct = await statement.insertData('products', product);
+      console.log(Number(insertProduct.insertId))
       const dataImges = data.images.map((i: any) => ({ idProduct: Number(insertProduct.insertId), ...i }))
-      const insertImges = await products.insertImages(dataImges)
-      const convertDetail = [...detail, { nameCol: 'idProduct', value: Number(insertProduct.insertId) }]
-      const insertDetail = await statement.insertData(data.tableName, convertDetail)
+      const insertImges = await statement.insertDataMulti('imageProduct', dataImges)
+      const detail = convertData(data.detail.map((d: any) => ({ ...d, idProduct: Number(insertProduct.insertId) })))
+      console.log(detail)
+      const insertDetail = await statement.insertData(data.tableName, detail)
       const resultLog = await logs.create(logsData)
       insertProduct && insertDetail ?
         responseMessageData(res, 201, 'Add new product is success', { id: Number(insertProduct.insertId) })

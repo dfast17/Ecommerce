@@ -17,10 +17,6 @@ export const statusNextValue: StatusValueType[] = [
     {
         current: "prepare",
         next: "shipping",
-    },
-    {
-        current: "shipping",
-        next: "delivery",
     }
 ]
 export const ShipperNextValue: StatusValueType[] = [

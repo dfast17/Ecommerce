@@ -18,7 +18,6 @@ import type {
   TypeProduct,
   UserAddressType,
   UserType,
-  WarehouseType,
 } from "types/types";
 
 export interface Database {
@@ -41,7 +40,6 @@ export interface Database {
   users: UserType;
   staff: StaffType;
   position: PositionType;
-  warehouse: WarehouseType;
 
   [anyTable: string]: any;
 }
