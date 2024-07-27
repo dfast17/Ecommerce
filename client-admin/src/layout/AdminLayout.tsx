@@ -241,11 +241,7 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
         {children}
       </main>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalContent >
-          {(onClose) => <>
-            <CurrentUser />
-          </>}
-        </ModalContent>
+        <CurrentUser />
       </Modal>
     </div>
   );

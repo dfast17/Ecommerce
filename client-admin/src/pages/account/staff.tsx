@@ -9,10 +9,11 @@ import { MdOutlineUpdate } from "react-icons/md";
 import { useForm } from "react-hook-form"
 import { GetToken } from "../../utils/token"
 import { createStaff } from "../../api/auth"
-const Staff = () => {
+const Staff = ({ handleChangeStatus }: { handleChangeStatus: (type: "users" | "staff", id: string, status: "active" | "block") => Promise<void> }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
     const { isDark } = useContext(StateContext)
     const { staff } = userStore()
+
     return <div className="staff w-[95%] md:w-2/5 h-auto min-h-[250px] flex flex-col pt-1 rounded-md">
         <div className="title w-full h-[50px] flex justify-between items-center px-2">
             <span className={`text-[25px] font-bold ${isDark ? "text-white" : "text-zinc-950"}`}>Staff</span>
@@ -26,7 +27,7 @@ const Staff = () => {
                 </div>
                 <div className="relative detail h-full col-span-2 text-zinc-950 flex flex-col justify-start items-start py-1">
                     <div className="w-full flex justify-end px-1">
-                        <Chip radius="sm" variant="bordered" color={s.action === "active" ? "success" : "danger"}>{s.action}</Chip>
+                        <Chip onClick={() => handleChangeStatus("staff", s.idStaff, s.action === "active" ? "block" : "active")} radius="sm" variant="bordered" color={s.action === "active" ? "success" : "danger"}>{s.action}</Chip>
                     </div>
                     <p className="font-bold">{s.name}</p>
                     <p className="text-zinc-700">{s.email}</p>

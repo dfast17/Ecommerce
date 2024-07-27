@@ -5,7 +5,7 @@ import { useContext } from "react"
 import { StateContext } from "../../context/state"
 import { CiCalendarDate } from "react-icons/ci";
 import { MdOutlineUpdate } from "react-icons/md";
-const User = () => {
+const User = ({ handleChangeStatus }: { handleChangeStatus: (type: "users" | "staff", id: string, status: "active" | "block") => Promise<void> }) => {
     const { isDark } = useContext(StateContext)
     const { user } = userStore()
     return <div className="staff w-[95%] md:w-2/5 min-h-[300px] xl:min-h-[400px] flex flex-col pt-1 ">
@@ -20,7 +20,8 @@ const User = () => {
                 </div>
                 <div className="relative detail h-full col-span-2 text-zinc-950 flex flex-col justify-start items-start py-1">
                     <div className="w-full flex justify-end px-1">
-                        <Chip radius="sm" variant="bordered" color={s.action === "active" ? "success" : "danger"}>{s.action}</Chip>
+                        <Chip onClick={() => handleChangeStatus("users", s.idUser, s.action === "active" ? "block" : "active")}
+                            radius="sm" variant="bordered" color={s.action === "active" ? "success" : "danger"}>{s.action}</Chip>
                     </div>
                     <p className="font-bold">{s.nameUser}</p>
                     <p className="text-zinc-700">{s.email}</p>

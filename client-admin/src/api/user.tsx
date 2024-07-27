@@ -47,3 +47,14 @@ export const getAddress = async () => {
     })
         .then(res => res.json())
 }
+export const updateStatus = async (token: string, data: { action: string, id: string }) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user/status`, {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+}
