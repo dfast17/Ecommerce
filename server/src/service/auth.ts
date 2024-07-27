@@ -4,6 +4,7 @@ export default class AuthStatement {
         return await db.selectFrom('auth')
             .select(["idUser", "username", "password_hash", "role"])
             .where('username', '=', `${username}`)
+            .where('action', '!=', 'block')
             .execute()
     }
     public getAuthAdmin = async (username: string) => {
@@ -11,6 +12,7 @@ export default class AuthStatement {
             .select(["idUser", "username", "password_hash", "role"])
             .where('username', '=', `${username}`)
             .where('role', '!=', 2)
+            .where('action', '!=', 'block')
             .execute()
     }
     public getMail = async (email: string) => {

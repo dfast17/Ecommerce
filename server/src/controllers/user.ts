@@ -3,12 +3,39 @@ import type { RequestCustom } from "types/types";
 import UserStatement from "service/user";
 import Statements, { type ConditionType } from "service/statement";
 import { responseData, responseMessage, responseMessageData } from "utils/response";
-import { convertData, handleFindData } from "utils/utils";
+import { convertData, handleFindData, logData } from "utils/utils";
 import { db } from "models/connect";
+import LogsStatement from "service/logs";
 
 const userStatement = new UserStatement();
 const statement = new Statements();
+const logs = new LogsStatement()
 export default class UserController {
+  public changeStatus = async (request: Request, res: Response) => {
+    const req = request as RequestCustom;
+    const idUser = req.idUser;
+    const data = req.body;
+    const dataUpdate = convertData([{ action: data.action }])
+    const condition: ConditionType = {
+      conditionName: "idUser",
+      conditionMethod: '=',
+      value: data.id
+    }
+    const logsData = logData(idUser, "Change status user")
+    try {
+      const result = await statement.updateDataByCondition("auth", dataUpdate, condition);
+      const resultLog = await logs.create(logsData)
+      if (!result) {
+        return responseMessage(res, 401, `Change status user is failed`);
+      }
+      responseMessage(res, 200, `Change status user is success`);
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
   public getUser = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;

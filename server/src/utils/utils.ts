@@ -42,9 +42,11 @@ export const handleChangeData = async (res: any, handle: any, method: "add" | "u
   }
 }
 export const logData = (idUser: string, content: string): LogsType => {
+  const time = new Date().toLocaleTimeString()
+  const date = new Date().toISOString().split("T")[0].split("-").reverse().join("/")
   return {
     idUser: idUser,
     content: content,
-    timestamp: new Date().toLocaleString()
+    timestamp: `${date}, ${time}`
   }
 }
