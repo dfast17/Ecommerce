@@ -11,7 +11,7 @@ interface FormValue {
   email: string,
 }
 const ModalEdit = ({ setModalName }: Modals) => {
-  const {user,updated_Store_User} = userStore()
+  const { user, updated_Store_User } = userStore()
   const { register, handleSubmit, formState: { errors } } = useForm<FormValue>()
   const onSubmit = async (data: FormValue) => {
     const changedKeys = (Object.keys(data) as (keyof FormValue)[]).filter((key: keyof FormValue) => {
@@ -24,7 +24,6 @@ const ModalEdit = ({ setModalName }: Modals) => {
     }, {});
     const dataUpdate: UserUpdateType = {
       table: "users",
-      col: "idUser",
       detail: [detailData]
     }
     token && changedKeys.length !== 0 && updateUser(token, dataUpdate)
@@ -42,7 +41,7 @@ const ModalEdit = ({ setModalName }: Modals) => {
         <ModalHeader className="flex flex-col gap-1">Edit</ModalHeader>
         <ModalBody>
           <form className="w-full">
-            <Input {...register('nameUser', { required: true })} type="text" label="Name" className="w-full my-2" radius="sm" defaultValue={user ?  user[0].nameUser : ""} />
+            <Input {...register('nameUser', { required: true })} type="text" label="Name" className="w-full my-2" radius="sm" defaultValue={user ? user[0].nameUser : ""} />
             <Input {...register('phone', { required: true })} type="text" label="Phone" className="w-full my-2" radius="sm" defaultValue={user ? user[0].phone : ""} />
             <Input {...register('email', {
               required: true, pattern: {
