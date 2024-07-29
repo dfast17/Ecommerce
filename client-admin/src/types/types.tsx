@@ -8,6 +8,10 @@ export interface LogsType {
     content: string,
     timestamp: string
 }
+export interface CustomerUpdateType {
+    table: string
+    detail: { [x: string]: string | number }[]
+}
 export interface ProductType {
     idProduct: number,
     nameProduct: string,
@@ -43,7 +47,7 @@ export interface PositionType {
     position_name?: string
 }
 export interface StaffType extends PositionType {
-    idStaff: string,
+    idStaff?: string,
     name: string,
     avatar?: string,
     email?: string,

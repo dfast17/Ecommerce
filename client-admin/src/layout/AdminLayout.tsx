@@ -20,7 +20,7 @@ import { IconType } from "react-icons";
 import { CiSearch } from "react-icons/ci";
 import { NavLink } from "react-router-dom";
 import { LuLogOut } from "react-icons/lu";
-import { Button, Modal, ModalContent, Switch, useDisclosure } from "@nextui-org/react";
+import { Button, Modal, Switch, useDisclosure } from "@nextui-org/react";
 import { StateContext } from "../context/state";
 import { RemoveToken } from "../utils/token";
 import Logo from "../assets/Logomark.png"

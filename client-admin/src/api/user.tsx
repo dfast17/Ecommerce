@@ -1,3 +1,5 @@
+import { CustomerUpdateType } from "../types/types"
+
 export const getInfo = async (token: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user/admin`, {
         method: "GET",
@@ -49,6 +51,18 @@ export const getAddress = async () => {
 }
 export const updateStatus = async (token: string, data: { action: string, id: string }) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user/status`, {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+}
+
+export const updateInfo = async (token: string, data: CustomerUpdateType) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user/`, {
         method: "PATCH",
         headers: {
             'Content-Type': 'application/json',
