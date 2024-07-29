@@ -36,6 +36,7 @@ export default class UserController {
       };
     }
   }
+
   public getUser = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;
@@ -56,7 +57,7 @@ export default class UserController {
     const table = data.table ? data.table : 'users';
     const detail = convertData(data.detail);
     const condition: ConditionType = {
-      conditionName: "idUser",
+      conditionName: data.table === 'staff' ? 'idStaff' : 'idUser',
       conditionMethod: '=',
       value: idUser
     }
