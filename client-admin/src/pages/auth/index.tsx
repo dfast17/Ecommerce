@@ -18,7 +18,7 @@ const Auth = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<FieldValues>();
-  const { setIsLogin, setRole } = useContext(StateContext)
+  const { isDark, setIsLogin, setRole } = useContext(StateContext)
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate()
   const onSubmit = (data: FieldValues) => {
@@ -33,7 +33,7 @@ const Auth = () => {
           SetToken('a-Log', 'true', res.data.expiredR)
           setIsLogin(true)
           setRole(res.data.role)
-          navigate('/')
+          navigate(res.data.router)
         }
       })
   }
@@ -56,13 +56,13 @@ const Auth = () => {
           <div className="mt-8">
             <div>
               <div>
-                <Input {...register('username', { required: true })} variant="bordered" type="text" label="Username" placeholder="Enter your username" />
+                <Input {...register('username', { required: true })} className={`${isDark ? "text-white" : "text-black"}`} variant="bordered" type="text" label="Username" placeholder="Enter your username" />
                 {errors.username && <p className="text-red-500">This field is required</p>}
               </div>
 
               <div className="mt-6">
                 <Input
-                  {...register('password', { required: true })} variant="bordered" type={showPassword ? "text" : "password"}
+                  {...register('password', { required: true })} className={`${isDark ? "text-white" : "text-black"}`} variant="bordered" type={showPassword ? "text" : "password"}
                   onKeyDown={(e) => e.key === "Enter" && handleSubmit(onSubmit)()}
                   label="Password" placeholder="Enter your password" />
                 {errors.password && <p className="text-red-500">This field is required</p>}

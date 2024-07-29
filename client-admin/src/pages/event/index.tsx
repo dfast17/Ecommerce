@@ -158,25 +158,25 @@ const FormAddEvent = ({ props }: { props: any }) => {
     })
   }
   return <div className="t-detailItem w-full h-auto flex flex-wrap items-center justify-start my-4">
-    <div className="tbHead w-full h-[30px] flex flex-wrap justify-around bg-slate-500 border-l border-r border-t border-black border-solid">
-      <div className="tbBody w-1/5 h-full flex items-center justify-center border-r bg-slate-500 border-black border-solid text-white font-semibold">Title</div>
-      <div className="tbBody w-[15%] h-full flex items-center justify-center border-r bg-slate-500 border-black border-solid text-white font-semibold">Start date</div>
-      <div className="tbBody w-[15%] h-full flex items-center justify-center border-r bg-slate-500 border-black border-solid text-white font-semibold">End date</div>
-      <div className="tbBody w-2/4 h-full flex items-center justify-center bg-slate-500 border-black border-solid text-white font-semibold">Detail</div>
+    <div className="tbHead w-full h-[30px] flex flex-wrap justify-around bg-zinc-100 border-l border-r border-t border-black border-solid">
+      <div className="tbBody w-1/5 h-full flex items-center justify-center border-r bg-zinc-100 border-black border-solid text-black font-semibold">Title</div>
+      <div className="tbBody w-[15%] h-full flex items-center justify-center border-r bg-zinc-100 border-black border-solid text-black font-semibold">Start date</div>
+      <div className="tbBody w-[15%] h-full flex items-center justify-center border-r bg-zinc-100 border-black border-solid text-black font-semibold">End date</div>
+      <div className="tbBody w-2/4 h-full flex items-center justify-center bg-zinc-100 border-black border-solid text-black font-semibold">Detail</div>
     </div>
-    <div className="tbContent w-full h-auto min-h-[35px] flex flex-wrap items-center justify-around bg-slate-500 border border-black border-solid">
+    <div className="tbContent w-full h-auto min-h-[35px] flex flex-wrap items-center justify-around bg-zinc-100 border border-black border-solid">
       <form className="w-2/4 h-auto flex flex-wrap">
-        <div className="tbBody w-2/5 h-full flex items-center justify-center border-r bg-slate-500 border-black border-solid text-white font-semibold">
+        <div className="tbBody w-2/5 h-full flex items-center justify-center border-r bg-zinc-100 border-black border-solid text-black font-semibold">
           <input {...register(`title`, { required: true })} type="text" className="w-[95%] h-4/5 bg-transparent rounded-lg outline-none" placeholder="Title" />
         </div>
-        <div className="tbBody w-[30%] h-full flex items-center justify-center border-r bg-slate-500 border-black border-solid text-white font-semibold">
+        <div className="tbBody w-[30%] h-full flex items-center justify-center border-r bg-zinc-10 border-black border-solid text-black font-semibold">
           <input {...register(`start`, { required: true })} type="date" className="w-[95%] h-4/5 bg-transparent rounded-lg outline-none" placeholder="Date" />
         </div>
-        <div className="tbBody w-[30%] h-full flex items-center justify-center border-r bg-slate-500 border-black border-solid text-white font-semibold">
+        <div className="tbBody w-[30%] h-full flex items-center justify-center border-r bg-zinc-10 border-black border-solid text-black font-semibold">
           <input {...register(`end`, { required: true })} type="date" className="w-[95%] h-4/5 bg-transparent rounded-lg outline-none" placeholder="Date" />
         </div>
       </form>
-      <div className="tbBody w-2/4 h-full flex flex-wrap items-center justify-start bg-slate-500 px-2 border-black border-solid text-white font-semibold">
+      <div className="tbBody w-2/4 h-full flex flex-wrap items-center justify-start bg-zinc-100 px-2 border-black border-solid text-black font-semibold">
         <form className="w-full h-auto flex flex-wrap">
           {dataSale.map((e: any) => (
             <div key={e} className="w-[90%] flex items-center mr-4 my-2">

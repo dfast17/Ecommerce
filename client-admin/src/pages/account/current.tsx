@@ -73,7 +73,7 @@ const CurrentUser = () => {
 
                 </div>
               }
-              <Button onClick={() => { setIsEdit(!isEdit); onClose() }} color="danger" size="sm" className="m-1 text-white" radius="sm">
+              <Button onClick={() => { setIsEdit(false); onClose() }} color="danger" size="sm" className="m-1 text-white" radius="sm">
                 Cancel
               </Button>
             </div>

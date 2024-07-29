@@ -91,7 +91,7 @@ export default class AuthController {
         value: result[0].idUser,
       };
       await statement.updateDataByCondition("auth", [{ nameCol: "rfToken", value: refreshToken }, { nameCol: "status", value: "login" }], condition);
-      responseData(res, 200, { role: result[0].role, accessToken, refreshToken, expiredA, expiredR });
+      responseData(res, 200, { role: result[0].role, accessToken, refreshToken, expiredA, expiredR, router: result[0].position_name === "shipper" ? "/order" : "/" });
     }
     catch {
       (errors: any) => {

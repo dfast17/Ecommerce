@@ -9,7 +9,8 @@ export default class AuthStatement {
     }
     public getAuthAdmin = async (username: string) => {
         return await db.selectFrom('auth')
-            .select(["idUser", "username", "password_hash", "role"])
+            .select<any>(["idUser", "username", "password_hash", "role", "position.position_name"])
+            .leftJoin("position", "position.idStaff", "auth.idUser")
             .where('username', '=', `${username}`)
             .where('role', '!=', 2)
             .where('action', '!=', 'block')

@@ -83,7 +83,7 @@ interface IAdminLayoutProps {
 }
 
 const AdminLayout = ({ children }: IAdminLayoutProps) => {
-  const { role, position, isDark, setIsDark, setIsLogin } = useContext(StateContext);
+  const { role, position, isDark, setIsDark, setIsLogin, setPosition } = useContext(StateContext);
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isHeader, setIsHeader] = useState(false)
   const [navResult, setNavResult] = useState<NavContent[] | null>(null)
@@ -100,6 +100,7 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
 
   const handleLogout = () => {
     setIsLogin(false);
+    setPosition(null);
     RemoveToken("aTk");
     RemoveToken("rTk");
     RemoveToken("a-Log");

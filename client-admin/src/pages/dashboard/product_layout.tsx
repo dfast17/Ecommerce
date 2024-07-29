@@ -32,21 +32,15 @@ const Product_layout = ({ data, type_layout, background }: { data: Product_view_
                         <div className="w-2/4 h-full">
                             <img src={p.imgProduct} className="w-full h-[95%] object-contain" />
                         </div>
-                        <div className="w-2/4 h-full flex flex-wrap content-start justify-around text-[20px] font-bold font-mono truncate text-center">
-                            <span className="w-full text-start text-[20px] font-bold font-mono">{p[type_layout]}</span>
+                        <div className="w-2/4 h-full flex flex-wrap content-center justify-around text-[20px] font-bold font-mono truncate text-center">
+                            <div className="w-4/5 h-2/5 bg-zinc-950 bg-opacity-80 rounded-md flex items-center justify-center" >
+                                <span className="text-start text-[20px] font-bold font-mono">{type_layout.toLocaleUpperCase()}:{p[type_layout]}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
         </div>
-        {/*  {statistical.product && statistical.product[0]?.view.map((p: any) => <div className="w-full h-auto min-h-[30px] flex justify-around items-center" key={`View-${p.nameProduct}`}>
-      <div className="w-1/4 text-[20px] font-bold font-mono truncate">
-        <span className="truncate">{p.nameProduct}</span>
-      </div>
-      <div className="w-1/4"><img src={p.imgProduct} className="w-full h-[50px] object-contain" /></div>
-      <span className="text-[20px] font-bold font-mono">{p.price}$</span>
-      <span className="text-[20px] font-bold font-mono">{p.view}</span>
-    </div>)} */}
     </div>
 }
 
