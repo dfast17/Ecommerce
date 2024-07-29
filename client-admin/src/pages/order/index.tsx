@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { StateContext } from "../../context/state"
-import { Button, Modal, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
+import { Button, Modal, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Textarea, useDisclosure } from "@nextui-org/react"
 import { OrderType, ShipperType, StatusValueType } from "../../types/types"
 //Import Icon
 import { FcViewDetails } from "react-icons/fc";
@@ -32,7 +32,7 @@ const Order = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [nextStatus, setNextStatus] = useState<string | null>(null)
   const [idShip, setIdShip] = useState<string>("")
-  const [listShipper, setListShipper] = useState<boolean>(false)
+  const [note, setNote] = useState<string>("")
   const [btnSubmit, setBtnSubmit] = useState<boolean>(false)
 
   const orderStatus: OrderStatusType[] = [
@@ -85,18 +85,25 @@ const Order = () => {
     const dataFilter = position === 'shipper' ? ShipperNextValue : statusNextValue
     const dataChange = dataFilter.filter((f: StatusValueType) => f.next === nextValue).map((s: StatusValueType) => s.current === currentStatus)[0]
     setNextStatus(nextValue)
-    nextValue === "shipping" ? setListShipper(true) : setListShipper(false)
     setBtnSubmit(dataChange)
   }
   const handleUpdateStatus = async () => {
+    let isFetch = false
+    nextStatus === "shipping" && !idShip && (alert("Select shipper"), isFetch = false)
+    nextStatus === "failed" && !note && (alert("Enter note"), isFetch = false)
     const token = await GetToken()
-    const dataUpdate = nextStatus !== "shipping" ? {
+    let dataUpdate: { orderStatus: string, [x: string]: string } = {
       orderStatus: nextStatus!
-    } : {
-      orderStatus: nextStatus!,
-      idShipper: idShip
     }
-    token && nextStatus && id && updateStatusOrder(token, { id: id, data_update: [dataUpdate] })
+    if (nextStatus === "shipping") {
+      dataUpdate.idShipper = idShip;
+      isFetch = true
+    }
+    if (nextStatus === "failed") {
+      dataUpdate.note = note
+      isFetch = true
+    }
+    isFetch && token && nextStatus && id && updateStatusOrder(token, { id: id, data_update: [dataUpdate] })
       .then(res => {
         alert(res.message)
         if (res.status === 200) {
@@ -104,8 +111,7 @@ const Order = () => {
           setCurrentStatus(nextStatus)
           setNextStatus(null)
           setIdShip("")
-          setListShipper(false)
-          setOrder(order.map((ord: OrderType) => ord.idOrder === id ? { ...ord, orderStatus: nextStatus } : ord))
+          setOrder(order.map((ord: OrderType) => ord.idOrder === id ? { ...ord, ...dataUpdate } : ord))
         }
       })
       .catch(err => console.log(err))
@@ -152,7 +158,7 @@ const Order = () => {
           <RxDragHandleDots2 className="w-5 h-5 mr-2" />
           Order #{id}
         </div>
-        <div onClick={() => { setDetail(null); setListShipper(false); setBtnSubmit(false) }} className="w-[30px] h-full flex items-center justify-center text-white cursor-pointer">
+        <div onClick={() => { setDetail(null); setBtnSubmit(false) }} className="w-[30px] h-full flex items-center justify-center text-white cursor-pointer">
           <IoMdClose className="w-5 h-5" />
         </div>
       </div>
@@ -205,7 +211,7 @@ const Order = () => {
               </span>
             </div>
           </div>
-          {isEdit && <div className="w-full h-[50px] flex items-center justify-between px-2">
+          {isEdit && <div className="w-full h-[auto min-h-[50px] flex flex-wrap items-center justify-between px-2">
             {currentStatus && <Select
               onChange={(e: any) => { handleChangeStatus(e) }}
               classNames={{ mainWrapper: 'h-[30px]', trigger: '!h-[30px] !min-h-[30px]', popoverContent: isDark ? 'text-white' : 'text-black' }}
@@ -216,7 +222,7 @@ const Order = () => {
                 <SelectItem className={`${isDark ? "text-white" : "text-black"}}`} key={o.value}>{o.label}</SelectItem>
               )}
             </Select>}
-            {listShipper && <Select
+            {nextStatus === "shipping" && <Select
               onChange={(e: any) => { setIdShip(e.target.value) }}
               className="w-2/5 mx-1"
               size="sm" radius="sm"
@@ -226,10 +232,17 @@ const Order = () => {
             <div className="w-[35%] h-[50px] flex items-center justify-end">
               {btnSubmit && <Button onClick={handleUpdateStatus} size="sm" color="success" className="w-3/5 h-[30px] text-[15px] text-white mx-1">Update</Button>}
               {!btnSubmit && <Button size="sm" color="success" className="w-3/5 h-[30px] bg-transparent mx-1"></Button>}
-              <Button isIconOnly size="sm" color="danger" className="" onClick={() => { setIsEdit(false); setBtnSubmit(false); setListShipper(false) }}>
+              <Button isIconOnly size="sm" color="danger" className="" onClick={() => { setIsEdit(false); setBtnSubmit(false); }}>
                 <IoMdClose className="w-3/5 h-3/5" />
               </Button>
             </div>
+            {nextStatus === "failed" && <Textarea
+              label="Note"
+              radius="sm"
+              onChange={(e: any) => { setNote(e.target.value) }}
+              placeholder="Enter your note"
+              className="w-full h-[60px] mb-4"
+            />}
           </div>}
         </div>
       </div>
