@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     document.title = "Tech Store"
   }, [])
-  return <div className='w-full h-auto flex flex-col items-center pt-2'>
+  return <div className='w-full h-auto flex flex-col items-center pt-2 px-1'>
     <div className='w-full h-auto flex flex-wrap justify-center px-1'>
       <div className='w-full h-auto'>
         <Suspense fallback={<div data-testid="slideshow">LOADING...</div>}>

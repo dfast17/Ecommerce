@@ -30,13 +30,13 @@ const SearchProduct = () => {
         FilterData()
     }, [filter])
     SortedData(currentData, filter.price, setCurrentData, setActivePage)
-    return data && data.data.length !== 0 ? <div className='product w-full h-auto flex flex-col items-center justify-center'>
+    return data && data.data.length !== 0 ? <div className='product w-full h-auto flex flex-col items-center justify-center overflow-hidden'>
         <div className='filter w-[90%] flex flex-wrap my-4 text-zinc-900'>
             {data && <FilterBrand listBrand={listBrand} setFilter={setFilter} filterData={filter} />}
             <FilterPrice setFilter={setFilter} filterData={filter} />
             <Button size='sm' radius='sm' color='danger' className='mx-1' onClick={() => { setFilter({ brand: [], price: "", detail: [] }) }}>CLEAR</Button>
         </div>
-        <div className='product-layout w-[90%] h-auto min-h-[760px] flex flex-wrap justify-around content-around'>
+        <div className='product-layout w-[90%] h-auto min-h-[760px]  grid grid-cols-1 ssm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
             {currentData && currentData.slice((12 * activePage) - 12, 12 * activePage).map((d: ProductType) =>
                 <Product_Layout_01 data={d} key={`search-${d.idProduct}`} />)}
         </div>

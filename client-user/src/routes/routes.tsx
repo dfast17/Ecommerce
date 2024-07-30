@@ -10,6 +10,7 @@ import User from "../pages/user";
 import Checkout from "../pages/checkout";
 import Contact from "../pages/contact";
 import ProductSale from "../pages/sale/sale";
+import Faq from "../pages/more/faq";
 const publicRoutes = [
     { path: "/", component: Home },
     { path: "/auth", component: Auth },
@@ -20,6 +21,7 @@ const publicRoutes = [
     { path: "/product/detail/:nameType/:idProduct/:nameProduct", component: DetailProduct },
     { path: "/post", component: Post },
     { path: "/contact", component: Contact },
+    { path: "/faq", component: Faq }
 
 ];
 const privateRoutes: any = [

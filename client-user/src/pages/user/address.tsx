@@ -27,19 +27,19 @@ const Address = () => {
     <div className="address w-full h-full text-zinc-900 mt-10">
       {user &&
         user[0]?.address.map((a: any) => (
-          <div className="address-detail w-[98%] my-2 !text-zic-100 flex" key={a.idAddress}>
+          <div className="address-detail w-[98%] my-2 !text-zic-100 flex flex-wrap" key={a.idAddress}>
             <Code
               radius="sm"
-              className={`flex items-center text-wrap ${a.type === "default" ? "bg-blue-500 text-white" : "bg-white shadow-lg text-black"
-                } w-4/5 min-h-[45px] text-[18px] cursor-pointer`}
+              className={`flex items-center ${a.type === "default" ? "bg-blue-500 text-white" : "bg-white shadow-lg text-black"
+                } w-[99%] md:w-4/5 min-h-[45px] text-[18px] cursor-pointer my-1`}
             >
-              {a.detail}
+              <span className="truncate">{a.detail}</span>
             </Code>
             <Button
               size="sm"
               radius="sm"
               className={`w-[120px] h-[45px] text-[18px] flex items-center  text-center ${a.type === "extra" ? "bg-white shadow-lg text-black" : "bg-blue-500 text-white"
-                }  mx-1 cursor-pointer`}
+                }  m-1 cursor-pointer`}
               onClick={() => {
                 handleChangeAddress("update", {
                   listId: [a.idAddress],
@@ -53,7 +53,7 @@ const Address = () => {
               isIconOnly
               size="sm"
               radius="sm"
-              className="h-[45px] text-[18px] bg-blue-500"
+              className="h-[45px] text-[18px] bg-blue-500 m-1"
             >
               <MdEditLocationAlt className="text-white" />
             </Button>
@@ -62,7 +62,7 @@ const Address = () => {
               size="sm"
               radius="sm"
               color="danger"
-              className="h-[45px] text-[18px] mx-1"
+              className="h-[45px] text-[18px] m-1"
               onClick={() => handleChangeAddress("remove", { listId: [a.idAddress] })}
             >
               <FaRegTrashAlt />

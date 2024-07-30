@@ -15,7 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
     <section className="w-full h-auto min-h-screen flex flex-wrap content-start justify-center">
       {isLoading && <LoadingComponent />}
       <Header />
-      <main className="w-full h-auto min-h-[99vh] overflow-y-auto">
+      <main className="w-full h-auto min-h-[99vh] overflow-y-auto overflow-x-hidden">
         <div className="w-full h-auto">{children}</div>
       </main>
       <Footer />

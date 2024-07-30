@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom"
 import Logo from "../assets/Logomark.png"
 import FacebookIcon_2 from "../components/icon/facebookIcon_2"
 import GoogleIcon_2 from "../components/icon/googleIcon_2"
 const Footer = (): JSX.Element => {
+  const navigate = useNavigate()
   return <footer className="w-full font-sans tracking-wide bg-[#242424] px-8 py-12 mt-10">
     <div className="flex flex-wrap items-center justify-evenly">
       <div className="w-full md:w-1/5">
@@ -32,13 +34,13 @@ const Footer = (): JSX.Element => {
           </h4>
           <ul className="space-y-5 mt-6 max-sm:hidden">
             <li>
-              <p className='hover:text-white text-gray-300 text-lg'>FAQ</p>
+              <p onClick={() => navigate('/faq')} className='hover:text-white text-gray-300 text-lg cursor-pointer'>FAQ</p>
             </li>
             <li>
-              <p className='hover:text-white text-gray-300 text-lg'>Blog</p>
+              <p onClick={() => navigate('/post')} className='hover:text-white text-gray-300 text-lg cursor-pointer'>Blog</p>
             </li>
             <li>
-              <p className='hover:text-white text-gray-300 text-lg'>Support</p>
+              <p className='hover:text-white text-gray-300 text-lg cursor-pointer'>Support</p>
             </li>
 
           </ul>
@@ -56,13 +58,13 @@ const Footer = (): JSX.Element => {
 
           <ul className="space-y-5 mt-6 max-sm:hidden">
             <li>
-              <p className='hover:text-white text-gray-300 text-lg'>About us</p>
+              <p className='hover:text-white text-gray-300 text-lg cursor-pointer'>About us</p>
             </li>
             <li>
-              <p className='hover:text-white text-gray-300 text-lg'>Careers</p>
+              <p className='hover:text-white text-gray-300 text-lg cursor-pointer'>Careers</p>
             </li>
             <li>
-              <p className='hover:text-white text-gray-300 text-lg'>Contact Us</p>
+              <p onClick={() => navigate('/contact')} className='hover:text-white text-gray-300 text-lg cursor-pointer'>Contact Us</p>
             </li>
           </ul>
         </div>
@@ -79,13 +81,13 @@ const Footer = (): JSX.Element => {
 
           <ul className="space-y-5 mt-6 max-sm:hidden">
             <li>
-              <p className='hover:text-white text-gray-300 text-lg'>Home</p>
+              <p onClick={() => navigate('/')} className='hover:text-white text-gray-300 text-lg cursor-pointer'>Home</p>
             </li>
             <li>
-              <p className='hover:text-white text-gray-300 text-lg'>Product</p>
+              <p onClick={() => navigate('/product')} className='hover:text-white text-gray-300 text-lg cursor-pointer'>Product</p>
             </li>
             <li>
-              <p className='hover:text-white text-gray-300 text-lg'>Sitemap</p>
+              <p className='hover:text-white text-gray-300 text-lg cursor-pointer'>Sitemap</p>
             </li>
           </ul>
         </div>

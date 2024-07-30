@@ -12,8 +12,8 @@ const Product_Layout_01 = ({ data }: { data: ProductType }) => {
     const navigateDetail = () => {
         navigate(`/product/detail/${data.nameType}/${data.idProduct}/${data.nameProduct.split(" ").join("-")}`)
     }
-    return <Fade triggerOnce fraction={0.6} className="w-1/5 h-auto min-w-[120px] my-1 mx-4 overflow-hidden shadow-lg" delay={1}>
-        <Card className="w-full h-auto min-h-[150px] rounded-md border border-solid border-transparent hover:border-cyan-500 transition-all"
+    return <Fade triggerOnce fraction={0.6} className="h-auto my-1 mx-4 overflow-hidden shadow-lg" delay={1}>
+        <Card className="w-full h-full rounded-md border border-solid border-transparent hover:border-cyan-500 transition-all"
         >
             <CardBody className="relative w-full h-auto flex flex-col items-center justify-center cursor-pointer">
                 {data.discount !== 0 && <div className="absolute w-[50px] h-[25px] flex items-center justify-center text-white rounded-md bg-red-500 top-1 left-1">
