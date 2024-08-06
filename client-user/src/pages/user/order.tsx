@@ -29,7 +29,7 @@ const Order = () => {
                         <TableCell>{o.paymentStatus}</TableCell>
                         <TableCell>{o.orderStatus}</TableCell>
                         <TableCell>
-                            {o.orderStatus === "pending" || o.orderStatus === "prepare" && <Tooltip radius="sm" content="Cancel Order" classNames={{ content: "text-zinc-950" }}>
+                            {(o.orderStatus === "pending" || o.orderStatus === "prepare") && <Tooltip radius="sm" content="Cancel Order" classNames={{ content: "text-zinc-950" }}>
                                 <Button size="sm" isIconOnly color="danger">
                                     <MdCancelPresentation className="text-xl" />
                                 </Button>

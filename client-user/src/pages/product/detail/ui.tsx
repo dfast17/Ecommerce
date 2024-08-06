@@ -2,21 +2,29 @@ import { Code } from "@nextui-org/react"
 import { useFetchDataByKey } from "../../../hooks/useFetchData"
 import { useEffect, useState } from "react"
 import CommentProduct from "./comment"
+import { productGetDetail } from "../../../api/product"
 
 const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number }) => {
+  const [data, setData] = useState<any[] | null>(null)
   const [currentImage, setCurrentImage] = useState("")
   const [column, setColumn] = useState<any[] | null>(null);
   const [option, setOption] = useState<number>(1)
-  const { data } = useFetchDataByKey('product', 'productGetDetail', { type: nameType, idProduct: idProduct })
   const { data: col } = useFetchDataByKey('product', 'getColByType', nameType)
   useEffect(() => {
-    data && setCurrentImage(data.data[0].imgProduct[0].img)
-    data && (document.title = data.data[0].nameProduct)
+    productGetDetail({ type: nameType, idProduct: idProduct }).then((res) => {
+      if (res.status === 200) {
+        setData(res.data)
+        setCurrentImage(res.data[0].imgProduct[0].img)
+        document.title = res.data[0].nameProduct
+      }
+    })
+  }, [nameType, idProduct])
+  useEffect(() => {
     col && setColumn(col.data)
-  }, [data, col])
+  }, [col])
   return <section className="text-zinc-900">
     <div className="container mx-auto px-4">
-      {data && data.data.map((d: any) => <div className="lg:col-gap-12 xl:col-gap-16 mt-8 grid grid-cols-1 gap-12 lg:mt-12 lg:grid-cols-5 lg:gap-16" key={`detail-${d.idProduct}`}>
+      {data && data.map((d: any) => <div className="lg:col-gap-12 xl:col-gap-16 mt-8 grid grid-cols-1 gap-12 lg:mt-12 lg:grid-cols-5 lg:gap-16" key={`detail-${d.idProduct}`}>
         <div className="lg:col-span-3 lg:row-end-1 flex items-center justify-center">
           <div className="flex flex-col">
             <div className="w-full h-3/5">

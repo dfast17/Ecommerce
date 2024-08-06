@@ -15,8 +15,9 @@ import { CartContext } from "../../context/cartContext";
 import PaymentPaypal from "./paypal";
 import ModalAddress from "../../pages/user/modal/address";
 import { GetToken } from "../../utils/token";
-import { insertPayment, orderInsert } from "../../api/order";
+import { orderInsert } from "../../api/order";
 import { userStore } from "../../store/user";
+import ModalCheckOutSuccess from "./modalCheckOutSuccess";
 interface FormInfo {
   nameUser: string;
   phone: string;
@@ -54,6 +55,7 @@ const InfoCheckout = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [paymentDetail, setPaymentDetail] = useState<any[] | null>(null);
   const [isPayment, setIsPayment] = useState<boolean>(false);
+  const { isOpen: isOpenStatus, onOpen: onOpenStatus, onOpenChange: onOpenChangeStatus } = useDisclosure();
   useEffect(() => {
     user && user[0].address.length !== 0
       ? setCurrentAddress(
@@ -113,169 +115,175 @@ const InfoCheckout = () => {
     };
     token &&
       (orderInsert(token, dataOrder).then((res) => {
-        alert(res.message);
         if (res.status === 201) {
           //delete items
+          onOpenStatus()
+
         }
       }));
   };
   return (
-    <div className="info-checkout w-[95%] sm:w-4/5 md:w-2/5 lg:w-[30%] h-full flex flex-col items-center">
-      {user &&
-        user.map((u: UserType) => (
-          <form
-            key={`form-checkout-${u.idUser}`}
-            className="w-full flex flex-wrap justify-between items-center"
-          >
-            <Input
-              {...register("nameUser", { required: true })}
-              type="text"
-              variant="faded"
-              label="Name"
-              size="sm"
-              radius="sm"
-              className="my-2 text-zinc-950"
-              classNames={{ inputWrapper: arrClassNameInput }}
-              defaultValue={u.nameUser}
-            />
-            <Input
-              {...register("phone", { required: true })}
-              type="text"
-              variant="faded"
-              label="Phone"
-              size="sm"
-              radius="sm"
-              className="my-2 text-zinc-950"
-              classNames={{ inputWrapper: arrClassNameInput }}
-              defaultValue={u.phone}
-            />
-            <Input
-              {...register("address", { required: true })}
-              type="text"
-              variant="faded"
-              label="Address"
-              size="sm"
-              radius="sm"
-              classNames={{ inputWrapper: arrClassNameInput }}
-              className="w-[90%] truncate pr-2 my-2 text-zinc-950"
-              value={currentAddress}
-            />
-            <Button
-              isIconOnly
-              size="sm"
-              radius="sm"
-              color="primary"
-              className="flex items-center justify-center"
-              onPress={onOpen}
+    <>
+      <div className="info-checkout w-[95%] sm:w-4/5 md:w-2/5 lg:w-[30%] h-full flex flex-col items-center">
+        {user &&
+          user.map((u: UserType) => (
+            <form
+              key={`form-checkout-${u.idUser}`}
+              className="w-full flex flex-wrap justify-between items-center"
             >
-              {user && user[0].address.length !== 0 ? <FaEdit /> : <IoMdAdd />}
-            </Button>
-          </form>
-        ))}
-      <div className="method-checkout w-full my-1 rounded-md text-zinc-950 p-1">
+              <Input
+                {...register("nameUser", { required: true })}
+                type="text"
+                variant="faded"
+                label="Name"
+                size="sm"
+                radius="sm"
+                className="my-2 text-zinc-950"
+                classNames={{ inputWrapper: arrClassNameInput }}
+                defaultValue={u.nameUser}
+              />
+              <Input
+                {...register("phone", { required: true })}
+                type="text"
+                variant="faded"
+                label="Phone"
+                size="sm"
+                radius="sm"
+                className="my-2 text-zinc-950"
+                classNames={{ inputWrapper: arrClassNameInput }}
+                defaultValue={u.phone}
+              />
+              <Input
+                {...register("address", { required: true })}
+                type="text"
+                variant="faded"
+                label="Address"
+                size="sm"
+                radius="sm"
+                classNames={{ inputWrapper: arrClassNameInput }}
+                className="w-[90%] truncate pr-2 my-2 text-zinc-950"
+                value={currentAddress}
+              />
+              <Button
+                isIconOnly
+                size="sm"
+                radius="sm"
+                color="primary"
+                className="flex items-center justify-center"
+                onPress={onOpen}
+              >
+                {user && user[0].address.length !== 0 ? <FaEdit /> : <IoMdAdd />}
+              </Button>
+            </form>
+          ))}
+        <div className="method-checkout w-full my-1 rounded-md text-zinc-950 p-1">
 
-        <div className="w-[95%] flex justify-between my-1">
-          Count:
-          <span>
-            {data.length !== 0
-              ? data
-                .map((d: CartType) => d.countProduct)
-                .reduce((a: number, b: number) => a + b)
-              : 0}
-          </span>
+          <div className="w-[95%] flex justify-between my-1">
+            Count:
+            <span>
+              {data.length !== 0
+                ? data
+                  .map((d: CartType) => d.countProduct)
+                  .reduce((a: number, b: number) => a + b)
+                : 0}
+            </span>
+          </div>
+          <div className="w-[95%] flex justify-between my-1">
+            Total price:{" "}
+            <span>
+              ${data.length !== 0
+                ? data
+                  .map(
+                    (d: any) =>
+                      d.countProduct * d.detail[0].price -
+                      (d.detail[0].price *
+                        d.countProduct *
+                        d.detail[0].discount) /
+                      100,
+                  )
+                  .reduce((a: number, b: number) => a + b)
+                  .toFixed(2)
+                : 0}
+            </span>
+          </div>
+          {/* Shipping method */}
+          <h2>Shipping method</h2>
+          <div className="w-full flex justify-around mb-3">
+            {arrShippingMethod.map((s: Method) => (
+              <div
+                key={s.id}
+                onClick={() => {
+                  setCost(s.costs!);
+                }}
+                className={`shipping-box shadow-lg ${cost === s.costs ? "bg-blue-600 text-white" : "bg-transparent"} flex flex-col justify-center items-center w-[45%] h-auto min-h-[80px] rounded-md hover:bg-blue-600 hover:text-white border border-solid border-zinc-200 cursor-pointer transition-all`}
+              >
+                <span>{s.content}</span>
+                <span>Cost: {s.costs}$</span>
+                <span>Delivery time: {s.date} day</span>
+              </div>
+            ))}
+          </div>
+          <h2>Payment method</h2>
+          <div className="w-full flex justify-around mb-2">
+            {arrPaymentMethod.map((m: Method) => (
+              <div
+                key={m.id}
+                onClick={() => {
+                  setIsPayment(m.id === "payment-1" ? true : false);
+                  cost !== 0
+                    ? setPaymentMethod(m.content)
+                    : alert("Select shipping method!");
+                }}
+                className={`payment-box shadow-lg flex justify-center items-center w-[45%] ${paymentMethod === m.content ? "bg-blue-600 text-white" : "bg-transparent"}  hover:bg-blue-600 hover:text-white border border-solid border-zinc-100 rounded-md cursor-pointer transition-all`}
+              >
+                {m.content}
+              </div>
+            ))}
+          </div>
+          {/* Payment method */}
+          {paymentMethod === "Payment with Paypal" && (
+            <PaymentPaypal
+              dataItem={data}
+              cost={cost}
+              setIsPayment={setIsPayment}
+              setPaymentDetail={setPaymentDetail}
+            />
+          )}
         </div>
-        <div className="w-[95%] flex justify-between my-1">
-          Total price:{" "}
-          <span>
-            ${data.length !== 0
-              ? data
-                .map(
-                  (d: any) =>
-                    d.countProduct * d.detail[0].price -
-                    (d.detail[0].price *
-                      d.countProduct *
-                      d.detail[0].discount) /
-                    100,
-                )
-                .reduce((a: number, b: number) => a + b)
-                .toFixed(2)
-              : 0}
-          </span>
-        </div>
-        {/* Shipping method */}
-        <h2>Shipping method</h2>
-        <div className="w-full flex justify-around mb-3">
-          {arrShippingMethod.map((s: Method) => (
-            <div
-              key={s.id}
-              onClick={() => {
-                setCost(s.costs!);
-              }}
-              className={`shipping-box shadow-lg ${cost === s.costs ? "bg-blue-600 text-white" : "bg-transparent"} flex flex-col justify-center items-center w-[45%] h-auto min-h-[80px] rounded-md hover:bg-blue-600 hover:text-white border border-solid border-zinc-200 cursor-pointer transition-all`}
-            >
-              <span>{s.content}</span>
-              <span>Cost: {s.costs}$</span>
-              <span>Delivery time: {s.date} day</span>
-            </div>
-          ))}
-        </div>
-        <h2>Payment method</h2>
-        <div className="w-full flex justify-around mb-2">
-          {arrPaymentMethod.map((m: Method) => (
-            <div
-              key={m.id}
-              onClick={() => {
-                setIsPayment(m.id === "payment-1" ? true : false);
-                cost !== 0
-                  ? setPaymentMethod(m.content)
-                  : alert("Select shipping method!");
-              }}
-              className={`payment-box shadow-lg flex justify-center items-center w-[45%] ${paymentMethod === m.content ? "bg-blue-600 text-white" : "bg-transparent"}  hover:bg-blue-600 hover:text-white border border-solid border-zinc-100 rounded-md cursor-pointer transition-all`}
-            >
-              {m.content}
-            </div>
-          ))}
-        </div>
-        {/* Payment method */}
-        {paymentMethod === "Payment with Paypal" && (
-          <PaymentPaypal
-            dataItem={data}
-            cost={cost}
-            setIsPayment={setIsPayment}
-            setPaymentDetail={setPaymentDetail}
-          />
+        {isPayment && (
+          <Button
+            onClick={() => {
+              handleSubmit(onSubmit)();
+            }}
+            color="success"
+            size="sm"
+            radius="sm"
+            className="w-2/5 text-white font-semibold text-[20px]"
+          >
+            Order
+          </Button>
         )}
-      </div>
-      {isPayment && (
-        <Button
-          onClick={() => {
-            handleSubmit(onSubmit)();
-          }}
-          color="success"
-          size="sm"
-          radius="sm"
-          className="w-2/5 text-white font-semibold text-[20px]"
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          size="lg"
+          backdrop="opaque"
+          placement="center"
         >
-          Order
-        </Button>
-      )}
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        size="lg"
-        backdrop="opaque"
-        placement="center"
-      >
-        {user && user[0].address.length !== 0 ? (
-          <ModalEditAddress
-            currentAddress={currentAddress}
-            setCurrentAddress={setCurrentAddress}
-          />
-        ) : (
-          <ModalAddress />
-        )}
+          {user && user[0].address.length !== 0 ? (
+            <ModalEditAddress
+              currentAddress={currentAddress}
+              setCurrentAddress={setCurrentAddress}
+            />
+          ) : (
+            <ModalAddress />
+          )}
+        </Modal>
+      </div>
+      <Modal isOpen={isOpenStatus} onOpenChange={onOpenChangeStatus} isDismissable={false} isKeyboardDismissDisabled={true}>
+        <ModalCheckOutSuccess />
       </Modal>
-    </div>
+    </>
   );
 };
 

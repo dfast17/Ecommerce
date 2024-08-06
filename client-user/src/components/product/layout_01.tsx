@@ -12,7 +12,7 @@ const Product_Layout_01 = ({ data }: { data: ProductType }) => {
     const navigateDetail = () => {
         navigate(`/product/detail/${data.nameType}/${data.idProduct}/${data.nameProduct.split(" ").join("-")}`)
     }
-    return <Fade triggerOnce fraction={0.6} className="h-auto my-1 mx-4 overflow-hidden shadow-lg" delay={1}>
+    return <Fade triggerOnce fraction={0.6} className="h-auto max-h-[244px] my-1 mx-4 overflow-hidden shadow-lg" delay={1}>
         <Card className="w-full h-full rounded-md border border-solid border-transparent hover:border-cyan-500 transition-all"
         >
             <CardBody className="relative w-full h-auto flex flex-col items-center justify-center cursor-pointer">
