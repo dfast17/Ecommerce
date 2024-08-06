@@ -22,6 +22,8 @@ export default class StatisticalStatement {
                             eb.fn.sum("od.countProduct").as("sold")
                         ])
                         .innerJoin("products as p", "p.idProduct", "od.idProduct")
+                        .leftJoin("order as o", "o.idOrder", "od.idOrder")
+                        .where("o.orderStatus", "=", "success")
                         .groupBy("od.idProduct")
                         .orderBy("sold", "desc")
                         .limit(4)

@@ -62,7 +62,7 @@ export default class TableController {
     const column = data.column
     try {
       const result: any = await statement.columnChange(method, tbName, column);
-      if (result) {
+      if (!result) {
         return responseMessageData(res, 401, `Remove data is failed`);
       }
       responseMessageData(res, 200, `Remove data is success`);

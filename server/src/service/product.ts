@@ -26,7 +26,24 @@ export default class ProductStatement {
       ])
       .execute();
   };
-
+  public findDetailType = async (nameType: string) => {
+    return await db
+      .selectFrom("type")
+      .select((eb: any) => [
+        "type.idType",
+        "type.nameType",
+        eb.fn.count('p.idProduct').as('count'),
+        jsonArrayFrom(
+          eb
+            .selectFrom("typedetail as td")
+            .select(["td.id", "td.type", "td.name", "td.displayname", "td.displayorder", "td.datatypes"])
+            .whereRef("td.type", "=", "type.nameType")
+        ).as("detail"),
+      ])
+      .leftJoin("products as p", "p.idType", "type.idType")
+      .where("type.nameType", "=", nameType)
+      .execute();;
+  }
   public findAll = async () => {
     return await db
       .selectFrom("products as p")
@@ -39,7 +56,8 @@ export default class ProductStatement {
         "brand",
         "t.nameType",
         "p.status as action",
-
+        "view",
+        sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount`,
       ])
       .leftJoin("type as t", "p.idType", "t.idType")
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
@@ -87,6 +105,7 @@ export default class ProductStatement {
         "p.idType",
         "brand",
         "t.nameType",
+        "p.view",
         "p.status as action",
         jsonArrayFrom(
           eb.selectFrom("imageProduct as i").select(["type", "img"]).whereRef(`i.idProduct`, "=", "p.idProduct")
@@ -198,7 +217,8 @@ export default class ProductStatement {
         jsonArrayFrom(
           eb
             .selectFrom("saleDetail as sd")
-            .select(["sd.id", "sd.idSale", "sd.idProduct", "sd.discount"])
+            .select(["sd.id", "sd.idSale", "sd.idProduct", "sd.discount", "p.nameProduct", "p.price", "p.imgProduct"])
+            .leftJoin("products as p", "p.idProduct", "sd.idProduct")
             .whereRef("sd.idSale", "=", "sale.idSale")
         ).as("detail"),
       ])
