@@ -1,10 +1,19 @@
+import { Modal, useDisclosure } from "@nextui-org/react"
 import { productStore } from "../../store/product"
 import { CategoryProductType } from "../../types/types"
+import ModalCateDetail from "./modal/category"
+import { useState } from "react"
 
 const Category = () => {
     const { category } = productStore()
+    const [name, setName] = useState<string>("")
+    const { isOpen, onOpen, onOpenChange } = useDisclosure()
     return <div className="w-full h-auto flex flex-wrap justify-around items-center my-4">
-        {category && category.map((c: CategoryProductType) => <div className="w-[200px] h-[100px] relative hover:scale-110 transition-all" key={c.idType}>
+        {category && category.map((c: CategoryProductType) => <div
+            onClick={() => {
+                setName(c.nameType)
+                onOpen()
+            }} className="w-[200px] h-[100px] relative hover:scale-110 transition-all" key={c.idType}>
             <div className='h-full flex items-center justify-center'
                 style={{
                     background: 'white',
@@ -24,6 +33,9 @@ const Category = () => {
                 {c.nameType.toLocaleUpperCase()}
             </div>
         </div>)}
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl">
+            <ModalCateDetail name={name} />
+        </Modal>
     </div>
 }
 

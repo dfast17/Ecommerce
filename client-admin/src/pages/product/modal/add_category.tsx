@@ -1,6 +1,6 @@
 import { Button, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react";
 import { StateContext } from "../../../context/state";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { productStore } from "../../../store/product";
 import { createCategory } from "../../../api/product";
@@ -15,7 +15,6 @@ interface KeyDetailType {
     datatypes: "text" | "number" | "longtext",
     displayorder: number,
     displayname: string,
-
 }
 
 const AddCategory = ({ setModalName }: { setModalName: React.Dispatch<React.SetStateAction<string>> }) => {
@@ -23,10 +22,7 @@ const AddCategory = ({ setModalName }: { setModalName: React.Dispatch<React.SetS
     const { category, setCategory } = productStore()
     const { register, handleSubmit, watch, formState: { errors: err } } = useForm();
     const [inputs, setInputs] = useState([1, 2, 3]);
-    useEffect(() => {
-        category && console.log(category)
-    }, [category])
-    const handleClick = () => {
+    const handleAddCol = () => {
         setInputs([...inputs, inputs.length + 1]);
     };
     const delCol = (index: number) => {
@@ -72,18 +68,18 @@ const AddCategory = ({ setModalName }: { setModalName: React.Dispatch<React.SetS
                     className={`w-full h-screen overflow-y-auto ${isDark ? "text-zinc-50" : "text-zinc-950"}`}>
                     <div className="container mx-auto px-4">
                         <Button className="w-[150px] h-[30px] rounded-lg bg-green-500 mx-2 font-bold text-white hover:bg-green-400 transition-all"
-                            isIconOnly onClick={handleClick}>
+                            isIconOnly onClick={handleAddCol}>
                             <PiColumnsPlusLeft className="text-[25px]" /> Add Column
                         </Button>
                         <form className="w-full h-auto overflow-y-auto flex flex-wrap justify-center">
-                            <input type="text" {...register('tbName', { required: true })} className={`w-3/4 h-[40px] my-4 ${err.tbName ? 'border-solid border-red-500 border-[1px]' : 'border-white border-solid border-[1px]'} rounded-lg outline-none px-2`} placeholder="Name type..." />
+                            <input type="text" {...register('tbName', { required: true })} className={`w-3/4 h-[40px] my-4 bg-zinc-800 text-white ${err.tbName ? 'border-solid border-red-500 border-[1px]' : 'border-white border-solid border-[1px]'} rounded-lg outline-none px-2`} placeholder="Name type..." />
                             <div className="formProduct w-[98%] h-auto min-h-[50px] flex flex-wrap justify-center items-start px-5">
                                 {inputs.map((input) => {
                                     const watchOption = watch(`option${input}`, '');
                                     return (
                                         <div className="w-full h-auto lg:h-[40px] flex flex-wrap justify-around my-4" key={input}>
                                             <input
-                                                className={`w-[45%] lg:w-[15%] h-[40px] lg:h-full ${err[`name-${input}`] ? 'border-solid border-red-500 border-[1px]' : 'border-transparent'} my-2 rounded-lg outline-none px-2`}
+                                                className={`w-[45%] lg:w-[15%] h-[40px] lg:h-full bg-zinc-800 text-white ${err[`name-${input}`] ? 'border-solid border-red-500 border-[1px]' : 'border-transparent'} my-2 rounded-lg outline-none px-2`}
 
                                                 {...register(`name-${input}`, { required: true })}
                                                 placeholder="Name"
@@ -95,20 +91,20 @@ const AddCategory = ({ setModalName }: { setModalName: React.Dispatch<React.SetS
                                                 <option value="date">Date</option>
                                             </select>
                                             <input
-                                                className={`w-[45%] lg:w-[15%] h-[40px] ${err[`input-demo${input}`] ? 'border-solid border-red-500 border-[1px]' : 'border-transparent'} lg:h-full my-2 rounded-lg outline-none px-2`}
+                                                className={`w-[45%] lg:w-[15%] h-[40px] bg-zinc-800 text-white ${err[`input-demo${input}`] ? 'border-solid border-red-500 border-[1px]' : 'border-transparent'} lg:h-full my-2 rounded-lg outline-none px-2`}
 
                                                 {...register(`limit-${input}`, { required: watchOption === 'longtext' || watchOption === 'date' ? false : true })}
                                                 placeholder="Character limit..."
                                                 disabled={watchOption === 'longtext' || watchOption === 'date'}
                                             />
                                             <input
-                                                className={`w-[45%] lg:w-[15%] h-[40px] ${err[`displayname${input}`] ? 'border-solid border-red-500 border-[1px]' : 'border-transparent'} lg:h-full my-2 rounded-lg outline-none px-2`}
+                                                className={`w-[45%] lg:w-[15%] h-[40px] bg-zinc-800 text-white ${err[`displayname${input}`] ? 'border-solid border-red-500 border-[1px]' : 'border-transparent'} lg:h-full my-2 rounded-lg outline-none px-2`}
 
                                                 {...register(`displayname-${input}`, { required: true })}
                                                 placeholder="Display name"
                                             />
                                             <input
-                                                className={`w-[45%] lg:w-[15%] h-[40px] lg:h-full ${err[`order-${input}`] ? 'border-solid border-red-500 border-[1px]' : 'border-transparent'} my-2 rounded-lg outline-none px-2`}
+                                                className={`w-[45%] lg:w-[15%] h-[40px] lg:h-full bg-zinc-800 text-white ${err[`order-${input}`] ? 'border-solid border-red-500 border-[1px]' : 'border-transparent'} my-2 rounded-lg outline-none px-2`}
 
                                                 {...register(`order-${input}`, { required: true })}
                                                 placeholder="Display order"

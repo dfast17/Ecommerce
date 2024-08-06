@@ -25,6 +25,10 @@ export const getAllCategoryProduct = async () => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/types`)
         .then(res => res.json())
 }
+export const getCategorydetail = async (name: string) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/detail/type/${name}`)
+        .then(res => res.json())
+}
 export const createProduct = async (data: any, token: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product`, {
         method: 'POST',
@@ -86,5 +90,38 @@ export const getSaleEvent = async () => {
 }
 export const getSaleDetail = async (id: number) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/sale/detail/${id}`)
+        .then(res => res.json())
+}
+
+export const columnChange = async (data: { method: string, table: string, colAdd?: { name: string, datatypes: string, isNull: boolean, limit: number }[], colDel?: string[] }) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/table`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+}
+export const columnDelete = async (token: string, data: { id: string, table: string, col: string }) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/type/col`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+}
+export const removeCategory = async (token: string, type: string) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/type/`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ type: type })
+    })
         .then(res => res.json())
 }

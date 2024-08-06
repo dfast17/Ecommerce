@@ -21,7 +21,7 @@ export interface ProductType {
     brand?: string,
     nameType?: string,
     discount?: number,
-    quantity?: number | string,
+    view?: number,
     action?: "show" | "hide"
 }
 export interface UserType {

@@ -86,7 +86,7 @@ const Statistical = () => {
         {statistical.order && statistical.order.map((item: any) =>
           <div className="w-full h-[50px] flex items-center justify-center text-[20px] font-bold font-mono" key={`Order-${item.idOrder}`}>
             <div className="w-2/5">#{item.idOrder}</div>
-            <div className="w-[15%]">{item.created_at}</div>
+            <div className="w-[15%]">{formatDate(item.created_at)}</div>
             {role === 0 && <div className="w-[15%]">{item.method}</div>}
             <div className="w-[15%]">{item.paymentStatus}</div>
             <div className="w-[15%]">{item.orderStatus}</div>

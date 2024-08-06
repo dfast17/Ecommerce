@@ -60,7 +60,7 @@ const TableProduct = () => {
                 <TableColumn>TYPE</TableColumn>
                 <TableColumn>BRAND</TableColumn>
                 <TableColumn>DISCOUNT</TableColumn>
-                <TableColumn>QUANTITY</TableColumn>
+                <TableColumn>View</TableColumn>
                 <TableColumn>ACTION</TableColumn>
             </TableHeader>
             <TableBody className="!z-0">
@@ -74,7 +74,7 @@ const TableProduct = () => {
                             <TableCell>{p.nameType}</TableCell>
                             <TableCell>{p.brand}</TableCell>
                             <TableCell>{p.discount}</TableCell>
-                            <TableCell>{p.quantity}</TableCell>
+                            <TableCell>{p.view}</TableCell>
                             <TableCell>
                                 <div className="relative flex items-center justify-around gap-2">
                                     <Tooltip className={`${isDark ? "text-zinc-50" : "text-zinc-950"}`} content="Details">
