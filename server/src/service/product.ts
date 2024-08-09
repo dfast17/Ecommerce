@@ -79,6 +79,7 @@ export default class ProductStatement {
         "view",
         "brand",
         "t.nameType",
+        sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount`,
         jsonArrayFrom(
           eb.selectFrom(table).select(colDetail).whereRef(`${table}.idProduct`, "=", "p.idProduct").limit(1)
         ).as("detail"),
@@ -139,6 +140,7 @@ export default class ProductStatement {
         "p.idType",
         "brand",
         "t.nameType",
+        sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount`,
       ])
       .leftJoin("type as t", "p.idType", "t.idType")
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")

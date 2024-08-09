@@ -11,4 +11,5 @@ router.get("/comment/:id/:page?", postController.getCommentPost)
 router.post("/comment", verifyToken, postController.insertCommentPost)
 router.post("/", verifyToken, postController.insertPost)
 router.patch("/", postController.updatePost)
+router.delete("/", postController.removePost)
 export default router

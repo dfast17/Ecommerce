@@ -6,8 +6,10 @@ import { responseData, responseMessage, responseMessageData } from "utils/respon
 import { convertData, handleFindData, logData } from "utils/utils";
 import { db } from "models/connect";
 import LogsStatement from "service/logs";
+import AuthStatement from "service/auth";
 
 const userStatement = new UserStatement();
+const authStatement = new AuthStatement();
 const statement = new Statements();
 const logs = new LogsStatement()
 export default class UserController {
@@ -62,6 +64,12 @@ export default class UserController {
       value: idUser
     }
     try {
+      if (Object.keys(data.detail[0]).includes('email')) {
+        const checkMail = await authStatement.getMail(data.detail[0].email)
+        if (checkMail.length > 0) {
+          return responseMessage(res, 401, 'Email already exists')
+        }
+      }
       const result = await statement.updateDataByCondition(table, detail, condition)
       if (!result) {
         return responseMessage(res, 401, 'Update is failed')
@@ -85,8 +93,8 @@ export default class UserController {
     and this is all key from body data:
     {
       type:"add"|"update"|"remove"
-      dataOperation("add" | "update"):{detail?:'address detail',type?:'extra' | 'default'} 
-      data.listId("update"|"remove"):[1,2,3,4] |[1]
+      dataOperation("add" | "update"):{detail?:'address detail',typeAddress?:'extra' | 'default'} 
+      data.id("update"|"remove"):1
     }
     */
   public userAddress = async (request: Request, res: Response) => {
@@ -99,11 +107,11 @@ export default class UserController {
       return responseData(res, 201, { idAddress: Number(result.insertId) })
     }
     if (data.type === "update" || data.type === "remove") {
-      const formatData = convertData([{ typeAddress: data.dataOperation.typeAddress }])
+      const formatData = convertData([{ ...data.dataOperation }])
       const condition: ConditionType = {
         conditionName: "idAddress",
-        conditionMethod: "in",
-        value: data.dataOperation.listId
+        conditionMethod: "=",
+        value: data.id
       }
       if (data.type === "update" && data.dataOperation.typeAddress === "default") {
         await

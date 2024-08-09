@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer'
 import { OAuth2Client } from 'google-auth-library'
 
 
-export const handleSendMail = (res:any, data:any) => {
+export const handleSendMail = (res: any, data: any) => {
     const toMail = data.toMail;
     const subject = data.subject;
     const content = data.content
@@ -43,10 +43,10 @@ export const handleSendMail = (res:any, data:any) => {
                 html: `<h3>${content}</h3>` // Nội dung email
             }
             await transport.sendMail(mailOptions)
-            res.status(200).json({status:200,message: 'Email sent successfully.' })
+            res.status(200).json({ status: 200, message: 'Email sent successfully.' })
         } catch (error: any) {
             res.status(500).json({ err: error.message });
-          }
+        }
     }
     sendMail()
 }

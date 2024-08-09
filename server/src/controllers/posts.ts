@@ -38,7 +38,7 @@ export default class PostsController {
       if (!result) {
         return responseMessageData(res, 401, `Post created is failed`);
       }
-      responseMessageData(res, 201, `Post created is success`, { id: Number(result.insertId) });
+      responseMessageData(res, 201, `Post created is success`, { id: Number(result.insertId), poster: idUser });
     } catch {
       (errors: any) => {
         responseMessageData(res, 500, "Server errors", errors);
@@ -74,7 +74,7 @@ export default class PostsController {
     const data = req.body;
     const changeData = convertData(data.detail);
     const condition: ConditionType = {
-      conditionName: "idPosts",
+      conditionName: "idPost",
       conditionMethod: "=",
       value: data.id,
     };
@@ -87,7 +87,7 @@ export default class PostsController {
     const idUser = req.idUser
     const data = req.body;
     const condition: ConditionType = {
-      conditionName: "idPosts",
+      conditionName: "idPost",
       conditionMethod: "=",
       value: data.id,
     };
