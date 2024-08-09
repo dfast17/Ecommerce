@@ -45,6 +45,7 @@ export interface UserAddressAddType {
         detail?: string,
         typeAddress?: string
     }
+    id?: number
 }
 export interface PostType {
     idPost: number,

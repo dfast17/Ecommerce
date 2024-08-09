@@ -34,20 +34,11 @@ const Product_Layout_01 = ({ data }: { data: ProductType }) => {
                     >
                         <span className="truncate">{data?.nameProduct}</span>
                     </div>
-                    {/* <div className="product-type w-[90%] flex flex-wrap justify-center lg:justify-between items-center my-1">
-                        <Button size="sm" className="w-[90%] sm:w-4/5 lg:w-[49%] xl:w-[45%] bg-[#2963F9] text-[20px] my-1 lg:my-0 text-white truncate">{data?.brand.toUpperCase()}</Button>
-                        <Button size="sm" className="w-[90%] sm:w-4/5 lg:w-[49%] xl:w-[45%] bg-[#2963F9] text-[20px] my-1 lg:my-0 text-white truncate">{data?.nameType.toUpperCase()}</Button>
-                    </div> */}
-                    <div className="w-[90%] h-[25px] flex items-center justify-start text-white font-bold text-[18px] truncate">
+                    <div className="w-[90%] h-[25px] flex items-center justify-start text-zinc-950 font-bold text-[18px] truncate">
                         $ {data.discount !== 0
                             ? <><span className="text-red-600 font-semibold line-through">{data.price}</span> {percentDiscount(data.discount!, Number(data.price))}</>
                             : data.price}
                     </div>
-                    {/* <div className="product-btn w-[90%] flex flex-wrap justify-around">
-                        <Button size="sm" className="w-full xl:w-3/4 font-semibold rounded-md bg-[#0a2461] text-zinc-50" onClick={() => addItemCart(data)}>
-                            <AiOutlineShoppingCart className="text-[15px]"/>Add to cart
-                        </Button>
-                    </div> */}
 
                 </div>
             </CardBody>

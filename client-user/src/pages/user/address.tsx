@@ -5,25 +5,33 @@ import { userAddress } from "../../api/user";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { MdEditLocationAlt } from "react-icons/md";
 import ModalAddress from "./modal/address";
-
+import { useState } from "react";
+import ModalEditAddress from "./modal/address.edit";
+import { toast } from "react-toastify"
 const Address = () => {
-  const { user, remove_address, updated_type_address } = userStore();
+  const { user, remove_address, updated_address } = userStore();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const handleChangeAddress = async (type: "update" | "remove", data: { listId?: number[]; typeAddress?: string }) => {
+  const [modalName, setModalName] = useState<string | null>(null)
+  const [dataEdit, setDataEdit] = useState<string>("")
+  const [selectedId, setSelectedId] = useState<number>(0)
+
+  const handleChangeAddress = async (type: "update" | "remove", data: { typeAddress?: string }, id: number) => {
     const token = await GetToken();
     const dataChange = {
       type: type,
       dataOperation: data,
+      id: id
     };
     token &&
       userAddress(token, dataChange).then((res) => {
         if (res.status === 200) {
-          type === "remove" ? remove_address(data.listId!) : updated_type_address(data);
+          type === "update" ? toast.success(res.message) : toast.success("Remove address is success");
+          type === "remove" ? remove_address(id) : updated_address({ ...data, id: id });
         }
       });
   };
   return <div className="w-full">
-    <Button onPress={onOpen} className="w-[220px] text-[18px] bg-[#0E1422] text-[#FFFFFF]" radius="sm">Add Address</Button>
+    <Button onClick={() => { setModalName("add"); onOpen() }} className="w-[220px] text-[18px] bg-[#0E1422] text-[#FFFFFF]" radius="sm">Add Address</Button>
     <div className="address w-full h-full text-zinc-900 mt-10">
       {user &&
         user[0]?.address.map((a: any) => (
@@ -42,9 +50,8 @@ const Address = () => {
                 }  m-1 cursor-pointer`}
               onClick={() => {
                 handleChangeAddress("update", {
-                  listId: [a.idAddress],
                   typeAddress: a.type === "default" ? "extra" : "default",
-                });
+                }, a.idAddress);
               }}
             >
               {a.type}
@@ -54,6 +61,7 @@ const Address = () => {
               size="sm"
               radius="sm"
               className="h-[45px] text-[18px] bg-blue-500 m-1"
+              onClick={() => { setSelectedId(a.idAddress), setDataEdit(a.detail); setModalName("edit"); onOpen() }}
             >
               <MdEditLocationAlt className="text-white" />
             </Button>
@@ -63,7 +71,7 @@ const Address = () => {
               radius="sm"
               color="danger"
               className="h-[45px] text-[18px] m-1"
-              onClick={() => handleChangeAddress("remove", { listId: [a.idAddress] })}
+              onClick={() => handleChangeAddress("remove", {}, a.idAddress)}
             >
               <FaRegTrashAlt />
             </Button>
@@ -77,7 +85,8 @@ const Address = () => {
       backdrop="opaque"
       placement="center"
     >
-      <ModalAddress />
+      {modalName && modalName === "add" && <ModalAddress />}
+      {modalName && modalName === "edit" && <ModalEditAddress address={dataEdit} idAddress={selectedId} />}
     </Modal>
   </div>
 };

@@ -11,7 +11,6 @@ export const getUser = async (token: string) => {
         .then(res => res.json())
 }
 
-/* Update user info | user address | cart update doesn't mean cart insert or cart remove */
 export const updateUser = async (token: string, data: UserUpdateType) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user`, {
         method: "PATCH",

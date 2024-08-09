@@ -2,6 +2,7 @@ import { authUpdatePassword } from '../../api/auth'
 import { useForm } from 'react-hook-form'
 import { GetToken } from '../../utils/token'
 import { Button, Input } from '@nextui-org/react'
+import { toast } from "react-toastify"
 interface FormValue {
   current: string,
   new: string,
@@ -21,7 +22,7 @@ const Password = () => {
     const token = await GetToken()
     token && authUpdatePassword(token, dataUpdate)
       .then(res => {
-        alert(res.message)
+        res.status === 200 ? toast.success(res.message) : toast.error(res.message)
       })
   }
   return <div className='password w-full h-[500px] flex flex-col justify-center items-center my-auto'>

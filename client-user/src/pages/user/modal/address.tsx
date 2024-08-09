@@ -1,6 +1,7 @@
 import { Button, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react";
+import { toast } from "react-toastify"
 import { useEffect, useState } from "react";
-import {  UserAddressAddType } from "../../../types/type";
+import { UserAddressAddType } from "../../../types/type";
 import { getApiProvince, getProvincesDetail, userAddress } from "../../../api/user";
 import { GetToken } from "../../../utils/token";
 import { userStore } from "../../../store/user";
@@ -30,10 +31,13 @@ const ModalAddress = () => {
   useEffect(() => {
     idDistrict !== null && getProvincesDetail('ward', idDistrict).then(res => setWard(res.results))
   }, [idDistrict])
-  const submitData = async () => {
+  const submitData = async (onClose: () => void) => {
     const keyArr = Object.keys(resultAddress)
     const isInvalid = keyArr.filter(key => resultAddress[key] === "");
-    isInvalid.length !== 0 && alert(`Please select ${isInvalid.toString()}`)
+    if (isInvalid.length !== 0) {
+      toast.error(`Please enter ${isInvalid.toString()}`)
+      return
+    }
     const token = await GetToken()
     const dataAddNew: UserAddressAddType = {
       type: "add",
@@ -45,13 +49,15 @@ const ModalAddress = () => {
     token && userAddress(token, dataAddNew)
       .then(res => {
         if (res.status === 201) {
-          alert("Add new address is success")
+
+          toast.success("Add new address is success")
           user &&
             add_address({
               idAddress: res.data.idAddress,
               type: user && (user[0].address.length === 0 ? 'default' : 'extra'),
               detail: `${resultAddress.details}, ${resultAddress.wards}, ${resultAddress.districts}, ${resultAddress.provinces}`
             })
+          onClose()
         }
       })
   }
@@ -106,7 +112,10 @@ const ModalAddress = () => {
 
               {ward !== null && ward.map((p: any) => <SelectItem key={p.ward_id} value={p.ward_id} textValue={p.ward_name}>{p.ward_name}</SelectItem>)}
             </Select>
-            <input className={`w-[90%] h-[15%] rounded-lg outline-none px-2 ${resultAddress.details.length !== 0 && 'border-green-500 border-solid border-[2px]'}`} type="text"
+            <input
+              className={`w-[99%] h-[15%] min-h-[40px] border border-solid rounded-lg outline-none px-2 my-2 
+              ${resultAddress.details.length !== 0 ? 'border-green-500' : 'border-zinc-400 '}`}
+              type="text"
               onChange={(e) => { setResultAddress((data) => ({ ...data, details: e.target.value })) }} placeholder="Address detail" />
           </form>
         </ModalBody>
@@ -114,7 +123,7 @@ const ModalAddress = () => {
           <Button color="danger" variant="light" onPress={() => { onClose() }}>
             Close
           </Button>
-          <Button color="success" className="text-white font-bold" onClick={submitData}>Create</Button>
+          <Button color="success" className="text-white font-bold" onClick={() => submitData(onClose)}>Create</Button>
         </ModalFooter>
       </>
     )}

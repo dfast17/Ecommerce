@@ -3,6 +3,7 @@ import { CartType, ProductType } from "../types/type";
 import { cartInsert, cartRemove, cartUpdate } from "../api/user";
 import { GetToken } from "../utils/token";
 import { userStore } from "../store/user";
+import { toast } from 'react-toastify';
 
 export const CartContext = createContext<any>({});
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -19,8 +20,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 const token = await GetToken()
                 token && cartInsert(token, data.idProduct, 1)
                     .then((res: any) => {
-                        console.log(res)
                         if (res.status === 201) {
+                            toast.success("Add item success")
                             const dataCart: CartType = {
                                 idCart: res.data.idCart,
                                 idProduct: data.idProduct,

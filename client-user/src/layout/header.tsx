@@ -161,13 +161,13 @@ const Header = (): JSX.Element => {
       />
     </nav>
     <nav className={`w-[5%] h-3/4 hidden lg:flex justify-evenly items-center transition-all rounded-lg`}>
-      {isLogin && <Dropdown placement="top-end" offset={20} className="relative bg-zinc-700">
+      {isLogin && <Dropdown backdrop="blur" placement="top-end" offset={20} className="relative bg-zinc-100">
         <DropdownTrigger className="fixed">
           <Button radius="sm" isIconOnly className="bg-transparent relative !hidden sm:!flex justify-center" aria-label="button-cart">
             <CartIcon />
           </Button>
         </DropdownTrigger>
-        <DropdownMenu closeOnSelect={true} className="w-[500px] h-auto min-h-[100px] max-h-[450px]">
+        <DropdownMenu closeOnSelect={false} className="w-[500px] h-auto min-h-[100px] max-h-[450px] !text-zinc-950">
           {cart && cart.slice(0, 4).map((c: CartType) => <DropdownItem key={c.idCart}>
             <Product_layout_02 data={c} isButton={true} />
           </DropdownItem>)}
