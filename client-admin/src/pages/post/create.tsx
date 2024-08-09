@@ -13,6 +13,7 @@ import { GetToken } from '../../utils/token';
 import { postCreate } from '../../api/post';
 import { Input, Select, SelectItem } from '@nextui-org/react';
 import { CategoryPostType } from '../../types/types';
+import { toast } from 'react-toastify';
 // import styles
 //Config màu cho code block
 hljs.configure({
@@ -25,7 +26,7 @@ Quill.register('modules/imageResize', ImageResize);
 Quill.register("modules/imageUploader", ImageUploader);
 
 const CreatePosts = () => {
-  const { isDark, typePost } = useContext(StateContext)
+  const { isDark, typePost, setPost, post } = useContext(StateContext)
   const { register, handleSubmit, formState: { errors: err } } = useForm();
   const [value, setValue] = useState('');
   const [resultValue, setResultValue] = useState<string | null>(null);
@@ -216,8 +217,12 @@ const CreatePosts = () => {
       // Gán giá trị nội dung HTML từ phần tử `<body>` của HTML đã parser thành `resultValue`
       setResultValue(doc.body.innerHTML);
     }
+    if (value !== "") {
+      let parser = new DOMParser();
+      let doc: any = parser.parseFromString(value, 'text/html');
+      setResultValue(doc.body.innerHTML);
+    }
   }, [value, imgUrl]);
-
   useEffect(() => {
     imgFile && setImgUrl(imgFile.map(e => `${import.meta.env.VITE_REACT_APP_URL_IMG}/posts/${e.name}`))
   }, [imgFile])
@@ -229,10 +234,18 @@ const CreatePosts = () => {
   };
   //Hàm tạo bài viết
   const onSubmit = (data: any) => {
-    resultValue === null && alert("Null")
-    !title && alert("Title is Null")
-    !thumbnail && alert("Thumbnail is Null")
-    !resultValue && alert("Content is Null")
+    if (!title) {
+      alert("Title is Null")
+      return
+    }
+    if (!thumbnail) {
+      alert("Thumbnail is Null")
+      return
+    }
+    if (!resultValue) {
+      alert("Content is Null")
+      return
+    }
     if (imgFile.length !== 0) {
       //Upload hình ảnh trong bài viết lên S3 Storage
       const data = new FormData()
@@ -264,13 +277,25 @@ const CreatePosts = () => {
       //Gửi dữ liệu tạo bài viết
       token && resultValue && postCreate(dataPost, token)
         .then((res: any) => {
-          alert(res.message)
+          if (res.status === 201) {
+            toast.success(res.message)
+            const dataAppend = {
+              title: title,
+              thumbnails: thumbnail ? `${import.meta.env.VITE_REACT_APP_URL_IMG}/posts/${thumbnail.name}` : "",
+              dateAdded: new Date().toISOString().split('T')[0],
+              idType: Number(data.type),
+              idPost: res.data.id,
+              poster: res.data.poster
+            }
+            setPost([dataAppend, ...post])
+          } else {
+            toast.error(res.message)
+          }
         })
         .catch((err: any) => console.log(err))
     }
     fetchData()
   }
-
   return (
     <>
       <div className='title-post w-full h-auto flex flex-wrap justify-around mt-10'>

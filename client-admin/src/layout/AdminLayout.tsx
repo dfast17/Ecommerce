@@ -26,6 +26,8 @@ import { RemoveToken } from "../utils/token";
 import Logo from "../assets/Logomark.png"
 import classNames from "classnames";
 import CurrentUser from "../pages/account/current";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface NavContent {
   idNav: number;
@@ -244,6 +246,7 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <CurrentUser />
       </Modal>
+      <ToastContainer />
     </div>
   );
 };

@@ -17,3 +17,13 @@ export const postGetAll = async () => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/post`)
         .then((res) => res.json());
 }
+export const removePost = async (token: string, id: number) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/post/`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id: id }),
+    }).then((res) => res.json());
+}
