@@ -6,6 +6,7 @@ import { RxUpdate } from "react-icons/rx";
 import { useForm } from "react-hook-form";
 import { productUpdate } from "../../../api/product";
 import { GetToken } from "../../../utils/token";
+import { toast } from "react-toastify";
 interface ObjectKeys {
   [key: string]: string | number | undefined;
 }
@@ -54,7 +55,7 @@ const ModalEdit = ({ id, nameType, setModalName }: { id: number | string, nameTy
         if (res.status !== 200) {
           return console.log(res.message)
         }
-        alert(res.message)
+        res.status === 200 ? toast.success(res.message) : toast.error(res.message)
         setProduct(product.map((prevP: any) => {
           return prevP.idProduct === id ? { ...prevP, ...dataUpdate } : { ...prevP }
         }))

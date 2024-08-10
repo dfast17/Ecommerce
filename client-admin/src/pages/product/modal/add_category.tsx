@@ -7,7 +7,7 @@ import { createCategory } from "../../../api/product";
 import { GetToken } from "../../../utils/token";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { PiColumnsPlusLeft } from "react-icons/pi";
-
+import { toast } from "react-toastify"
 interface KeyDetailType {
     id: string,
     name: string,
@@ -56,8 +56,10 @@ const AddCategory = ({ setModalName }: { setModalName: React.Dispatch<React.SetS
                     }))
                 }
                 category && setCategory([...category, newData])
-                alert(res.message)
+                toast.success(res.message)
                 setModalName('')
+            } else {
+                toast.error(res.message)
             }
         }).catch((err) => console.log(err))
     }

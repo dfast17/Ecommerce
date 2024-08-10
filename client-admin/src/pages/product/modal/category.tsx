@@ -8,7 +8,7 @@ import { GetToken } from "../../../utils/token";
 import { columnChange, columnDelete, createCategory, productUpdate, removeCategory } from "../../../api/product";
 import { useForm } from "react-hook-form";
 import { productStore } from "../../../store/product";
-
+import { toast } from "react-toastify";
 interface FormEditType {
     id: string,
     name: string
@@ -80,7 +80,7 @@ const ModalCateDetail = ({ name }: { name: string }) => {
                     ...c,
                     id: `${c.type}${c.name}`
                 }))
-                alert(res.message)
+                res.status === 200 ? toast.success(res.message) : toast.error(res.message)
                 setAddCol({ add: false, colNumber: [1] })
                 res.status === 200 && dataCate && setDataCate(dataCate.map((d: any) => ({ ...d, detail: [...d.detail, ...dataAppend] })))
             })
@@ -89,7 +89,7 @@ const ModalCateDetail = ({ name }: { name: string }) => {
         const token = await GetToken()
         token && columnDelete(token, { id, table, col })
             .then(res => {
-                alert(res.message)
+                res.status === 200 ? toast.success(res.message) : toast.error(res.message)
                 res.status === 200 && dataCate && setDataCate(dataCate.map((d: any) => ({ ...d, detail: d.detail.filter((d: any) => d.id !== id) })))
             })
     }
@@ -99,7 +99,7 @@ const ModalCateDetail = ({ name }: { name: string }) => {
         const token = await GetToken()
         token && removeCategory(token, nameType)
             .then(res => {
-                alert(res.message)
+                res.status === 200 ? toast.success(res.message) : toast.error(res.message)
                 res.status === 200 && (
                     category && setCategory(category.filter((d: any) => d.nameType !== nameType)),
                     onClose()

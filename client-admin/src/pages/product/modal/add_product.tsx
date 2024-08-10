@@ -7,7 +7,7 @@ import { productStore } from "../../../store/product";
 import { uploadImageProductToS3 } from "../../../api/image";
 import { createProduct } from "../../../api/product";
 import { GetToken } from "../../../utils/token";
-
+import { toast } from "react-toastify";
 interface KeyDetailType {
     id: string,
     name: string,
@@ -89,8 +89,8 @@ const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetSt
         const token = await GetToken()
         token && createProduct(dataInsert, token)
             .then((res: any) => {
-                alert(res.message)
-                product && setProduct([...product, {
+                res.status === 201 ? toast.success(res.message) : toast.error(res.message)
+                res.status === 201 && product && setProduct([...product, {
                     ...dataInsert.product[0],
                     idProduct: res.insertId,
                 }])
