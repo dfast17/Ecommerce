@@ -37,14 +37,19 @@ export default class Statements {
     tableSelect: string,
     colSelect: any[],
     condition: ConditionType,
-    join?: any[],
+    join?: {
+      table: string,
+      key1: string,
+      key2: string,
+      type: string
+    }[],
   ) => {
     return await db
       .insertInto(tableInsert)
       .columns(colInsert)
       .expression((eb: any) => {
         let query: any = eb.selectFrom(tableSelect).select(colSelect);
-        join && join.map((j: any) => (query = query.innerJoin(j.table, j.key1, j.key2)));
+        join && join.map((j: any) => (query = query[j.type](j.table, j.key1, j.key2)));
         return query.where(condition.conditionName, condition.conditionMethod, condition.value);
       })
       .execute();

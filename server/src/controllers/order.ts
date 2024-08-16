@@ -73,17 +73,20 @@ export default class OrderController {
         {
           table: "products as p",
           key1: "p.idProduct",
-          key2: "carts.idProduct"
+          key2: "carts.idProduct",
+          type: "innerJoin"
         },
         {
           table: "saleDetail as sd",
           key1: "p.idProduct",
-          key2: "sd.idProduct"
+          key2: "sd.idProduct",
+          type: "leftJoin"
         },
         {
           table: "sale",
           key1: "sd.idSale",
-          key2: "sale.idSale"
+          key2: "sale.idSale",
+          type: "leftJoin"
         }
       ]
       const insertDetail = await statement.insertSubQuery(tableInsert, colInsert, tableSelect, colSelect, conditionDetail, join)
@@ -93,7 +96,7 @@ export default class OrderController {
     if (!insertData.insertDetail[0].insertId) {
       return responseMessage(res, 401, "Order failed");
     }
-    responseMessage(res, 201, "Order success");
+    responseMessageData(res, 201, "Order success", { idOrder: idOrder, detail: { fistId: Number(insertData.insertDetail[0].insertId), length: data.listId.length } });
   };
   public adminInsertOrder = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
