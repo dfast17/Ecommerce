@@ -45,7 +45,7 @@ const getNextDay = (currentDate: Date, daysToAdd: number) => {
 
 const InfoCheckout = () => {
   const { cart } = useContext(CartContext);
-  const { listCheckOut } = useContext(StateContext);
+  const { listCheckOut, order, setOrder } = useContext(StateContext);
   const { user } = userStore();
   const { register, handleSubmit } = useForm<FormInfo>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -95,16 +95,16 @@ const InfoCheckout = () => {
       content: "Payment with Paypal",
     },
   ];
-  const onSubmit = async (data: FormInfo) => {
+  const onSubmit = async (formData: FormInfo) => {
     const currentDate = new Date();
     const eddDate = getNextDay(currentDate, 12);
     const token = await GetToken();
     const dataOrder: OrderInsertType = {
       order: [
         {
-          fullName: data.nameUser,
-          phone: data.phone,
-          address: data.address,
+          fullName: formData.nameUser,
+          phone: formData.phone,
+          address: formData.address,
           costs: cost,
           method: paymentMethod,
           edd: eddDate.toISOString().split("T")[0],
@@ -116,9 +116,23 @@ const InfoCheckout = () => {
     token &&
       (orderInsert(token, dataOrder).then((res) => {
         if (res.status === 201) {
-          //delete items
           onOpenStatus()
-
+          const dataAppend = [...Array(res.data.detail.length)].map((_, i) => {
+            const dataProduct = data.filter((f: any) => f.idCart === listCheckOut[i])
+            return {
+              idOrderDetail: res.data.detail.firstId + i,
+              idOrder: res.data.id,
+              idProduct: listCheckOut[i],
+              nameProduct: dataProduct[0].detail[0].nameProduct,
+              imgProduct: dataProduct[0].detail[0].imgProduct,
+              countProduct: dataProduct[0].countProduct,
+              price: dataProduct[0].detail[0].price,
+              discount: dataProduct[0].detail[0].discount,
+              orderStatus: 'pending',
+              paymentStatus: paymentDetail ? "paid" : "unpaid",
+            }
+          })
+          setOrder([...order, ...dataAppend])
         }
       }));
   };

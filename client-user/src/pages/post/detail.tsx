@@ -1,17 +1,20 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import 'react-quill/dist/quill.snow.css';// import styles
 import "highlight.js/styles/monokai-sublime.min.css";
 import { useFetchDataByKey } from "../../hooks/useFetchData";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Avatar, Button, Code, Pagination } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { GetToken } from "../../utils/token";
 import { commentPostInsert, getCommentByPost } from "../../api/post";
 import { CommentResType, CommentType } from "types/type";
 import { userStore } from "../../store/user";
+import { StateContext } from "../../context/stateContext";
 const PostsDetail = () => {
     const { register, handleSubmit } = useForm()
+    const { isLogin } = useContext(StateContext)
     const { user } = userStore()
+    const navigate = useNavigate()
     const param = useParams()
     //Hàm gọi data bài viết và data bình luận
     const { data } = useFetchDataByKey('posts', 'postGetDetail', Number(param.idPost))
@@ -82,7 +85,7 @@ const PostsDetail = () => {
         </div>
         {/* Bình luận bài viết */}
         <div className="w-3/5 xl:w-1/4 h-auto min-h-screen flex flex-col justify-start">
-            <div className="form-comment w-full flex flex-col justify-start pt-10">
+            {isLogin && <div className="form-comment w-full flex flex-col justify-start pt-10">
                 <textarea {...register('message', { required: true })} rows={5}
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
@@ -90,7 +93,10 @@ const PostsDetail = () => {
                     placeholder="Write a comment..." required />
                 <Button className="w-[200px] h-[40px] my-2 bg-zinc-800 text-zinc-100" size="sm"
                     onClick={() => handleSubmit(onSubmit)()}>Send</Button>
-            </div>
+            </div>}
+            {!isLogin && <p className="text-zinc-900">
+                <Code radius="sm" size="sm" className="cursor-pointer" color="danger" onClick={() => navigate('/auth')}>Login</Code> to comment
+            </p>}
             <Code radius="sm" className="flex items-center justify-center my-2 font-bold cursor-pointer bg-zinc-600 text-zinc-50">Comment for post</Code>
             <div className="comment-detail w-full flex flex-wrap items-center justify-center">
                 <div className="comment-list w-full flex flex-wrap items-center justify-center">
