@@ -11,5 +11,6 @@ router.get('/purchase', verifyToken, orderController.getPurchaseOrderByUser)
 router.post('/', verifyToken, orderController.insertOrder)
 router.post('/admin', verifyTokenAdmin, orderController.adminInsertOrder)
 router.patch('/', orderController.updateOrder)
+router.delete('/', orderController.deleteOrderItem)
 
 export default router

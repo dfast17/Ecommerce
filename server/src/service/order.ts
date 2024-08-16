@@ -1,6 +1,13 @@
 import { db } from "../models/connect";
 
 export default class OrderStatement {
+  public getCountItem = async (idOrder: string) => {
+    return await db
+      .selectFrom("order_Detail")
+      .select("idOrder")
+      .where("idOrder", "=", `${idOrder}`)
+      .execute();
+  }
   public getAllOrder = async () => {
     return await db
       .selectFrom("order")

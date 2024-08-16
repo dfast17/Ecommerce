@@ -159,4 +159,37 @@ export default class OrderController {
     const idUser = req.idUser
     handleFindData(res, order.getPurchaseOrderByUser(idUser))
   }
+  public deleteOrderItem = async (req: Request, res: Response) => {
+    const data = req.body
+    const condition: ConditionType = {
+      conditionName: "idOrdDetail",
+      conditionMethod: "=",
+      value: data.id
+    }
+    try {
+      const getCountItem = await order.getCountItem(data.id)
+      const deleteData = await statement.removeData("order_Detail", condition);
+      if (getCountItem.length === 1) {
+        const condition: ConditionType = {
+          conditionName: "idOrder",
+          conditionMethod: "=",
+          value: data.id
+        }
+        const deleteData = await statement.removeData("order", condition);
+        if (!deleteData) {
+          return responseMessage(res, 401, "Delete order failed");
+        }
+        return responseMessage(res, 200, "Delete order success");
+      }
+      if (!deleteData) {
+        return responseMessage(res, 401, "Delete order item failed");
+      }
+      responseMessage(res, 200, "Delete order item success");
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
 }
