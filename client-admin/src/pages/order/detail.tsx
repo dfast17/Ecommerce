@@ -93,7 +93,6 @@ const OrderDetail = ({ id, info, setInfo, detail, currentStatus, setDetail, btnS
             dataUpdate.note = note
             isFetch = true
         }
-        console.log(isFetch)
         isFetch && token && nextStatus && id && updateStatusOrder(token, { id: id, data_update: [dataUpdate] })
             .then(res => {
                 alert(res.message)
@@ -201,21 +200,21 @@ const OrderDetail = ({ id, info, setInfo, detail, currentStatus, setDetail, btnS
                             <SelectItem className={`${isDark ? "text-white" : "text-black"}}`} key={o.value}>{o.label}</SelectItem>
                         )}
                     </Select>}
-                    {nextStatus === "shipping" && <Select
+                    {nextStatus === "shipping" && btnSubmit && <Select
                         onChange={(e: any) => { setIdShip(e.target.value) }}
                         className="w-2/5 mx-1"
                         size="sm" radius="sm"
                         classNames={{ mainWrapper: 'h-[30px]', trigger: '!h-[30px] !min-h-[30px]', popoverContent: isDark ? 'text-white' : 'text-black' }}>
                         {shipper && shipper.map((s: ShipperType) => <SelectItem key={s.idStaff}>{s.name}</SelectItem>)}
                     </Select>}
-                    <div className="w-[35%] h-[50px] flex items-center justify-end">
-                        {btnSubmit && <Button onClick={handleUpdateStatus} size="sm" color="success" className="w-3/5 h-[30px] text-[15px] text-white mx-1">Update</Button>}
+                    <div className="w-[35%] h-[50px] flex items-center justify-start">
+                        {btnSubmit && <Button onClick={handleUpdateStatus} size="sm" color="success" className="w-3/5 h-[30px] text-[15px] text-white">Update</Button>}
                         {!btnSubmit && <Button size="sm" color="success" className="w-3/5 h-[30px] bg-transparent mx-1"></Button>}
-                        <Button isIconOnly size="sm" color="danger" className="" onClick={() => { setIsEdit(false); setBtnSubmit(false); }}>
+                        <Button isIconOnly size="sm" color="danger" className="mx-1" onClick={() => { setIsEdit(false); setBtnSubmit(false); }}>
                             <IoMdClose className="w-3/5 h-3/5" />
                         </Button>
                     </div>
-                    {nextStatus === "failed" && <Textarea
+                    {nextStatus === "failed" && btnSubmit && <Textarea
                         label="Note"
                         radius="sm"
                         onChange={(e: any) => { setNote(e.target.value) }}

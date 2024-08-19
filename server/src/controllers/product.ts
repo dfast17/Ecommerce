@@ -53,7 +53,7 @@ export default class ProductController {
       id: `${data.nameType ? data.nameType : x.type}${x.name}`,
       name: x.name,
       type: data.nameType ? data.nameType : x.type,
-      datatypes: x.datatypes === "varchar" ? "text" : ((x.datatypes === "int" || x.datatypes === "interger") ? "number" : "longtext"),
+      datatypes: x.datatypes === "varchar" ? "text" : ((x.datatypes === "int" || x.datatypes === "integer") ? "number" : "longtext"),
       displayorder: Number(x.displayorder),
       displayname: x.displayname,
     }))
@@ -175,7 +175,25 @@ export default class ProductController {
     }
   };
   public getAll = async (req: Request, res: Response) => {
-    handleFindData(res, products.findAll());
+    const { total, page, limit } = req.query
+    try {
+      const result = await products.findAll(Number(limit), Number(page));
+      const totalData: any = total ? [{ total: Number(total) }] : await products.countData();
+      const totalValue = totalData[0]?.total;
+      const dataRes = {
+        total: totalValue,
+        total_page: Math.ceil(Number(totalValue) / Number(limit)),
+        page: Number(page),
+        limit: Number(limit),
+        data: result
+      };
+      responseData(res, 200, dataRes);
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
   };
   public getProductByType = async (req: Request, res: Response) => {
     const typeName = req.params["nameType"];

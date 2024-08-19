@@ -1,5 +1,5 @@
-export const getOrder = async (token: string) => {
-    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/order`, {
+export const getOrder = async (token: string, total?: number, page?: number, limit?: number) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/order?${total ? `total=${total}&&` : ''}page=${page ? page : 1}&limit=${limit ? limit : 20}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -19,8 +19,8 @@ export const createOrder = async (token: string, data: { order: any[], detail: {
     })
         .then(res => res.json())
 }
-export const getOrderByRoleShipper = async (token: string) => {
-    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/order/shipper`, {
+export const getOrderByRoleShipper = async (token: string, total?: number, page?: number, limit?: number) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/order/shipper?${total ? `total=${total}&&` : ''}page=${page ? page : 1}&limit=${limit ? limit : 20}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',

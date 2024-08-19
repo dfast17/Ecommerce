@@ -23,6 +23,7 @@ import fileUpload from "express-fileupload";
 
 const app = express();
 const port = process.env.PORT || 3030;
+
 /*const redis = new Redis({
   host: process.env.HOST_REDIS,
   port: Number(process.env.PORT_REDIS),
@@ -113,7 +114,6 @@ app.post("/upload/:folder", async (req, res) => {
       res.status(500).json(err);
     }
   }
-
   res.status(201).json({ message: "All files uploaded successfully" });
 });
 

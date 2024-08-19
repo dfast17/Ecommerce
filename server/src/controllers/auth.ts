@@ -115,11 +115,12 @@ export default class AuthController {
       const resultAuth = await statement.insertDataMulti("auth", list_staff);
       const resultInfo = await statement.insertDataMulti("staff", list_info_staff);
       const resultPosition = await statement.insertDataMulti("position", list_position);
+      console.log(resultPosition)
       const resultLog = await logs.create(logsData)
       if (!resultAuth || !resultInfo || !resultPosition) {
         return responseMessageData(res, 401, `Create staff is failed`);
       }
-      responseMessageData(res, 201, `Create staff is success`);
+      responseMessageData(res, 201, `Create staff is success`, { firstId: Number(resultAuth[0].insertId) });
     }
     catch {
       (errors: any) => {

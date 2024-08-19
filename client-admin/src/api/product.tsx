@@ -1,5 +1,5 @@
-export const productGetAll = async () => {
-    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product`)
+export const productGetAll = async (total?: number, page?: number, limit?: number) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product?${total ? `total=${total}&&` : ''}page=${page ? page : 1}&&limit=${limit ? limit : 20}`)
         .then(res => res.json())
 }
 export const productGetDetail = async (obj: { nameType: string, idProduct: string | number }) => {

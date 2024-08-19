@@ -12,6 +12,18 @@ export interface CustomerUpdateType {
     table: string
     detail: { [x: string]: string | number }[]
 }
+export interface Responses {
+    total: number,
+    total_page: number,
+    page: number,
+    limit: number
+}
+export interface ProductResponse extends Responses {
+    data: ProductType[]
+}
+export interface OrderResponse extends Responses {
+    data: OrderType[]
+}
 export interface ProductType {
     idProduct: number,
     nameProduct: string,

@@ -6,6 +6,7 @@ import { GetToken } from "../../utils/token";
 import { createEvent } from "../../api/product";
 import { CiTrash } from "react-icons/ci";
 import Select from "react-select";
+import { toast } from "react-toastify";
 
 const FormAddEvent = ({ props }: { props: any }) => {
     const { sale, setSale } = useContext(StateContext)
@@ -14,7 +15,7 @@ const FormAddEvent = ({ props }: { props: any }) => {
     const { register, handleSubmit, control } = useForm();
     const [newData, setNewData] = useState<any>(null)
     useEffect(() => {
-        product !== null && setNewData(product.map((e: any) => { return { value: e.idProduct, label: e.nameProduct, isDis: false } }))
+        product !== null && setNewData(product.data.map((e: any) => { return { value: e.idProduct, label: e.nameProduct, isDis: false } }))
     }, [product])
     const handleChange = (data: any) => {
         setNewData(newData?.map((e: any) => {
@@ -25,23 +26,21 @@ const FormAddEvent = ({ props }: { props: any }) => {
         }))
     }
     const onSubmit = async (data: any) => {
+        const detail = dataSale.flatMap((e: number) => {
+            return data[`select${e}`].flatMap((p: any) => ({ discount: Number(data[`percent-${e}`]), idProduct: p.value }))
+        })
         const result = {
             sale: {
                 title: data.title,
                 start_date: data.start,
                 end_date: data.end,
             },
-            detail: dataSale.map((e: any) => {
-                return {
-                    discount: Number(data[`percent-${e}`]),
-                    idProduct: Number(data[`select${e}`].map((p: any) => p.value))
-                }
-            })
+            detail: detail
         }
         const token = await GetToken()
         createEvent(result, token).then((res: any) => {
             if (res.status === 201) {
-                alert(res.message)
+                toast.success(res.message)
                 const lastData = {
                     idSale: res.data.id,
                     title: data.title,
@@ -51,7 +50,7 @@ const FormAddEvent = ({ props }: { props: any }) => {
                 setSale([...sale, lastData])
                 props.setAddForm(false)
             } else {
-                alert(res.message)
+                toast.error(res.message)
             }
         })
     }
@@ -89,7 +88,7 @@ const FormAddEvent = ({ props }: { props: any }) => {
                                     <Select
                                         {...field}
                                         className="w-4/5 rounded-lg bg-transparent text-black border-slate-400 border-solid border outline-none mx-2"
-                                        options={newData?.filter((f: any) => !f.isDis)}
+                                        options={newData?.filter((f: any) => f.isDis === false)}
                                         isMulti
                                         onChange={(change: any) => {
                                             field.onChange(change)

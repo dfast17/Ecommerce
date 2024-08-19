@@ -2,13 +2,14 @@ import { Avatar, Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFoote
 import { userStore } from "../../store/user"
 import { StaffType } from "../../types/types"
 import { StateContext } from "../../context/state"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { CiCalendarDate } from "react-icons/ci";
 import { FaUserPlus } from "react-icons/fa";
 import { MdOutlineUpdate } from "react-icons/md";
 import { useForm } from "react-hook-form"
 import { GetToken } from "../../utils/token"
 import { createStaff } from "../../api/auth"
+import { toast } from "react-toastify"
 const Staff = ({ handleChangeStatus }: { handleChangeStatus: (type: "users" | "staff", id: string, status: "active" | "block") => Promise<void> }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
     const { isDark } = useContext(StateContext)
@@ -27,7 +28,7 @@ const Staff = ({ handleChangeStatus }: { handleChangeStatus: (type: "users" | "s
                 </div>
                 <div className="relative detail h-full col-span-2 text-zinc-950 flex flex-col justify-start items-start py-1">
                     <div className="w-full flex justify-end px-1">
-                        <Chip onClick={() => handleChangeStatus("staff", s.idStaff, s.action === "active" ? "block" : "active")} radius="sm" variant="bordered" color={s.action === "active" ? "success" : "danger"}>{s.action}</Chip>
+                        <Chip onClick={() => handleChangeStatus("staff", s.idStaff!, s.action === "active" ? "block" : "active")} radius="sm" variant="bordered" color={s.action === "active" ? "success" : "danger"}>{s.action}</Chip>
                     </div>
                     <p className="font-bold">{s.name}</p>
                     <p className="text-zinc-700">{s.email}</p>
@@ -55,11 +56,15 @@ const Staff = ({ handleChangeStatus }: { handleChangeStatus: (type: "users" | "s
 const ModalAddStaff = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
     const [staffCount, setStaffCount] = useState<number[]>([1])
+    const { isDark, } = useContext(StateContext)
+    const { setStaff, staff } = userStore()
     const handleChangeCountStaff = (type: string, id?: number) => {
         type === "add" ? setStaffCount((prev: number[]) => [...prev, prev.length + 1]) : setStaffCount((prev: number[]) => prev.filter((s: number) => s !== id))
     }
     const onSubmit = async (data: any) => {
         const dataCopy = [...staffCount]
+        const created_date = new Date().toISOString().split("T")[0]
+        const updated_date = new Date().toISOString().split("T")[0]
         const staffData = dataCopy.map((s: number) => ({
             username: data[`username-${s}`],
             password_hash: data[`password-${s}`],
@@ -72,8 +77,8 @@ const ModalAddStaff = () => {
             email: data[`email-${s}`],
             phone: data[`phone-${s}`],
             idStaff: data[`username-${s}`],
-            created_at: new Date().toISOString().split("T")[0],
-            updated_at: new Date().toISOString().split("T")[0]
+            created_at: created_date,
+            updated_at: updated_date
         }))
         const positionData = dataCopy.map((s: number) => ({
             idStaff: data[`username-${s}`],
@@ -82,22 +87,40 @@ const ModalAddStaff = () => {
         const token = await GetToken()
         token && createStaff(token, { staff: staffData, info: infoData, position: positionData })
             .then(res => {
-                if (res.status === 200) {
-                    alert("Create staff success")
+                if (res.status === 201) {
+                    const dataAppend = dataCopy.map((s: number, i: number) => ({
+                        idStaff: data[`username-${s}`],
+                        name: data[`name-${s}`],
+                        email: data[`email-${s}`],
+                        phone: data[`phone-${s}`],
+                        position_name: data[`position-${s}`],
+                        created_at: new Date(created_date).toISOString(),
+                        updated_at: new Date(updated_date).toISOString(),
+                        action: "active",
+                        avatar: "",
+                        birthday: "",
+                        address: "",
+                        position_id: res.data.firtId + i
+                    }))
+                    toast.success("Create staff success")
+                    staff && setStaff([...staff, ...dataAppend])
                 }
             })
             .catch(err => console.log(err))
     }
-    return <ModalContent>
+    useEffect(() => {
+        staff && console.log(staff)
+    }, [staff])
+    return <ModalContent >
         {(onClose) => <>
             <ModalHeader className="flex flex-col justify-center gap-1">
-                <p className="text-center text-zinc-100">Create a new staff account</p>
+                <p className={`${isDark ? "text-white" : "text-zinc-950"} text-center`}>Create a new staff account</p>
                 <Button isIconOnly color="primary" onClick={() => handleChangeCountStaff("add")}><FaUserPlus className="text-[20px]" /></Button>
             </ModalHeader>
             <ModalBody key="Modal-add-staff" className="grid grid-cols-2 gap-2 max-h-[500px] overflow-auto">
                 {
                     staffCount.map((s: number) => <div className="col-span-1" key={s}>
-                        <p className="text-zinc-100">Staff #{s}</p>
+                        <p className={`${isDark ? "text-white" : "text-zinc-950"}`}>Staff #{s}</p>
                         <div className="w-full grid grid-cols-1 gap-2">
                             <Input {...register(`username-${s}`, { required: true })} label="Username"
                                 type="text"

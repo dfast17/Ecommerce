@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { getLocalStorage } from "../utils/localStorage";
 import Cookies from "js-cookie";
 import { Product_sold_type, Product_view_type } from "../types/layout_type";
-import { CategoryPostType, CommentType, LogsType, OrderType, PostType, ShipperType } from "../types/types";
+import { CategoryPostType, CommentType, LogsType, OrderResponse, PostType, ShipperType } from "../types/types";
 interface statisticalType {
     product: [{ total: number, view: Product_view_type[], sold: Product_sold_type[] }] | null,
     user: any[] | null,
@@ -28,7 +28,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     const [post, setPost] = useState<PostType[] | null>(null)
     const [typePost, setTypePost] = useState<CategoryPostType[] | null>(null)
     const [sale, setSale] = useState<any>(null)
-    const [order, setOrder] = useState<OrderType[] | null>(null)
+    const [order, setOrder] = useState<OrderResponse | null>(null)
     const [shipper, setShipper] = useState<ShipperType[] | null>()
     const [log, setLog] = useState<LogsType[] | null>(null)
     const [comment, setComment] = useState<StateCommentType>({ product: null, post: null })

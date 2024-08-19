@@ -30,7 +30,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                                     discount: Number(data.discount),
                                     imgProduct: data.imgProduct as string,
                                     nameProduct: data.nameProduct,
-                                    price: Number(data.price)
+                                    price: Number(data.price),
                                 }]
                             }
                             cart && setCart([dataCart, ...cart])

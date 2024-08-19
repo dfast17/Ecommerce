@@ -320,7 +320,7 @@ const CreatePosts = () => {
       </div>
       <form>
         <Select className={`w-[200px] ${err.type ? 'border-red-500' : 'border-transparent'} border-solid border-[3px] rounded-lg`} label="Type Post" placeholder="Select an type post" {...register("type", { required: true })}>
-          {typePost && typePost.map((e: CategoryPostType) => <SelectItem key={e.idType}>
+          {typePost && typePost.map((e: CategoryPostType) => <SelectItem className={`${isDark ? 'text-white' : 'text-slate-700'} `} key={e.idType}>
             {e.nameType}
           </SelectItem>)}
         </Select>

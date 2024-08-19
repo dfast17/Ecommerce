@@ -7,6 +7,7 @@ import { deleteEvent, updateEvent } from "../../api/product";
 import { Modal, useDisclosure } from "@nextui-org/react";
 import DetailEvent from "./detail";
 import FormAddEvent from "./addEvent";
+import { toast } from "react-toastify";
 
 const Event = () => {
   const { isDark, sale, setSale } = useContext(StateContext);
@@ -18,8 +19,8 @@ const Event = () => {
   const editEventSale = async () => {
     const resultObj = sale.filter((f: any) => f.idSale === idEdit).map((s: any) => ({
       title: s.title,
-      start_date: formatDate(s.start_date),
-      end_date: formatDate(s.end_date)
+      start_date: s.start_date.split("T")[0],
+      end_date: s.end_date.split("T")[0]
     }))
     const keyChange = Object.keys(formValue).filter((e: any) => formValue[e] !== "").filter((f: any) => formValue[f] !== resultObj[0][f])
 
@@ -46,9 +47,11 @@ const Event = () => {
         ))
         setIdEdit(0)
         setFormValue({ title: '', startDate: '', endDate: '' })
-
+        toast.success("Update Event is success")
+      } else {
+        toast.error("Update Event is failed")
       }
-      alert(res.message)
+
     })
   }
   const delEvent = async (idSale: number) => {
@@ -80,11 +83,11 @@ const Event = () => {
           placeholder={s.title} /> : s.title}
       </div>
       <div className="tbBody w-[15%] h-full flex items-center justify-center font-semibold">
-        {idEdit === s.idSale ? <input type="text" className="w-4/5 h-[90%] border-slate-500 rounded-lg px-2 border-solid border bg-transparent outline-none"
+        {idEdit === s.idSale ? <input type="date" className="w-4/5 h-[90%] border-slate-500 rounded-lg px-2 border-solid border bg-transparent outline-none"
           onChange={(e) => { setFormValue({ ...formValue, start_date: e.target.value ? e.target.value : formatDate(s.start_date) }) }}
           placeholder={formatDate(s.start_date)} /> : formatDate(s.start_date)}</div>
       <div className="tbBody w-[15%] h-full flex items-center justify-center font-semibold">
-        {idEdit === s.idSale ? <input type="text" className="w-4/5 h-[90%] border-slate-500 rounded-lg px-2 border-solid border bg-transparent outline-none"
+        {idEdit === s.idSale ? <input type="date" className="w-4/5 h-[90%] border-slate-500 rounded-lg px-2 border-solid border bg-transparent outline-none"
           onChange={(e) => { setFormValue({ ...formValue, end_date: e.target.value ? e.target.value : formatDate(s.end_date) }) }}
           placeholder={formatDate(s.end_date)} /> : formatDate(s.end_date)}</div>
       <div className="tbBody w-[15%] h-full flex items-center justify-evenly text-white font-semibold">

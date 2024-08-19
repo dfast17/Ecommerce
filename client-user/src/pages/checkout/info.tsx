@@ -120,8 +120,8 @@ const InfoCheckout = () => {
           const dataAppend = [...Array(res.data.detail.length)].map((_, i) => {
             const dataProduct = data.filter((f: any) => f.idCart === listCheckOut[i])
             return {
-              idOrderDetail: res.data.detail.firstId + i,
-              idOrder: res.data.id,
+              idOrdDetail: res.data.detail.firstId + i,
+              idOrder: res.data.idOrder,
               idProduct: listCheckOut[i],
               nameProduct: dataProduct[0].detail[0].nameProduct,
               imgProduct: dataProduct[0].detail[0].imgProduct,
@@ -169,6 +169,7 @@ const InfoCheckout = () => {
               />
               <Input
                 {...register("address", { required: true })}
+                isReadOnly
                 type="text"
                 variant="faded"
                 label="Address"

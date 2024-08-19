@@ -8,11 +8,21 @@ export default class OrderStatement {
       .where("idOrder", "=", `${idOrder}`)
       .execute();
   }
-  public getAllOrder = async () => {
+  public getCountOrder = async (limit: number, page: number, idUser?: string) => {
+    return await db.selectFrom("order")
+      .select((eb: any) => eb.fn.count("idOrder").as("total"))
+      .where("order.idShipper", "=", idUser ? idUser : "null")
+      .limit(limit)
+      .offset((page - 1) * limit)
+      .execute()
+  }
+  public getAllOrder = async (limit: number, page: number) => {
     return await db
       .selectFrom("order")
       .select(["idOrder", "created_at", "fullName", "phone", "address", "method", "paymentStatus", "orderStatus", "note", "idShipper"])
       .orderBy("created_at", "desc")
+      .limit(limit)
+      .offset((page - 1) * limit)
       .execute();
   };
   public getDetailOrder = async (idOrder: string) => {
@@ -23,12 +33,14 @@ export default class OrderStatement {
       .orderBy("od.idOrdDetail asc")
       .execute()
   };
-  public getOrderByRoleShipper = async (idShipper: string) => {
+  public getOrderByRoleShipper = async (idShipper: string, limit: number, page: number) => {
     return await db
       .selectFrom("order")
       .selectAll()
       .where("idShipper", "=", idShipper)
-      .where("orderStatus", "in", ['shipping', 'delivery'])
+      .orderBy("created_at", "desc")
+      .limit(limit)
+      .offset((page - 1) * limit)
       .execute();
   }
   public getOrderByUser = async (idUser: string) => {

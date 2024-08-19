@@ -1,6 +1,7 @@
 import { db } from "models/connect"
 
 export default class PostStatement {
+
     public createPost = async (data: any) => {
         return await db
             .insertInto("posts")
@@ -14,13 +15,13 @@ export default class PostStatement {
             })
             .executeTakeFirst()
     }
-    public getAll = async () => {
-        return await db.selectFrom("posts as p")
-            .select(["idPost", "p.idType", "t.nameType", "dateAdded", "p.title", "p.thumbnails", "valuesPosts", "poster"])
-            .innerJoin("typePost as t", "p.idType", "t.idType")
-            .orderBy("dateAdded desc")
-            .execute()
-    }
+    /*     public getAll = async () => {
+            return await db.selectFrom("posts as p")
+                .select(["idPost", "p.idType", "t.nameType", "dateAdded", "p.title", "p.thumbnails", "valuesPosts", "poster"])
+                .innerJoin("typePost as t", "p.idType", "t.idType")
+                .orderBy("dateAdded desc")
+                .execute()
+        } */
     public getAll = async () => {
         return await db.selectFrom("posts as p")
             .select(["idPost", "p.idType", "t.nameType", "dateAdded", "p.title", "p.thumbnails", "poster"])

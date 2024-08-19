@@ -19,8 +19,26 @@ const randomText = (length: number) => {
   return crypto.randomBytes(length).toString("hex");
 };
 export default class OrderController {
+  constructor() { }
   public getAll = async (req: Request, res: Response) => {
-    handleFindData(res, order.getAllOrder());
+    const { total, limit, page } = req.query
+    try {
+      const totalData: any = total ? [{ total: Number(total) }] : await order.getCountOrder(Number(limit), Number(page))
+      const totalValue = totalData[0].total
+      const result = await order.getAllOrder(Number(limit), Number(page))
+      const resultData = {
+        total: totalValue,
+        total_page: Math.ceil(totalValue / Number(limit)),
+        page: Number(page),
+        data: result
+      }
+      responseData(res, 200, resultData);
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
   };
   public getDetail = async (req: Request, res: Response) => {
     const idOrder = req.params["id"];
@@ -29,8 +47,24 @@ export default class OrderController {
   public getOrderByRoleShipper = async (request: Request, res: Response) => {
     const req = request as RequestCustom
     const idUser = req.idUser
-    handleFindData(res, order.getOrderByRoleShipper(idUser));
-
+    const { total, limit, page } = req.query
+    try {
+      const totalData: any = total ? [{ total: Number(total) }] : await order.getCountOrder(Number(limit), Number(page), idUser)
+      const totalValue = totalData[0].total
+      const result = await order.getOrderByRoleShipper(idUser, Number(limit), Number(page))
+      const resultData = {
+        total: totalValue,
+        total_page: Math.ceil(totalValue / Number(limit)),
+        page: Number(page),
+        data: result
+      }
+      responseData(res, 200, resultData);
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
   }
   public getByUser = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
@@ -164,16 +198,16 @@ export default class OrderController {
     const condition: ConditionType = {
       conditionName: "idOrdDetail",
       conditionMethod: "=",
-      value: data.id
+      value: data.idOrdDetail
     }
     try {
-      const getCountItem = await order.getCountItem(data.id)
+      const getCountItem = await order.getCountItem(data.idOrder)
       const deleteData = await statement.removeData("order_Detail", condition);
       if (getCountItem.length === 1) {
         const condition: ConditionType = {
           conditionName: "idOrder",
           conditionMethod: "=",
-          value: data.id
+          value: data.idOrder
         }
         const deleteData = await statement.removeData("order", condition);
         if (!deleteData) {

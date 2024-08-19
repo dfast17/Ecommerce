@@ -1,10 +1,12 @@
 import { Code } from "@nextui-org/react"
 import { useFetchDataByKey } from "../../../hooks/useFetchData"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import CommentProduct from "./comment"
 import { productGetDetail } from "../../../api/product"
+import { CartContext } from "../../../context/cartContext"
 
 const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number }) => {
+  const { addItemCart } = useContext(CartContext)
   const [data, setData] = useState<any[] | null>(null)
   const [currentImage, setCurrentImage] = useState("")
   const [column, setColumn] = useState<any[] | null>(null);
@@ -22,6 +24,16 @@ const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number
   useEffect(() => {
     col && setColumn(col.data)
   }, [col])
+  const handleAddCart = (data: any) => {
+    const convertData = {
+      idProduct: data.idProduct,
+      nameProduct: data.nameProduct,
+      price: data.price,
+      imgProduct: data.imgProduct[0].img,
+      discount: data.discount
+    }
+    addItemCart(convertData)
+  }
   return <section className="text-zinc-900">
     <div className="container mx-auto px-4">
       {data && data.map((d: any) => <div className="lg:col-gap-12 xl:col-gap-16 mt-8 grid grid-cols-1 gap-12 lg:mt-12 lg:grid-cols-5 lg:gap-16" key={`detail-${d.idProduct}`}>
@@ -72,7 +84,7 @@ const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number
               <h1 className="text-3xl font-bold">${d.price}</h1>
             </div>
             {/* Button add to cart */}
-            {d.action === "show" && <button type="button" className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800">
+            {d.action === "show" && <button onClick={() => handleAddCart(data[0])} type="button" className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800">
               <svg xmlns="http://www.w3.org/2000/svg" className="shrink-0 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>

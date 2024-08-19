@@ -15,7 +15,7 @@ export default class UserStatement {
           eb.selectFrom("carts")
             .select((c: any) => [
               "idCart",
-              "idProduct",
+              "carts.idProduct",
               "countProduct",
               jsonArrayFrom(
                 c
@@ -31,9 +31,12 @@ export default class UserStatement {
                   .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
                   .leftJoin("sale", "sd.idSale", "sale.idSale")
                   .whereRef("carts.idProduct", "=", "p.idProduct")
+                  .where("p.status", "=", "show")
               ).as("detail"),
             ])
+            .leftJoin("products", "carts.idProduct", "products.idProduct")
             .where("carts.idUser", "=", idUser)
+            .where("products.status", "=", "show")
         ).as("cart"),
         jsonArrayFrom(
           eb

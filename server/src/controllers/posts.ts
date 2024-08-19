@@ -23,6 +23,26 @@ export default class PostsController {
     const idPosts = req.params["id"];
     handleFindData(res, postStatement.getDetail(Number(idPosts)));
   };
+  public createCategory = async (req: RequestCustom, res: Response) => {
+    const idUser = req.idUser
+    const data = req.body
+    const newData = convertData([data])
+    const logsData = logData(idUser, "Create new category")
+    try {
+      const result = await statement.insertData("typePost", newData)
+      const resultLog = logs.create(logsData)
+      if (!result) {
+        return responseMessageData(res, 401, `Category created is failed`);
+      }
+      responseMessageData(res, 201, `Category created is success`, { id: Number(result.insertId) });
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+        throw errors
+      };
+    }
+  }
   public insertPost = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const data = req.body;

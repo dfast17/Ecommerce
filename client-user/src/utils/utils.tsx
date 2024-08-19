@@ -1,5 +1,5 @@
 export const pagination = (itemsInPage: number, dataLength: number): number => {
-    return Math.round(dataLength / itemsInPage)
+    return Math.ceil(dataLength / itemsInPage)
 }
 export const percentDiscount = (discount: number, price: number) => {
     return price - ((price * discount) / 100)

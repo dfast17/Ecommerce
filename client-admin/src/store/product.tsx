@@ -1,10 +1,10 @@
-import {create} from "zustand";
-import { CategoryProductType, ProductType } from "../types/types";
+import { create } from "zustand";
+import { CategoryProductType, ProductResponse } from "../types/types";
 
 interface ProductStoreType {
-  product: ProductType[] | null;
-  category:CategoryProductType[] | null;
-  setProduct: (product: ProductType[]) => void;
+  product: ProductResponse | null;
+  category: CategoryProductType[] | null;
+  setProduct: (product: ProductResponse) => void;
   setCategory: (product: CategoryProductType[]) => void;
   error: string | null;
   setError: (error: string | null) => void;
@@ -12,10 +12,10 @@ interface ProductStoreType {
   setIsLoading: (isLoading: boolean) => void;
 }
 
-export const productStore = create<ProductStoreType>((set:any) => ({
+export const productStore = create<ProductStoreType>((set: any) => ({
   product: null,
-  category:null,
-  setProduct: (product: ProductType[]) => set({ product }),
+  category: null,
+  setProduct: (product: ProductResponse) => set({ product }),
   setCategory: (category: CategoryProductType[]) => set({ category }),
   error: null,
   setError: (error: string | null) => set({ error }),

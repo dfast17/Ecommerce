@@ -1,12 +1,12 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { StateContext } from "../../context/state"
-import { Button, Modal, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
+import { Button, Modal, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
 import { OrderType } from "../../types/types"
 //Import Icon
 import { FcViewDetails } from "react-icons/fc";
 //
 import { GetToken } from "../../utils/token";
-import { getOrderById } from "../../api/order";
+import { getOrder, getOrderById } from "../../api/order";
 import ModalOrder from "./order.modal";
 import OrderDetail from "./detail";
 export interface OrderStatusType {
@@ -17,12 +17,13 @@ export interface OrderStatusType {
 const Order = () => {
   const { position, order, isDark } = useContext(StateContext)
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [data, setData] = useState<OrderType[] | []>([])
   const [id, setId] = useState<string>("")
   const [detail, setDetail] = useState<any[] | null>(null)
   const [info, setInfo] = useState<any>([])
   const [currentStatus, setCurrentStatus] = useState<string | null>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
-
+  const [activePage, setActivePage] = useState<number>(1)
   const [btnSubmit, setBtnSubmit] = useState<boolean>(false)
 
   const orderStatus: OrderStatusType[] = [
@@ -51,13 +52,16 @@ const Order = () => {
       label: "Failed"
     }
   ]
+  useEffect(() => {
+    order && setData(order.data)
+  }, [order])
   const handleDetail = async (id: string) => {
     setIsEdit(false)
     setBtnSubmit(false)
     setId(id)
-    const status = order.filter((ord: OrderType) => ord.idOrder === id)[0].orderStatus
+    const status = order.data.filter((ord: OrderType) => ord.idOrder === id)[0].orderStatus
     setCurrentStatus(orderStatus.filter((ord: OrderStatusType) => ord.value === status)[0].value)
-    setInfo(order.filter((ord: OrderType) => ord.idOrder === id).map((ord: OrderType) => ({
+    setInfo(order.data.filter((ord: OrderType) => ord.idOrder === id).map((ord: OrderType) => ({
       fullName: ord.fullName,
       phone: ord.phone,
       address: ord.address,
@@ -72,7 +76,22 @@ const Order = () => {
       .catch(err => console.log(err))
 
   }
+  const handlePagination = async (page: number) => {
+    if (page === activePage) {
+      return false
+    }
+    const token = await GetToken()
+    setActivePage(page)
+    order && page > 1 && getOrder(token, order.total, page, order.limit)
+      .then(res => {
+        if (res.status !== 200) {
+          return console.log(res.message)
+        }
+        setData(res.data.data)
+      })
 
+    order && page === 1 && setData(order.data)
+  }
   return <div className={`w-full h-auto min-h-[95.6vh] grid grid-cols-3 gap-1 ${isDark ? "bg-[#3d3d3d] text-white" : "bg-[#F5F5F5] text-zinc-950"} p-2`}>
     <div className="order-data h-full col-span-2">
       <div className="w-full h-[80px] col-span-3 row-span-1 flex items-center justify-start">
@@ -91,7 +110,7 @@ const Order = () => {
         </TableHeader>
 
         <TableBody>
-          {order && order.map((o: OrderType) =>
+          {data && data.map((o: OrderType) =>
             <TableRow key={`order-${o.idOrder}`}>
               <TableCell>#{o.idOrder}</TableCell>
               <TableCell>{o.fullName}</TableCell>
@@ -109,8 +128,9 @@ const Order = () => {
             </TableRow>
           )}
         </TableBody>
-
       </Table>
+      {order && data && data.length > 0 && <Pagination onChange={(e: number) => handlePagination(e)} className="my-1" isCompact size="lg" showControls
+        page={activePage} total={order.total_page} />}
     </div>
 
 

@@ -3,9 +3,18 @@ import { useContext, useState } from "react"
 import { Button, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import { pagination } from "../../utils/utils"
 import { MdCancelPresentation } from "react-icons/md";
+import { deleteOrderItem } from "../../api/order";
+import { toast } from "react-toastify";
 const Order = () => {
-    const { order } = useContext(StateContext)
+    const { order, setOrder } = useContext(StateContext)
     const [activePage, setActivePage] = useState<number>(1)
+    const handleDeleteItemOrder = (idOrdDetail: number, idOrder: string) => {
+        deleteOrderItem({ idOrdDetail, idOrder }).then((res) => {
+            res.status === 200 && setOrder(order.filter((o: any) => o.idOrdDetail !== idOrdDetail))
+            res.status === 200 ? toast.success(res.message) : toast.error(res.message)
+            setActivePage(1)
+        })
+    }
     return <div className="user-purchase w-full h-auto flex flex-wrap justify-center items-center p-1">
         <div className="product w-full h-auto flex flex-wrap justify-around content-start">
             <Table aria-label="TableOrder"
@@ -30,7 +39,7 @@ const Order = () => {
                         <TableCell>{o.orderStatus}</TableCell>
                         <TableCell>
                             {(o.orderStatus === "pending" || o.orderStatus === "prepare") && <Tooltip radius="sm" content="Cancel Order" classNames={{ content: "text-zinc-950" }}>
-                                <Button size="sm" isIconOnly color="danger">
+                                <Button size="sm" isIconOnly color="danger" onClick={() => { handleDeleteItemOrder(o.idOrdDetail, o.idOrder) }}>
                                     <MdCancelPresentation className="text-xl" />
                                 </Button>
                             </Tooltip>}

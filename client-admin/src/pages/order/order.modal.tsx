@@ -32,7 +32,7 @@ const ModalOrder = () => {
     }
     useEffect(() => {
         productList && product && setProductOrder(
-            product.filter((f: ProductType) =>
+            product.data.filter((f: ProductType) =>
                 productList.includes(f.idProduct.toString())
             ).map((p: ProductType) => ({
                 idProduct: p.idProduct,
@@ -128,7 +128,7 @@ const ModalOrder = () => {
                         size="lg"
                         className="w-[100%] col-span-1"
                     >
-                        {product.map((p: ProductType) => <SelectItem key={p.idProduct}
+                        {product.data.map((p: ProductType) => <SelectItem key={p.idProduct}
                             startContent={<img className="size-10 object-contain" src={p.imgProduct} alt={p.imgProduct} />}
                         >{p.nameProduct}</SelectItem>)}
                     </Select>}

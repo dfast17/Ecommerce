@@ -10,6 +10,12 @@ export default class ProductStatement {
       .orderBy("displayorder asc")
       .execute();
   };
+  public countData = async () => {
+    return await db
+      .selectFrom("products")
+      .select((eb: any) => eb.fn.count('idProduct').as('total'))
+      .execute();
+  }
   public findAllType = async () => {
     return await db
       .selectFrom("type")
@@ -44,10 +50,10 @@ export default class ProductStatement {
       .where("type.nameType", "=", nameType)
       .execute();;
   }
-  public findAll = async () => {
+  public findAll = async (limit: number, page: number) => {
     return await db
       .selectFrom("products as p")
-      .select<string | any>((eb: any) => [
+      .select<any>([
         "p.idProduct",
         "nameProduct",
         "price",
@@ -64,6 +70,8 @@ export default class ProductStatement {
       .leftJoin("sale", "sd.idSale", "sale.idSale")
       .where("p.status", "=", "show")
       .groupBy("p.idProduct")
+      .limit(limit)
+      .offset((page - 1) * limit)
       .execute();
   };
 
@@ -162,6 +170,7 @@ export default class ProductStatement {
         "p.idType",
         "brand",
         "t.nameType",
+        sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount`,
       ])
       .leftJoin("type as t", "p.idType", "t.idType")
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
