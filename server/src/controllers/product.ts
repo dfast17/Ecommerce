@@ -151,6 +151,59 @@ export default class ProductController {
       };
     }
   };
+  public insertImages = async (request: Request, res: Response) => {
+    const req = request as RequestCustom
+    const data = req.body;
+    const logsData = logData(req.idUser, 'Add new image')
+    try {
+      const insertDetail = await statement.insertDataMulti('imageProduct', data);
+      console.log(insertDetail)
+      const resultLog = await logs.create(logsData)
+      insertDetail
+        ? responseMessageData(res, 201, 'Add new image is success', { firstId: Number(insertDetail[0].insertId) })
+        : responseMessage(res, 500, "Server errors");
+    } catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
+  public updateImage = async (request: Request, res: Response) => {
+    const req = request as RequestCustom
+    const data = req.body;
+    const condition: ConditionType = {
+      conditionName: "img",
+      conditionMethod: "=",
+      value: data.urlDefault
+    }
+    const conditionProduct: ConditionType | null = data.type === "update" ? {
+      conditionName: "idProduct",
+      conditionMethod: "=",
+      value: data.idProduct
+    } : null
+
+    const logsData = logData(req.idUser, data.type === "update" ? 'Update image' : 'Delete image')
+    console.log("start")
+    console.log(condition)
+    try {
+      const resultLog = await logs.create(logsData)
+      const updateImage = data.type === "update" ? await statement.updateDataByCondition('imageProduct', convertData([{ img: data.url }]), condition)
+        : await statement.removeData('imageProduct', condition)
+      const updateImgDefault = conditionProduct ? await statement.updateDataByCondition('products', convertData([{ imgProduct: data.urlDefault }]), conditionProduct) : null
+      if (data.type === "update" && !updateImage) {
+        const restoreData = await statement.updateDataByCondition('imageProduct', data.urlDefault, condition)
+        return responseMessageData(res, 403, "Update image is failed", restoreData)
+      }
+      updateImage
+        ? responseMessage(res, 200, data.type === "update" ? 'Update image is success' : 'Delete image is success')
+        : responseMessage(res, 500, "Server errors");
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
   public updateProduct = async (request: Request, res: Response) => {
     const req = request as RequestCustom
     const data = req.body;

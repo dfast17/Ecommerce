@@ -23,7 +23,8 @@ export default class PostsController {
     const idPosts = req.params["id"];
     handleFindData(res, postStatement.getDetail(Number(idPosts)));
   };
-  public createCategory = async (req: RequestCustom, res: Response) => {
+  public createCategory = async (request: Request, res: Response) => {
+    const req = request as RequestCustom
     const idUser = req.idUser
     const data = req.body
     const newData = convertData([data])

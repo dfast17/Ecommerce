@@ -110,6 +110,7 @@ const AdminLayout = ({ children }: IAdminLayoutProps) => {
 
   return (
     <div className={`relative flex h-screen overflow-y-hidden `}>
+      <div className={`overlay absolute ${isHeader ? "block" : "hidden"} top-0 left-0 w-full h-full z-20 bg-zinc-950 bg-opacity-50 transition-all`} onClick={() => setIsHeader(!isHeader)}></div>
       <aside
         className={`fixed z-50 transition-all w-72 pt-6 px-6 pb-8 h-full flex flex-col overflow-y-auto border-r bg-[#09090A] text-white
           ${isDark ? " border-r-[#1F1F22]" : "border-r-[#EFEFEF]"} 

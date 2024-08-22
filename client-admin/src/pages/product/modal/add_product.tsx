@@ -20,7 +20,7 @@ interface KeyDetailType {
 
 const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetStateAction<string>> }) => {
     const { isDark } = useContext(StateContext)
-    const { product, category, setProduct } = productStore()
+    const { category } = productStore()
     const { register: registerProduct, handleSubmit, formState: { errors: err } } = useForm();
     const [date, setDate] = useState<string | null>(null)
     const [selectValue, setSelectValue] = useState<string | null>(null);
@@ -41,11 +41,9 @@ const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetSt
         setFileName(file.name);
     };
     const handleChangeSubImages = (e: any) => {
-        console.log(Array.from(e.target.files).flatMap((f: any) => f.name).toString())
         setSubImages(Array.from(e.target.files))
     }
     const onSubmit = async (data: any) => {
-
         const subImage = new FormData()
         const defaultImage = new FormData()
         for (let i = 0; i < subImages.length; i++) {
@@ -90,10 +88,6 @@ const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetSt
         token && createProduct(dataInsert, token)
             .then((res: any) => {
                 res.status === 201 ? toast.success(res.message) : toast.error(res.message)
-                res.status === 201 && product && setProduct([...product, {
-                    ...dataInsert.product[0],
-                    idProduct: res.insertId,
-                }])
                 setModalName("")
             })
             .catch((err: any) => console.log(err))

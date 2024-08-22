@@ -17,6 +17,17 @@ export const productUpdate = async (token: string, data: { tableName: string, co
     })
         .then(res => res.json())
 }
+export const imageUpdate = async (token: string, data: { [key: string]: string | number }) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/image`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+}
 export const getColByType = async (type: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/col/${type}`)
         .then(res => res.json())
@@ -31,6 +42,17 @@ export const getCategorydetail = async (name: string) => {
 }
 export const createProduct = async (data: any, token: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+}
+export const createImage = async (data: { type: string, img: string }[], token: string) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/image`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -92,7 +114,6 @@ export const getSaleDetail = async (id: number) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/sale/detail/${id}`)
         .then(res => res.json())
 }
-
 export const columnChange = async (data: { method: string, table: string, colAdd?: { name: string, datatypes: string, isNull: boolean, limit: number }[], colDel?: string[] }) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/table`, {
         method: 'PUT',

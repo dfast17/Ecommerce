@@ -80,6 +80,7 @@ const PostsDetail = () => {
         {/* Nội dung bài viết */}
         <div className="w-[99%] xl:w-3/5 h-auto py-10">
             {data !== null && data.data.map((e: any) => <div className="ql-snow" key={e.idPost}>
+                <h1 className="text-4xl text-black font-bold text-center">{e.title}</h1>
                 <div className={`ql-editor text-slate-700 bg-transparent`} dangerouslySetInnerHTML={{ __html: e.valuesPosts }} />
             </div>)}
         </div>

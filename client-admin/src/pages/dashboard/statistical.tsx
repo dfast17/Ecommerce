@@ -75,20 +75,24 @@ const Statistical = () => {
       }}
     >
       <h1 className="w-full text-[30px] text-center font-bold font-mono">New Order</h1>
-      <div className="w-full h-[300px] flex flex-wrap justify-center  items-center">
+      <div className="w-full h-[350px] flex flex-wrap justify-center  items-center">
         <div className="w-full h-[50px] flex items-center justify-center text-[20px] font-bold font-mono">
           <div className="w-2/5">Id Order</div>
-          <div className="w-[15%]">Created at</div>
-          {role === 0 && <div className="w-[15%]">Payment method</div>}
-          <div className="w-[15%]">Payment status</div>
+          <div className={`${role === 0 ? "w-[15%]" : "w-[25%]"}`}>Created at</div>
+          {role === 0 && <>
+            <div className="w-[15%]">Payment method</div>
+            <div className="w-[15%]">Payment status</div>
+          </>}
           <div className="w-[15%]">Order status</div>
         </div>
         {statistical.order && statistical.order.map((item: any) =>
-          <div className="w-full h-[50px] flex items-center justify-center text-[20px] font-bold font-mono" key={`Order-${item.idOrder}`}>
+          <div className="w-full h-[50px] flex items-center justify-center text-[20px] font-bold font-mono border-b border-solid border-white/50" key={`Order-${item.idOrder}`}>
             <div className="w-2/5">#{item.idOrder}</div>
-            <div className="w-[15%]">{formatDate(item.created_at)}</div>
-            {role === 0 && <div className="w-[15%]">{item.method}</div>}
-            <div className="w-[15%]">{item.paymentStatus}</div>
+            <div className={`${role === 0 ? "w-[15%]" : "w-[25%]"}`}>{formatDate(item.created_at)}</div>
+            {role === 0 && <>
+              <div className="w-[15%]">{item.method}</div>
+              <div className="w-[15%]">{item.paymentStatus}</div>
+            </>}
             <div className="w-[15%]">{item.orderStatus}</div>
           </div>
         )}

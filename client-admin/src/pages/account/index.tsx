@@ -5,10 +5,12 @@ import { useContext } from "react"
 import { GetToken } from "../../utils/token"
 import { updateStatus } from "../../api/user"
 import { userStore } from "../../store/user"
+import { useNavigate } from "react-router-dom"
 
 const Account = () => {
-  const { isDark } = useContext(StateContext)
+  const { role, isDark } = useContext(StateContext)
   const { user, staff, setUser, setStaff } = userStore()
+  const navigate = useNavigate()
   const handleChangeStatus = async (type: "users" | "staff", id: string, action: "active" | "block") => {
     const token = await GetToken()
     token && updateStatus(token, { action, id }).
@@ -21,11 +23,17 @@ const Account = () => {
       })
       .catch(err => console.log(err))
   }
+  if (role !== 0) {
+    return navigate('/')
+  }
   return <div className={`user w-full h-auto min-h-[95.6vh] flex flex-wrap justify-evenly content-start 
   ${isDark ? "bg-[#3d3d3d] text-white" : "bg-[#F5F5F5] text-zinc-900"}`}>
-    <Staff handleChangeStatus={handleChangeStatus} />
-    <User handleChangeStatus={handleChangeStatus} />
+    {role === 0 && <>
+      <Staff handleChangeStatus={handleChangeStatus} />
+      <User handleChangeStatus={handleChangeStatus} />
+    </>}
   </div>
+
 }
 
 export default Account
