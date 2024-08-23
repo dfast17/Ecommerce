@@ -28,6 +28,10 @@ export const imageUpdate = async (token: string, data: { [key: string]: string |
     })
         .then(res => res.json())
 }
+export const eventProductGetAll = async () => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/sale/product`)
+        .then(res => res.json())
+}
 export const getColByType = async (type: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/col/${type}`)
         .then(res => res.json())
@@ -40,6 +44,7 @@ export const getCategorydetail = async (name: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/detail/type/${name}`)
         .then(res => res.json())
 }
+
 export const createProduct = async (data: any, token: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product`, {
         method: 'POST',

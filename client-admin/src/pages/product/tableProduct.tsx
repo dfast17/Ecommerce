@@ -12,6 +12,7 @@ import { productStore } from "../../store/product";
 import { GetToken } from "../../utils/token";
 import { productGetAll, productUpdate } from "../../api/product";
 import { pagination } from "../../utils/utils";
+import { toast } from "react-toastify";
 const TableProduct = () => {
     const { isDark } = useContext(StateContext)
     const { product } = productStore()
@@ -45,7 +46,7 @@ const TableProduct = () => {
         const token = await GetToken()
         token && productUpdate(token, { tableName: table, condition: condition, data_update: dataUpdate })
             .then(res => {
-                alert(res.message)
+                res.status === 200 ? toast.success(res.message) : toast.error(res.message)
                 res.status === 200 && product && setData(product.data.map((p: ProductType) => p.idProduct === id ? { ...p, action: status } : p))
             })
             .catch(err => console.log(err))
@@ -112,7 +113,6 @@ const TableProduct = () => {
                         </TableRow>
                     )
                 }
-
             </TableBody>
 
         </Table>

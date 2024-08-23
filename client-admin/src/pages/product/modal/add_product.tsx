@@ -29,7 +29,6 @@ const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetSt
     const [file, setFile] = useState("")
     const [subImages, setSubImages] = useState<File[]>([])
     useEffect(() => {
-        selectValue && category && console.log(category?.filter((f: any) => f.idType === Number(selectValue))[0].detail.map((m: any) => m.name))
         selectValue && category && setDetail(category?.filter((f: any) => f.idType === Number(selectValue))[0].detail)
     }, [selectValue, category])
     const handleSelectChange = (e: any) => {

@@ -7,7 +7,6 @@ const Product = () => {
     <BtnList />
     <Category />
     <TableProduct />
-
   </div>
 }
 

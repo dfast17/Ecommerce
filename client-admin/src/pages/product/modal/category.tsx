@@ -94,8 +94,6 @@ const ModalCateDetail = ({ name }: { name: string }) => {
             })
     }
     const handleDeleteTable = async (nameType: string, onClose: () => void) => {
-        console.log(nameType)
-
         const token = await GetToken()
         token && removeCategory(token, nameType)
             .then(res => {

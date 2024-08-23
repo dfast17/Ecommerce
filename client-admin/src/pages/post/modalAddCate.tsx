@@ -1,5 +1,5 @@
 import { Button, Input, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { StateContext } from '../../context/state'
 import { CategoryPostType } from '../../types/types'
@@ -35,9 +35,6 @@ const ModalAddCate = () => {
                 }
             })
     }
-    useEffect(() => {
-        typePost && console.log(typePost)
-    }, [typePost])
     return <ModalContent>
         {(__onClose) => <>
             <ModalHeader>Add category for post</ModalHeader>

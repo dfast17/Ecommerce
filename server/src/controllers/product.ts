@@ -416,5 +416,8 @@ export default class ProductController {
     const idSale = req.params["idSale"];
     handleFindData(res, products.findSaleDetail(Number(idSale)));
   };
+  public eventProductGetAll = async (req: Request, res: Response) => {
+    handleFindData(res, products.eventProductGetAll());
+  };
 
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import { StateContext } from "../../context/state"
 import { Code } from "@nextui-org/react"
 import FluentEmojiLaptop from "../../components/icon/laptop"

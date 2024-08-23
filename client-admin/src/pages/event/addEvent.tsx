@@ -1,22 +1,22 @@
 import { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { StateContext } from "../../context/state";
-import { productStore } from "../../store/product";
 import { GetToken } from "../../utils/token";
 import { createEvent } from "../../api/product";
 import { CiTrash } from "react-icons/ci";
 import Select from "react-select";
 import { toast } from "react-toastify";
+import { useFetchData } from "../../hooks/useFetchData";
 
 const FormAddEvent = ({ props }: { props: any }) => {
     const { sale, setSale } = useContext(StateContext)
-    const { product } = productStore()
+    const { data } = useFetchData('product', 'eventProductGetAll')
     const [dataSale, setDataSale] = useState<any>([1]);
     const { register, handleSubmit, control } = useForm();
     const [newData, setNewData] = useState<any>(null)
     useEffect(() => {
-        product !== null && setNewData(product.data.map((e: any) => { return { value: e.idProduct, label: e.nameProduct, isDis: false } }))
-    }, [product])
+        data !== null && setNewData(data.data.map((e: any) => { return { value: e.idProduct, label: e.nameProduct, isDis: false } }))
+    }, [data])
     const handleChange = (data: any) => {
         setNewData(newData?.map((e: any) => {
             return {

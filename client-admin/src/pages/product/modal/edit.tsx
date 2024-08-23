@@ -91,7 +91,6 @@ const ModalEdit = ({ id, nameType, setModalName }: { id: number | string, nameTy
   }
   const handleChangeSubImages = (e: any) => {
     const files = Array.from(e.target.files) as File[]
-    console.log(Array.from(e.target.files))
     newImg.length === 0 ? setNewImg(files) : setNewImg(prevFile => [...prevFile, ...files])
   }
   const handleSetDefaultImage = async (img: string) => {

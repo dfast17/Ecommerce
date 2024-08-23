@@ -11,12 +11,6 @@ interface EventDetailProductType {
     price: number,
     discount: number
 }
-/* interface EventDetailType {
-    idSale: number
-    start_date: string
-    end_date: string,
-    detail: EventDetailProductType[]
-} */
 const DetailEvent = ({ idSale }: { idSale: number }) => {
     const { data } = useFetchDataByKey('product', 'getSaleDetail', idSale)
     const { isDark } = useContext(StateContext)

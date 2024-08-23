@@ -2,7 +2,7 @@ import { Avatar, Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFoote
 import { userStore } from "../../store/user"
 import { StaffType } from "../../types/types"
 import { StateContext } from "../../context/state"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { CiCalendarDate } from "react-icons/ci";
 import { FaUserPlus } from "react-icons/fa";
 import { MdOutlineUpdate } from "react-icons/md";
@@ -108,9 +108,6 @@ const ModalAddStaff = () => {
             })
             .catch(err => console.log(err))
     }
-    useEffect(() => {
-        staff && console.log(staff)
-    }, [staff])
     return <ModalContent >
         {(onClose) => <>
             <ModalHeader className="flex flex-col justify-center gap-1">

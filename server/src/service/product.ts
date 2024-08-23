@@ -216,7 +216,6 @@ export default class ProductStatement {
       .where((eb: any) => eb("sale.start_date", "<=", date).and("sale.end_date", ">=", date))
       .execute();
   };
-
   public findSaleDetail = async (idSale: number) => {
     return await db
       .selectFrom("sale")
@@ -234,6 +233,16 @@ export default class ProductStatement {
         ).as("detail"),
       ])
       .where("sale.idSale", "=", idSale)
+      .execute();
+  };
+  public eventProductGetAll = async () => {
+    return await db
+      .selectFrom("products")
+      .select((eb: any) => [
+        "idProduct",
+        "nameProduct",
+        "imgProduct",
+      ])
       .execute();
   };
 }

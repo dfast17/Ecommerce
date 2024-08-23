@@ -8,13 +8,10 @@ export default class OrderStatement {
       .where("idOrder", "=", `${idOrder}`)
       .execute();
   }
-  public getCountOrder = async (limit: number, page: number, idUser?: string) => {
-    return await db.selectFrom("order")
-      .select((eb: any) => eb.fn.count("idOrder").as("total"))
-      .where("order.idShipper", "=", idUser ? idUser : "null")
-      .limit(limit)
-      .offset((page - 1) * limit)
-      .execute()
+  public getCountOrder = async (limit: number, page: number, idShipper?: string) => {
+    let query = db.selectFrom("order").select((eb: any) => eb.fn.count("idOrder").as("total"))
+    return idShipper ? await query.where("order.idShipper", "=", idShipper).limit(limit).offset((page - 1) * limit).execute()
+      : await query.limit(limit).offset((page - 1) * limit).execute()
   }
   public getAllOrder = async (limit: number, page: number) => {
     return await db

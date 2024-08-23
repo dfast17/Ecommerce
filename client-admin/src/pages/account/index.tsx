@@ -6,6 +6,7 @@ import { GetToken } from "../../utils/token"
 import { updateStatus } from "../../api/user"
 import { userStore } from "../../store/user"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 const Account = () => {
   const { role, isDark } = useContext(StateContext)
@@ -15,11 +16,13 @@ const Account = () => {
     const token = await GetToken()
     token && updateStatus(token, { action, id }).
       then(res => {
-        alert(res.message)
+
         if (res.status === 200) {
+          toast.success(res.message)
           type === "users" && user && setUser(user.map((u: any) => u.idUser === id ? { ...u, action: action } : u))
           type === "staff" && staff && setStaff(staff.map((s: any) => s.idStaff === id ? { ...s, action: action } : s))
         }
+        else toast.error(res.message)
       })
       .catch(err => console.log(err))
   }

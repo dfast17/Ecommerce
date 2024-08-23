@@ -1,7 +1,6 @@
 import { Button, Modal, useDisclosure } from "@nextui-org/react"
 import { LiaLaptopMedicalSolid } from "react-icons/lia";
 import { TbCategoryPlus } from "react-icons/tb";
-/* import { FaRegImages } from "react-icons/fa"; */
 import { useState } from "react";
 import AddProduct from "./modal/add_product";
 import AddCategory from "./modal/add_category";
@@ -25,9 +24,6 @@ const BtnList = () => {
         <Button onClick={() => { onOpen(); setModalName("category") }} isIconOnly color="primary" size="sm" className="mx-1">
             <TbCategoryPlus className="text-[20px] text-zinc-50" />
         </Button>
-        {/* <Button isIconOnly color="primary" size="sm" className="mx-1">
-            <FaRegImages className="text-[20px] text-zinc-50" />
-        </Button> */}
         <Modal
             isOpen={isOpen}
             onOpenChange={() => { onOpenChange(); setModalName("") }}
