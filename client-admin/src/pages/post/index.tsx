@@ -11,11 +11,11 @@ const Post = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   return <div className={`w-full h-auto flex flex-wrap justify-center items-center ${isDark ? "bg-[#3d3d3d] text-white" : "bg-[#F5F5F5] text-zinc-950"} !text-zinc-900`}>
     <div className="w-[90%] my-2">
-      <Post_data />
       <h1 className="text-blue-500 text-[25px] text-center font-bold my-4">Create a new Posts</h1>
       <Button onPress={onOpen} color="primary" size="sm" className="my-4">Add category</Button>
       <ShortKey />
       <CreatePosts />
+      <Post_data />
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} >
         <ModalAddCate />
       </Modal>

@@ -157,7 +157,6 @@ export default class ProductController {
     const logsData = logData(req.idUser, 'Add new image')
     try {
       const insertDetail = await statement.insertDataMulti('imageProduct', data);
-      console.log(insertDetail)
       const resultLog = await logs.create(logsData)
       insertDetail
         ? responseMessageData(res, 201, 'Add new image is success', { firstId: Number(insertDetail[0].insertId) })
@@ -183,8 +182,6 @@ export default class ProductController {
     } : null
 
     const logsData = logData(req.idUser, data.type === "update" ? 'Update image' : 'Delete image')
-    console.log("start")
-    console.log(condition)
     try {
       const resultLog = await logs.create(logsData)
       const updateImage = data.type === "update" ? await statement.updateDataByCondition('imageProduct', convertData([{ img: data.url }]), condition)

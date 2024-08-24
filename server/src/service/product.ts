@@ -63,7 +63,7 @@ export default class ProductStatement {
         "t.nameType",
         "p.status as action",
         "view",
-        sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount`,
+        sql`IFNULL(MAX(IF(sale.end_date >= CURRENT_DATE() AND sale.start_date <= CURRENT_DATE(), sd.discount, 0)), 0) AS discount`,
       ])
       .leftJoin("type as t", "p.idType", "t.idType")
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
@@ -122,11 +122,13 @@ export default class ProductStatement {
         jsonArrayFrom(eb.selectFrom(type).select(["id", ...colDetail]).whereRef(`${type}.idProduct`, "=", "p.idProduct")).as(
           "detail"
         ),
+        sql`IFNULL(MAX(IF(sale.end_date >= CURRENT_DATE() AND sale.start_date <= CURRENT_DATE(), sd.discount, 0)), 0) AS discount`,
       ])
       .leftJoin("type as t", "p.idType", "t.idType")
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
       .leftJoin("sale", "sd.idSale", "sale.idSale")
       .where("p.idProduct", "=", idProduct)
+      .groupBy("p.idProduct")
       .execute();
   };
 
