@@ -35,9 +35,7 @@ const ModalEdit = ({ id, nameType, setModalName }: { id: number | string, nameTy
     data && setDetailData(data.data)
     col && setColumn(col.data)
   }, [data, col])
-  useEffect(() => {
-    detailData && console.log(detailData)
-  }, [detailData])
+
   const onSubmitInfo = async (data: ObjectKeys) => {
     const formatData: ObjectKeys = { ...data, price: Number(data.price) }
     const currentData = detailData?.map((e: ProductEditType) => ({
@@ -128,7 +126,7 @@ const ModalEdit = ({ id, nameType, setModalName }: { id: number | string, nameTy
           console.log(updateDetail)
           detailData && setDetailData(detailData.map((d: any) => ({
             ...d,
-            imgProduct: updateDetail?.sort((a: any, b: any) => a.type === "default" ? -1 : 1)
+            imgProduct: updateDetail?.sort((a: any, __b: any) => a.type === "default" ? -1 : 1)
           })))
         }
         else {

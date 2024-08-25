@@ -7,32 +7,36 @@ import FilterBrand from './layout/filterBrand';
 import FilterPrice from './layout/filterPrice';
 import { SortedData } from '../../utils/handle';
 import { useParams } from 'react-router-dom';
-import { useFetchDataByKey } from '../../hooks/useFetchData';
 import Empty_Data from '../../components/error/empty';
+import { productGetByKey } from '../../api/product';
 
 const SearchProduct = () => {
     const param = useParams()
-    const { data } = useFetchDataByKey('product', 'productGetByKey', param.key);
-    const listBrand = data && Array.from(new Set(
-        data.data.map((d: ProductType) => d.brand)
-    ))
     const [currentData, setCurrentData] = useState<ProductType[] | null>(null);
+    const [listBrand, setListBrand] = useState<string[]>([])
     const [activePage, setActivePage] = useState<number>(1)
     const [filter, setFilter] = useState<ProductFilterType>({ brand: [], price: "", detail: [] })
-    useEffect(() => { data && setCurrentData(data.data) }, [data])
+    useEffect(() => {
+        productGetByKey(param.key!)
+            .then(res => {
+                if (res.status !== 200) return
+                setCurrentData(res.data)
+                setListBrand(Array.from(new Set(res.data.map((d: ProductType) => d.brand))))
+            })
+    }, [param])
     useEffect(() => {
         const FilterData = async () => {
             setActivePage(1)
-            const productData = data?.data
-            const resultBrand = filter.brand.length !== 0 ? productData.filter((f: any) => filter.brand.includes(f.brand)) : productData
+            const productData = currentData && currentData
+            const resultBrand = filter.brand.length !== 0 && productData ? productData.filter((f: any) => filter.brand.includes(f.brand)) : productData
             setCurrentData(resultBrand)
         }
         FilterData()
     }, [filter])
     SortedData(currentData, filter.price, setCurrentData, setActivePage)
-    return data && data.data.length !== 0 ? <div className='product w-full h-auto flex flex-col items-center justify-center overflow-hidden'>
+    return currentData && currentData.length !== 0 ? <div className='product w-full h-auto flex flex-col items-center justify-center overflow-hidden'>
         <div className='filter w-[90%] flex flex-wrap my-4 text-zinc-900'>
-            {data && <FilterBrand listBrand={listBrand} setFilter={setFilter} filterData={filter} />}
+            {listBrand && <FilterBrand listBrand={listBrand} setFilter={setFilter} filterData={filter} />}
             <FilterPrice setFilter={setFilter} filterData={filter} />
             <Button size='sm' radius='sm' color='danger' className='mx-1' onClick={() => { setFilter({ brand: [], price: "", detail: [] }) }}>CLEAR</Button>
         </div>

@@ -3,7 +3,13 @@ export const productGetAll = async (total?: number, page?: number, limit?: numbe
         .then(res => res.json())
 }
 export const productGetDetail = async (obj: { nameType: string, idProduct: string | number }) => {
-    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/detail/${obj.nameType}/${obj.idProduct}`)
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/detail/${obj.idProduct}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ type: obj.nameType, role: "admin" })
+    })
         .then(res => res.json())
 }
 export const productUpdate = async (token: string, data: { tableName: string, condition: { name: string, value: string | number }, data_update: any }) => {

@@ -103,7 +103,7 @@ const Statistical = () => {
       <div className="w-full h-[300px] flex flex-wrap justify-start content-around overflow-y-scroll px-3">
         {log && log.map((l: LogsType) =>
           <div className="w-full flex flex-wrap justify-center" key={l._id}>
-            <div className="w-3/5 h-[50px] flex items-center justify-start text-[20px] font-bold font-mono truncate">{l.idUser}:{l.content}</div>
+            <div className="w-3/5 h-[50px] flex items-center justify-start text-[20px] font-bold font-mono truncate">{l.idUser}:<span className="truncate">{l.content}</span></div>
             <div className="w-2/5 h-[50px] flex items-center justify-end text-[20px] font-bold font-mono">{l.timestamp}</div>
           </div>
         )}

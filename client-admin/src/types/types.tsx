@@ -33,6 +33,7 @@ export interface ProductType {
     brand?: string,
     nameType?: string,
     discount?: number,
+    total?: number,
     view?: number,
     action?: "show" | "hide"
 }
@@ -126,8 +127,11 @@ export interface OrderDetailType {
     idOrdDetail: number,
     idOrder: string,
     idProduct: number,
+    nameProduct: string,
+    imgProduct: string,
     countProduct: number,
     discount: number,
+    price: number
 }
 export interface CategoryPostType {
     idType: number,

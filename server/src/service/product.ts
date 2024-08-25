@@ -61,6 +61,7 @@ export default class ProductStatement {
         "p.idType",
         "brand",
         "t.nameType",
+        "total",
         "p.status as action",
         "view",
         sql`IFNULL(MAX(IF(sale.end_date >= CURRENT_DATE() AND sale.start_date <= CURRENT_DATE(), sd.discount, 0)), 0) AS discount`,
@@ -68,7 +69,6 @@ export default class ProductStatement {
       .leftJoin("type as t", "p.idType", "t.idType")
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
       .leftJoin("sale", "sd.idSale", "sale.idSale")
-      .where("p.status", "=", "show")
       .groupBy("p.idProduct")
       .limit(limit)
       .offset((page - 1) * limit)
@@ -86,6 +86,7 @@ export default class ProductStatement {
         "p.idType",
         "view",
         "brand",
+        "total",
         "t.nameType",
         sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount`,
         jsonArrayFrom(
@@ -150,6 +151,7 @@ export default class ProductStatement {
         "p.idType",
         "brand",
         "t.nameType",
+        "total",
         sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount`,
       ])
       .leftJoin("type as t", "p.idType", "t.idType")
@@ -172,6 +174,7 @@ export default class ProductStatement {
         "p.idType",
         "brand",
         "t.nameType",
+        "total",
         sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount`,
       ])
       .leftJoin("type as t", "p.idType", "t.idType")

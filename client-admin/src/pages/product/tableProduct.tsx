@@ -76,6 +76,7 @@ const TableProduct = () => {
                 <TableColumn>TYPE</TableColumn>
                 <TableColumn>BRAND</TableColumn>
                 <TableColumn>DISCOUNT</TableColumn>
+                <TableColumn>TOTAL</TableColumn>
                 <TableColumn>View</TableColumn>
                 <TableColumn>ACTION</TableColumn>
             </TableHeader>
@@ -90,6 +91,7 @@ const TableProduct = () => {
                             <TableCell>{p.nameType}</TableCell>
                             <TableCell>{p.brand}</TableCell>
                             <TableCell>{p.discount}</TableCell>
+                            <TableCell>{p.total}</TableCell>
                             <TableCell>{p.view}</TableCell>
                             <TableCell>
                                 <div className="relative flex items-center justify-around gap-2">

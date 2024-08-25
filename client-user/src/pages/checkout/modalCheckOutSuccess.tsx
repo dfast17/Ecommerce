@@ -21,9 +21,7 @@ const ModalCheckOutSuccess = () => {
                                 d="M256 0C114.84 0 0 114.84 0 256s114.84 256 256 256 256-114.84 256-256S397.16 0 256 0zm0 470.487c-118.265 0-214.487-96.214-214.487-214.487 0-118.265 96.221-214.487 214.487-214.487 118.272 0 214.487 96.221 214.487 214.487 0 118.272-96.215 214.487-214.487 214.487z"
                                 data-original="#000000" />
                         </svg>
-                        <h4 className="text-xl text-gray-800 font-semibold mt-4">Successfully accepted!</h4>
-                        <p className="text-sm text-gray-500 leading-relaxed mt-4">Et leo, enim in non sed quis sed. Auctor natoque auctor risus amet quis
-                            mauris. Interdum et nisi, pellentesque id lectus. Ut bibendum pellentesque arcu luctus sapien.</p>
+                        <h4 className="text-xl text-gray-800 font-semibold mt-4">Your order has been placed</h4>
                     </div>
 
                     <button onClick={() => { setListCheckOut([]); navigate('/') }}

@@ -7,6 +7,7 @@ import { CiTrash } from "react-icons/ci";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import { useFetchData } from "../../hooks/useFetchData";
+import { DatePicker } from "@nextui-org/react";
 
 const FormAddEvent = ({ props }: { props: any }) => {
     const { sale, setSale } = useContext(StateContext)
@@ -66,18 +67,18 @@ const FormAddEvent = ({ props }: { props: any }) => {
                 <div className="tbBody w-2/5 h-full flex items-center justify-center border-r bg-zinc-100 border-black border-solid text-black font-semibold">
                     <input {...register(`title`, { required: true })} type="text" className="w-[95%] h-4/5 bg-transparent rounded-lg outline-none" placeholder="Title" />
                 </div>
-                <div className="tbBody w-[30%] h-full flex items-center justify-center border-r bg-zinc-10 border-black border-solid text-black font-semibold">
-                    <input {...register(`start`, { required: true })} type="date" className="w-[95%] h-4/5 bg-transparent rounded-lg outline-none" placeholder="Date" />
+                <div className="tbBody w-[30%] h-full flex items-center justify-center border-r bg-zinc-10 border-black border-solid text-white font-semibold">
+                    <input type="date" {...register(`start`, { required: true })} className="w-[95%] h-4/5  bg-zinc-500 rounded-lg outline-none px-1" />
                 </div>
-                <div className="tbBody w-[30%] h-full flex items-center justify-center border-r bg-zinc-10 border-black border-solid text-black font-semibold">
-                    <input {...register(`end`, { required: true })} type="date" className="w-[95%] h-4/5 bg-transparent rounded-lg outline-none" placeholder="Date" />
+                <div className="tbBody w-[30%] h-full flex items-center justify-center border-r bg-zinc-10 border-black border-solid text-white font-semibold">
+                    <input {...register(`end`, { required: true })} type="date" className="w-[95%] h-4/5 bg-zinc-500 rounded-lg outline-none px-1" placeholder="Date" />
                 </div>
             </form>
             <div className="tbBody w-2/4 h-full flex flex-wrap items-center justify-start bg-zinc-100 px-2 border-black border-solid text-black font-semibold">
                 <form className="w-full h-auto flex flex-wrap">
                     {dataSale.map((e: any) => (
-                        <div key={e} className="w-[90%] flex items-center mr-4 my-2">
-                            #{e} - <input {...register(`percent-${e}`, { required: true })} type="text" className="w-[30px] h-[30px] flex justify-center items-center rounded-lg bg-transparent border-solid border-slate-300 border outline-none mx-2 px-2" placeholder="%" />
+                        <div key={e} className="w-[99%] flex items-center mr-4 my-2">
+                            #{e} - <input {...register(`percent-${e}`, { required: true, max: 50 })} onChange={(e) => { if (Number(e.target.value) > 50) e.target.value = '50' }} max={50} type="text" className="w-[60px] h-[30px] flex justify-center items-center rounded-lg bg-transparent border-solid border-slate-300 border outline-none mx-2 px-2" placeholder="%" />
                             {'=>'}
                             <Controller
                                 name={`select${e}`}

@@ -86,6 +86,13 @@ const Header = (): JSX.Element => {
         }
       })
   }
+  const handleNavigate = (url: string) => {
+    navigate(url)
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
   const handleSearch = () => {
     inputSearch !== "" && (setNavMob(false), navigate(`/search/${inputSearch}`))
   }
@@ -126,7 +133,7 @@ const Header = (): JSX.Element => {
     <nav className={`w-full sm:w-[65%] lg:w-[40%] h-3/4 flex justify-around items-center transition-all rounded-lg`}>
       {listNav.map((n: NavType) => <div
         key={`header-${n.id}`}
-        onClick={() => { navigate(n.url) }}
+        onClick={() => { handleNavigate(n.url) }}
         className={`nav-content w-1/5 h-4/5 flex flex-col items-center content-center justify-evenly  text-zinc-900 hover:font-semibold transition-all rounded-md cursor-pointer
           
         `}

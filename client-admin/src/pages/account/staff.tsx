@@ -1,4 +1,4 @@
-import { Avatar, Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react"
+import { Avatar, Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from "@nextui-org/react"
 import { userStore } from "../../store/user"
 import { StaffType } from "../../types/types"
 import { StateContext } from "../../context/state"
@@ -61,7 +61,7 @@ const ModalAddStaff = () => {
     const handleChangeCountStaff = (type: string, id?: number) => {
         type === "add" ? setStaffCount((prev: number[]) => [...prev, prev.length + 1]) : setStaffCount((prev: number[]) => prev.filter((s: number) => s !== id))
     }
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: { [key: string]: string }) => {
         const dataCopy = [...staffCount]
         const created_date = new Date().toISOString().split("T")[0]
         const updated_date = new Date().toISOString().split("T")[0]
@@ -148,12 +148,10 @@ const ModalAddStaff = () => {
                                 className={`${errors[`email-${s}`] && "border-red-500"} border border-solid`}
                                 radius="sm"
                             />
-
-                            <Input {...register(`position-${s}`, { required: true })} label="Position"
-                                type="text"
-                                className={`${errors[`position-${s}`] && "border-red-500"} border border-solid`}
-                                radius="sm"
-                            />
+                            <Select label="Position" {...register(`position-${s}`, { required: true })}>
+                                <SelectItem key="staff">Staff</SelectItem>
+                                <SelectItem key="shipper">Shipper</SelectItem>
+                            </Select>
                         </div>
                     </div>)
                 }

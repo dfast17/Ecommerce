@@ -253,20 +253,24 @@ export default class ProductController {
     handleFindData(res, products.findByType(typeName, shortKey, colDetail));
   };
   public getDetail = async (req: Request, res: Response) => {
-    const type = req.params["type"];
     const idProduct = req.params["idProduct"];
+    const data = req.body
+    const type = data.type
+    const role = data.role
     const colType = await products.getColumnByType(type);
     const colDetail = colType.map((c: TypeDetail) => c.name);
     try {
       const result = <ProductType[]>await products.findDetail(Number(idProduct), type, colDetail);
       //Update view product
-      const resultView = convertData([{ view: result[0].view ? result[0].view + 1 : 1 }])
-      const condition: ConditionType = {
-        conditionName: "idProduct",
-        conditionMethod: "=",
-        value: idProduct
+      if (role === "user") {
+        const resultView = convertData([{ view: result[0].view ? result[0].view + 1 : 1 }])
+        const condition: ConditionType = {
+          conditionName: "idProduct",
+          conditionMethod: "=",
+          value: idProduct
+        }
+        const updateView = await statement.updateDataByCondition("products", resultView, condition);
       }
-      const updateView = await statement.updateDataByCondition("products", resultView, condition);
       //
       const parseResult = result.map((e: any) => {
         let subImg = e.img;
@@ -287,6 +291,32 @@ export default class ProductController {
       };
     }
   };
+  public adminGetDetailProduct = async (req: Request, res: Response) => {
+    const type = req.params["type"];
+    const idProduct = req.params["idProduct"];
+    const colType = await products.getColumnByType(type);
+    const colDetail = colType.map((c: TypeDetail) => c.name);
+    try {
+      const result = <ProductType[]>await products.findDetail(Number(idProduct), type, colDetail);
+      const parseResult = result.map((e: any) => {
+        let subImg = e.img;
+        let formatResult = {
+          ...e,
+          imgProduct: subImg.every((c: any) => Object.values(c).every((value) => value === null))
+            ? [{ img: e.imgProduct, type: "default" }]
+            : [{ img: e.imgProduct, type: "default" }, ...subImg],
+
+        };
+        delete formatResult.img;
+        return formatResult;
+      });
+      responseData(res, 200, parseResult);
+    } catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
   public getNew = async (req: Request, res: Response) => {
     handleFindData(res, products.findByCondition("new"));
   };

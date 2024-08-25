@@ -39,7 +39,10 @@ export const getOrderById = async (token: string, id: string) => {
     })
         .then(res => res.json())
 }
-export const updateStatusOrder = async (token: string, data: { id: string, data_update: [{ orderStatus: string, idShipper?: string }] }) => {
+export const updateStatusOrder = async (token: string, data: {
+    id: string, product: { idProduct: number, countProduct: number }[] | null,
+    data_update: [{ orderStatus: string, idShipper?: string }]
+}) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/order/`, {
         method: "PATCH",
         headers: {

@@ -1,13 +1,32 @@
 import { Request, Response } from "express"
 import LogsStatement from "service/logs"
 import { ObjectId } from "mongodb"
-import { RequestCustom } from "types/types"
+import { LogsType, RequestCustom } from "types/types"
 import { handleFindData } from "utils/utils"
+import { responseData, responseMessageData } from "utils/response"
 
 const logsStatement = new LogsStatement()
 export default class LogsController {
     public getLogs = async (req: Request, res: Response) => {
-        handleFindData(res, logsStatement.getLogs())
+        try {
+            const dataLogs: LogsType[] = await logsStatement.getLogs()
+            const convertDate = dataLogs.map((item: any) => {
+                const date = new Date(item.date).toISOString().split("T")[0].split("-").reverse().join("/")
+                return {
+                    _id: item._id,
+                    idUser: item.idUser,
+                    content: item.content,
+                    timestamp: `${date}, ${item.time}`
+                }
+            })
+            responseData(res, 200, convertDate)
+        }
+        catch {
+            (errors: any) => {
+                responseMessageData(res, 500, "Server errors", errors);
+            };
+        }
+        /* handleFindData(res, logsStatement.getLogs()) */
     }
     public removeLogs = async (request: Request, res: Response) => {
         const req = request as RequestCustom

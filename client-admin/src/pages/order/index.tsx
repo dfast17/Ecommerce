@@ -92,9 +92,9 @@ const Order = () => {
 
     order && page === 1 && setData(order.data)
   }
-  useEffect(() => {
-    order && console.log(order)
-  }, [order])
+  /*  useEffect(() => {
+     order && console.log(order)
+   }, [order]) */
   return <div className={`w-full h-auto min-h-[95.6vh] grid grid-cols-3 gap-1 ${isDark ? "bg-[#3d3d3d] text-white" : "bg-[#F5F5F5] text-zinc-950"} p-2`}>
     <div className="order-data h-full col-span-2">
       <div className="w-full h-[80px] col-span-3 row-span-1 flex items-center justify-start">

@@ -106,8 +106,10 @@ const AddProduct = ({ setModalName }: { setModalName: React.Dispatch<React.SetSt
                                     {...registerProduct("nameProduct", { required: "This is not required" })}
                                     placeholder="Name product"
                                 />
-                                <input className={`w-[30%] h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err.price ? 'border-red-500' : 'border-transparent'} px-1`}
+                                <input className={`w-[15%] h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err.price ? 'border-red-500' : 'border-transparent'} px-1`}
                                     type="number"{...registerProduct("price", { required: true, pattern: /^[0-9]+$/ })} placeholder="Price" />
+                                <input className={`w-[15%] h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err.price ? 'border-red-500' : 'border-transparent'} px-1`}
+                                    type="number"{...registerProduct("total", { required: true, pattern: /^[0-9]+$/ })} placeholder="Total" />
                                 <div className="flex items-center justify-around w-full">
                                     <label htmlFor="dropzone-file" className={`flex flex-col items-center justify-center w-[49%] h-40 border-2 ${err.image ? 'border-red-500' : 'border-gray-300'}
                                     border-dashed rounded-lg cursor-pointer bg-gray-700 `}>

@@ -1,6 +1,5 @@
 import express from "express";
 import ProductController from "controllers/product";
-import { verify } from "crypto";
 import { verifyTokenAdmin } from "middlewares/middle";
 const router = express.Router();
 const productController = new ProductController()
@@ -10,7 +9,7 @@ router.get('/search/:key', productController.search)
 router.get('/type/:nameType', productController.getProductByType)
 router.get('/detail/type/:type', productController.getDetailType)
 router.get('/col/:nameType', productController.getColByType)
-router.get('/detail/:type/:idProduct', productController.getDetail)
+router.post('/detail/:idProduct', productController.getDetail)
 router.get('/new', productController.getNew)
 router.get('/view', productController.getView)
 router.get('/sale/all', productController.getAllSaleEvent)

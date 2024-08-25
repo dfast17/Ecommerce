@@ -83,9 +83,10 @@ const Event = () => {
           placeholder={s.title} /> : s.title}
       </div>
       <div className="tbBody w-[15%] h-full flex items-center justify-center font-semibold">
-        {idEdit === s.idSale ? <input type="date" className="w-4/5 h-[90%] border-slate-500 rounded-lg px-2 border-solid border bg-transparent outline-none"
+        {formatDate(s.start_date)}
+        {/* {idEdit === s.idSale ? <input type="date" className="w-4/5 h-[90%] border-slate-500 rounded-lg px-2 border-solid border bg-transparent outline-none"
           onChange={(e) => { setFormValue({ ...formValue, start_date: e.target.value ? e.target.value : formatDate(s.start_date) }) }}
-          placeholder={formatDate(s.start_date)} /> : formatDate(s.start_date)}</div>
+          placeholder={formatDate(s.start_date)} /> : formatDate(s.start_date)} */}</div>
       <div className="tbBody w-[15%] h-full flex items-center justify-center font-semibold">
         {idEdit === s.idSale ? <input type="date" className="w-4/5 h-[90%] border-slate-500 rounded-lg px-2 border-solid border bg-transparent outline-none"
           onChange={(e) => { setFormValue({ ...formValue, end_date: e.target.value ? e.target.value : formatDate(s.end_date) }) }}

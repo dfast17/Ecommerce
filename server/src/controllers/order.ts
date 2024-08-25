@@ -174,11 +174,25 @@ export default class OrderController {
       conditionMethod: "=",
       value: data.id,
     };
-    const logsData = logData(req.idUser, `Update order status to ${data.data_update.orderStatus}`)
+    const logsData = logData(req.idUser, `Update order status to ${data.data_update[0].orderStatus}`)
     try {
       const updateStatus = await statement.updateDataByCondition("order", valueUpdate, condition);
       if (!updateStatus) {
         return responseMessage(res, 401, "Status update failed");
+      }
+      //update total product
+      if (data.data_update[0].orderStatus === "delivery") {
+        console.log(data.dataProduct)
+        const updatePromise = data.product.map((p: { idProduct: number, countProduct: number }) => {
+          db.updateTable("products").set({ total: sql`total - ${p.countProduct}` }).where("idProduct", "=", p.idProduct).execute()
+        })
+        await Promise.all(updatePromise)
+      }
+      if (data.data_update[0].orderStatus === "failed") {
+        const updatePromise = data.product.map((p: { idProduct: number, countProduct: number }) => {
+          db.updateTable("products").set({ total: sql`total + ${p.countProduct}` }).where("idProduct", "=", p.idProduct).execute()
+        })
+        await Promise.all(updatePromise)
       }
       const insertLogs = await logs.create(logsData)
       responseMessage(res, 200, "Update status success");

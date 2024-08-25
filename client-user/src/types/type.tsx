@@ -6,7 +6,8 @@ export interface CartType {
         discount: number,
         nameProduct: string,
         imgProduct: string,
-        price: number
+        price: number,
+        total?: number
     }[]
 }
 export interface CategoryDetailType {
@@ -67,6 +68,7 @@ export interface ProductType {
     nameType: string,
     view: number,
     brand: string,
+    total?: number
     detail?: any[]
     action?: "show" | "hide"
 }

@@ -51,7 +51,6 @@ export default class CommentController {
       if (!result) {
         responseMessageData(res, 401, `Add comment is failed`);
       }
-      console.log(result)
       responseMessageData(res, 201, `Add comment is success`, { id: Number(result.insertId) });
     } catch {
       (errors: any) => {

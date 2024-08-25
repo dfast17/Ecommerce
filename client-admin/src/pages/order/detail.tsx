@@ -10,7 +10,7 @@ import { IoPrintOutline } from "react-icons/io5";
 import { HiOutlineDuplicate } from "react-icons/hi";
 import { BsThreeDots } from "react-icons/bs";
 import { StateContext } from "../../context/state";
-import { OrderType, ShipperType, StatusValueType } from "../../types/types";
+import { OrderDetailType, OrderType, ShipperType, StatusValueType } from "../../types/types";
 import { ShipperNextValue, statusNextValue } from "../../utils/utils";
 import { updateStatusOrder } from "../../api/order";
 import { GetToken } from "../../utils/token";
@@ -89,11 +89,20 @@ const OrderDetail = ({ id, info, setInfo, detail, currentStatus, setDetail, btnS
             dataUpdate.idShipper = idShip;
             isFetch = true
         }
+
         if (nextStatus === "failed") {
             dataUpdate.note = note
             isFetch = true
         }
-        isFetch && token && nextStatus && id && updateStatusOrder(token, { id: id, data_update: [dataUpdate] })
+        const listProduct = detail && detail.map((f: OrderDetailType) => ({
+            idProduct: f.idProduct,
+            countProduct: f.countProduct
+        }))
+        isFetch && token && nextStatus && id && updateStatusOrder(token, {
+            id: id,
+            product: (nextStatus === "failed" || nextStatus === "delivery") && detail ? listProduct : null,
+            data_update: [dataUpdate]
+        })
             .then(res => {
                 alert(res.message)
                 if (res.status === 200) {
@@ -101,7 +110,7 @@ const OrderDetail = ({ id, info, setInfo, detail, currentStatus, setDetail, btnS
                     setCurrentStatus(nextStatus)
                     setNextStatus(null)
                     setIdShip("")
-                    setOrder(order.map((ord: OrderType) => ord.idOrder === id ? { ...ord, ...dataUpdate } : ord))
+                    setOrder({ ...order, data: order.data.map((ord: OrderType) => ord.idOrder === id ? { ...ord, ...dataUpdate } : ord) })
                     setInfo(info.map((inf: any) => ({ ...inf, ...dataUpdate })))
                 }
             })
@@ -143,7 +152,7 @@ const OrderDetail = ({ id, info, setInfo, detail, currentStatus, setDetail, btnS
                         <Tab key="items" title="Order Items">
                             <Card classNames={{ base: "bg-transparent shadow-none" }}>
                                 <CardBody className="border-b border-solid border-zinc-500">
-                                    {detail && detail.map((d: any) => <div className="relative w-full h-auto flex flex-wrap justify-center content-start p-1">
+                                    {detail && detail.map((d: OrderDetailType) => <div className="relative w-full h-auto flex flex-wrap justify-center content-start p-1">
                                         {d.discount !== 0 && <div className="absolute w-[60px] h-[20px] top-1 right-1 text-white bg-red-600 rounded-sm flex justify-center items-center">-{d.discount}%</div>}
                                         <div className="images w-[60px] h-[60px] flex items-center justify-center">
                                             <img src={d.imgProduct} className="w-full h-full object-contain" />

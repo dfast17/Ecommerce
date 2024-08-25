@@ -5,7 +5,7 @@ const Slideshow = () => {
   const [index, setIndex] = useState(0);
   const [data, setData] = useState<any[] | null>(null);
   useEffect(() => {
-    product && setData(product.filter((f: any) => f.type === "laptop")[0].data.filter((f: any) => f.view > 24))
+    product && setData(product.filter((f: any) => f.type === "laptop")[0].data.filter((f: any) => f.view > 24).slice(0, 5))
   }, [product]);
   const timeoutRef = useRef<any | null>(null);
   const delay = 10000;

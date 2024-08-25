@@ -1,10 +1,10 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { CartType, ProductType } from "../types/type";
 import { cartInsert, cartRemove, cartUpdate } from "../api/user";
 import { GetToken } from "../utils/token";
 import { userStore } from "../store/user";
 import { toast } from 'react-toastify';
-
+import _ from "lodash";
 export const CartContext = createContext<any>({});
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const { user } = userStore()
@@ -31,6 +31,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                                     imgProduct: data.imgProduct as string,
                                     nameProduct: data.nameProduct,
                                     price: Number(data.price),
+                                    total: Number(data.total)
                                 }]
                             }
                             cart && setCart([dataCart, ...cart])
@@ -42,19 +43,34 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
     }
-    const updateCount = (idCart: number, count: number) => {
+    const debounceUpdate = useCallback(_.debounce((idCart: number, count: number) => {
         cartUpdate(idCart, count)
             .then(res => {
-                if (res.status === 200) {
+                if (res.status !== 200) {
+                    // Xử lý lỗi nếu cần
                     cart && setCart(cart.map((c: CartType) => {
                         return {
                             ...c,
-                            countProduct: c.idCart === idCart ? count : c.countProduct
-                        }
-                    }))
+                            countProduct: c.idCart === idCart ? count - 1 : c.countProduct
+                        };
+                    }));
                 }
-            })
-    }
+            });
+    }, 500), []);
+
+    const updateCount = (idCart: number, count: number) => {
+        // Cập nhật trạng thái ở đây
+        cart && setCart(cart.map((c: CartType) => {
+            return {
+                ...c,
+                countProduct: c.idCart === idCart ? count : c.countProduct
+            }
+        }));
+
+        // Gọi hàm debounce đã được khai báo
+        debounceUpdate(idCart, count);
+    };
+
     const removeItemCart = (listId: number[]) => {
         cartRemove(listId)
             .then(res => {

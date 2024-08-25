@@ -9,15 +9,17 @@ export interface RequestCustom extends Request {
 }
 export type OrderStatusType = "pending" | "prepare" | "shipping" | "delivery" | "canceled" | "success" | "failed";
 export interface LogsType {
-  timestamp: string,
   idUser: string,
-  content: string
+  content: string,
+  date: Date,
+  time: string
 }
 export interface ProductType {
   idProduct: number,
   nameProduct: string,
   price: number,
   imgProduct: string,
+  total?: number
   dateAdded?: Date
   des?: string,
   view?: number,
