@@ -34,7 +34,7 @@ const User = () => {
     }
   ]
   return user && <div className="user w-full h-auto min-h-screen p-2 flex items-center justify-center">
-    <div className="user w-[85%] h-auto min-h-[500px] flex flex-wrap justify-around items-center">
+    <div className="user w-[90%] h-auto min-h-[500px] flex flex-wrap justify-around items-center">
       <div className="w-full 2xl:w-1/5 h-auto min-h-[100px] 2x:h-[500px] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-1 2xl:border-r 2x:border-r-solid 2xl:border-zinc-900 py-10">
         {componentList.map((c: any) => <div
           onClick={() => setActiveComponent(c.displayName)}

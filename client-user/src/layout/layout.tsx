@@ -13,7 +13,7 @@ const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const location = useLocation()
   const { isLoading } = useContext(StateContext)
   return location.pathname !== "/auth" ?
-    <section className="w-full h-auto min-h-screen flex flex-wrap content-start justify-center">
+    <section className="w-full h-auto min-h-screen flex flex-wrap content-start justify-center overflow-x-hidden">
       {isLoading && <LoadingComponent />}
       <ToastContainer />
       <Header />

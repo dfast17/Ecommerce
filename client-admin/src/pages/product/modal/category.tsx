@@ -59,10 +59,10 @@ const ModalCateDetail = ({ name }: { name: string }) => {
             return false
         }
         const token = await GetToken()
-        const colRowInsert = addCol.colNumber.map((n: number) => ({
+        const colRowInsert = addCol.colNumber.map((n: number, index: number) => ({
             name: data[`name-${n}`],
             displayname: data[`displayname-${n}`],
-            displayorder: Number(data[`displayorder-${n}`]),
+            displayorder: dataCate && dataCate[0].detail.length + (index + 1),
             datatypes: data[`option${n}`],
             type: name,
         }))
@@ -136,7 +136,7 @@ const ModalCateDetail = ({ name }: { name: string }) => {
                             {addCol.add && addCol.colNumber.map((c: number) => <div className="w-full grid grid-cols-12 gap-2 items-center my-2" key={`col-${c}`}>
                                 <Input {...register(`name-${c}`, { required: true })} className="col-span-3" size="sm" label="Name" />
                                 <Input {...register(`displayname-${c}`, { required: true })} className="col-span-2" size="sm" label="Displayname" />
-                                <Input {...register(`displayorder-${c}`, { required: true })} className="col-span-2" size="sm" label="Displayorder" />
+                                {/* <Input {...register(`displayorder-${c}`, { required: true })} className="col-span-2" size="sm" label="Displayorder" /> */}
                                 <select {...register(`option${c}`, { required: true })} className="col-span-2 h-full rounded-md">
                                     <option value="varchar">Text</option>
                                     <option value="integer">Number</option>
@@ -157,7 +157,7 @@ const ModalCateDetail = ({ name }: { name: string }) => {
                             <div className={`grid grid-cols-4 gap-2 my-3`} key={item.id}>
                                 <Input isReadOnly={idEdit === item.id ? false : true} onChange={e => formEdit && setFormEdit({ ...formEdit, name: e.target.value })} defaultValue={item.displayname.toLocaleUpperCase()} label="Display name" />
                                 <Input isReadOnly defaultValue={item.datatypes} label="Data type" />
-                                <Input isReadOnly={idEdit === item.id ? false : true} defaultValue={item.displayorder} label="Display order" />
+                                <Input isReadOnly defaultValue={item.displayorder} label="Display order" />
                                 <div className="flex items-center justify-evenly">
                                     {(!idEdit || idEdit !== item.id) && <Button size="sm" color="primary"
                                         onClick={() => { setIdEdit(item.id); setFormEdit({ id: item.id, name: item.displayname }) }

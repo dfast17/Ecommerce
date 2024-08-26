@@ -29,11 +29,11 @@ const AddCategory = ({ setModalName }: { setModalName: React.Dispatch<React.SetS
         setInputs(inputs.filter(e => e !== Number(index)))
     }
     const onSubmit = async (data: any) => {
-        const arrayObj = inputs.map((value) => ({
+        const arrayObj = inputs.map((value, index: number) => ({
             name: data[`name-${value}`],
             datatypes: data[`option${value}`],
             limit: data[`option${value}`] === 'varchar' ? Number(data[`limit-${value}`]) : 0,
-            displayorder: data[`order-${value}`],
+            displayorder: index + 1,
             displayname: data[`displayname-${value}`]
         }));
         const dataInsert = {
@@ -105,13 +105,13 @@ const AddCategory = ({ setModalName }: { setModalName: React.Dispatch<React.SetS
                                                 {...register(`displayname-${input}`, { required: true })}
                                                 placeholder="Display name"
                                             />
-                                            <input
+                                            {/* <input
                                                 className={`w-[45%] lg:w-[15%] h-[40px] lg:h-full bg-zinc-800 text-white ${err[`order-${input}`] ? 'border-solid border-red-500 border-[1px]' : 'border-transparent'} my-2 rounded-lg outline-none px-2`}
 
                                                 {...register(`order-${input}`, { required: true })}
                                                 placeholder="Display order"
 
-                                            />
+                                            /> */}
                                             <Button isIconOnly size="sm" onClick={(e) => { e.preventDefault(); delCol(input) }}
                                                 className="h-[40px] lg:h-full my-2 bg-red-600 text-white font-bold rounded-lg">
                                                 <FaRegTrashAlt className="text-[20px]" />

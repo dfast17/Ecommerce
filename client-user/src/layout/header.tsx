@@ -14,7 +14,6 @@ import { CartContext } from "../context/cartContext";
 import { CartType } from "../types/type";
 import Product_layout_02 from "../components/product/layout_02";
 import { GetToken, RemoveToken } from "../utils/token";
-import { removeLocalStorage } from "../utils/localStorage";
 import { authLogout } from "../api/auth";
 import { IconType } from "react-icons";
 
@@ -125,10 +124,11 @@ const Header = (): JSX.Element => {
           }
         />
       </div>
-      {listNavMobile.map((n: NavType) => <div className="w-full h-[50px] flex justify-start items-center my-1 px-2" key={n.id}>
+      {listNavMobile.map((n: NavType) => <div className="w-full h-[50px] flex justify-start items-center my-1 px-2" onClick={() => { handleNavigate(n.url) }} key={n.id}>
         {<n.icon className="text-[20px] text-zinc-50" />} <span className="mx-2 text-zinc-950 text-[20px]">{n.name}</span>
       </div>
       )}
+      <Button size="sm" radius="sm" color="danger" onClick={() => isLogin ? handleLogout() : navigate("/auth")}>{isLogin ? "Logout" : "Login"}</Button>
     </nav>
     <nav className={`w-full sm:w-[65%] lg:w-[40%] h-3/4 flex justify-around items-center transition-all rounded-lg`}>
       {listNav.map((n: NavType) => <div

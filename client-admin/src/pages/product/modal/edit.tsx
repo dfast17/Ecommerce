@@ -253,9 +253,10 @@ const ModalEdit = ({ id, nameType, setModalName }: { id: number | string, nameTy
 
                   )}
                 </div>
-                <Input {...regisInfo('nameProduct', { required: true })} defaultValue={d.nameProduct} className={`w-2/4 text-2xl font-bold sm:text-3xl ${isDark ? "text-zinc-50" : "text-zinc-950"} my-1`} />
-                <Input {...regisInfo('price', { required: true })} type="text" defaultValue={d.price} className="w-[24%] my-1" />
-                <Input {...regisInfo('brand', { required: true })} type="text" defaultValue={d.brand} className="w-[24%] my-1" />
+                <Input {...regisInfo('nameProduct', { required: true })} label="Name Product" defaultValue={d.nameProduct} className={`w-2/4 text-2xl font-bold sm:text-3xl ${isDark ? "text-zinc-50" : "text-zinc-950"} my-1`} />
+                <Input {...regisInfo('price', { required: true })} label="Price" type="text" defaultValue={d.price} className="w-[15%] my-1" />
+                <Input {...regisInfo('total', { required: true })} label="Total" type="text" defaultValue={d.total} className="w-[15%] my-1" />
+                <Input {...regisInfo('brand', { required: true })} label="Brand" type="text" defaultValue={d.brand} className="w-[15%] my-1" />
                 <Textarea
                   {...regisInfo('des')}
                   labelPlacement="outside"

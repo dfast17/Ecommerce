@@ -13,7 +13,8 @@ const Password = () => {
   const onSubmit = async (data: FormValue) => {
     console.log(data)
     if (data.confirm !== data.new) {
-      alert("Confirm password does not match with password!")
+      toast.error("Confirm password does not match with password!")
+      return
     }
     const dataUpdate = {
       current: data.current,

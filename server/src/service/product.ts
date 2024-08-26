@@ -116,6 +116,7 @@ export default class ProductStatement {
         "brand",
         "t.nameType",
         "p.view",
+        "total",
         "p.status as action",
         jsonArrayFrom(
           eb.selectFrom("imageProduct as i").select(["type", "img"]).whereRef(`i.idProduct`, "=", "p.idProduct")

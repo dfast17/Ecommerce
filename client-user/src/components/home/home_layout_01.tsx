@@ -1,4 +1,3 @@
-import Product_Layout_01 from "../product/layout_01"
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick"
@@ -92,7 +91,12 @@ const Home_layout_01 = ({ data, k, title, subTitle, link, banner }: HomeLayout01
                         backgroundSize: 'contain',
                         clipPath: 'polygon(21% 1%, 99.5% 1px, 99.5% 59%, 79% 99%, 1px 99%, 1px 41%)'
                     }}
-                    onClick={() => navigate(link)}
+                    onClick={() => {
+                        navigate(link), window.scrollTo({
+                            top: 0,
+                            behavior: "smooth"
+                        });
+                    }}
                 >
                     See all
                 </div>

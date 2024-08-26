@@ -4,13 +4,16 @@ import { PostType } from "../../types/types"
 import { Button, Code, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react"
 import { formatDate } from "../../utils/utils"
 import { TbTrash } from "react-icons/tb"
+import { BiDetail } from "react-icons/bi";
 import { GetToken } from "../../utils/token"
 import { removePost } from "../../api/post"
 import { toast } from "react-toastify"
+import ModalPostDetail from "./modalDetail"
 const Post_data = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
     const { post, setPost } = useContext(StateContext)
     const [idDel, setIdDel] = useState<number | null>(null)
+    const [id, setId] = useState<number | null>(null)
     const handleDeletePost = async (onClose: () => void) => {
         const token = await GetToken()
         token && idDel && removePost(token, idDel).then((res) => {
@@ -29,8 +32,13 @@ const Post_data = () => {
             >
                 <div
                     onClick={() => { setIdDel(e.idPost); onOpen() }}
-                    className="absolute top-2 left-2 hidden group-hover:flex items-center justify-center w-[60px] h-[30px] bg-red-500 z-10 rounded-md cursor-pointer transition-all">
+                    className="absolute top-2 left-2 hidden group-hover:flex items-center justify-center w-[60px] h-[30px] bg-red-500 z-20 rounded-md cursor-pointer transition-all">
                     <TbTrash className="w-4/5 h-4/5 text-white" />
+                </div>
+                <div
+                    onClick={() => { setId(e.idPost); onOpen() }}
+                    className="absolute top-2 left-20 hidden group-hover:flex items-center justify-center w-[60px] h-[30px] bg-green-500 z-20 rounded-md cursor-pointer transition-all">
+                    <BiDetail className="w-4/5 h-4/5 text-white" />
                 </div>
                 <div className="overlay absolute top-0 left-0 w-full h-full flex items-center justify-center bg-zinc-950 bg-opacity-60 rounded-md cursor-pointer z-0"></div>
                 <div className="relative w-full h-auto flex items-center justify-center text-[35px] text-center font-bold font-tech-shark text-white cursor-pointer z-10">
@@ -46,8 +54,8 @@ const Post_data = () => {
                 </div>
             </div>)}
         </div>
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="lg">
-            <ModalContent>
+        <Modal size={id ? "5xl" : "md"} isOpen={isOpen} onOpenChange={() => { onOpenChange(), setId(null) }}>
+            {id === null && <ModalContent>
                 {(__onClose) => <>
                     <ModalHeader>Delete post</ModalHeader>
                     <ModalBody>Are you sure you want to delete this post? This cannot be undone.</ModalBody>
@@ -56,7 +64,8 @@ const Post_data = () => {
                         <Button color="danger" onClick={() => handleDeletePost(__onClose)}>Delete</Button>
                     </ModalFooter>
                 </>}
-            </ModalContent>
+            </ModalContent>}
+            {id && <ModalPostDetail idPost={id} setId={setId} />}
         </Modal>
 
 
