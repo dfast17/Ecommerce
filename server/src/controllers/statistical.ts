@@ -13,6 +13,9 @@ export default class StatisticalController {
     public order = (req: Request, res: Response) => {
         handleFindData(res, statisticalStatement.order())
     }
+    public countOrder = (req: Request, res: Response) => {
+        handleFindData(res, statisticalStatement.countOrder())
+    }
     public commentPost = (req: Request, res: Response) => {
         handleFindData(res, statisticalStatement.commentPost())
     }

@@ -62,6 +62,7 @@ const ModalAddStaff = () => {
         type === "add" ? setStaffCount((prev: number[]) => [...prev, prev.length + 1]) : setStaffCount((prev: number[]) => prev.filter((s: number) => s !== id))
     }
     const onSubmit = async (data: { [key: string]: string }) => {
+
         const dataCopy = [...staffCount]
         const created_date = new Date().toISOString().split("T")[0]
         const updated_date = new Date().toISOString().split("T")[0]
@@ -148,7 +149,7 @@ const ModalAddStaff = () => {
                                 className={`${errors[`email-${s}`] && "border-red-500"} border border-solid`}
                                 radius="sm"
                             />
-                            <Select label="Position" {...register(`position-${s}`, { required: true })}>
+                            <Select classNames={{ popoverContent: `${isDark ? "text-white" : "text-zinc-950"}` }} label="Position" {...register(`position-${s}`, { required: true })}>
                                 <SelectItem key="staff">Staff</SelectItem>
                                 <SelectItem key="shipper">Shipper</SelectItem>
                             </Select>

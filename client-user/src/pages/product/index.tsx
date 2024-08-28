@@ -30,19 +30,21 @@ const Product = () => {
         FilterData()
     }, [filter, product, currentType])
     SortedData(currentData, filter.price, setCurrentData, setActivePage)
-    return <div className='product w-full h-auto flex flex-col items-center justify-center overflow-hidden'>
-        <div className='filter w-[90%] flex flex-wrap my-4 text-zinc-900'>
+    return <div className='product w-full h-auto flex flex-wrap items-center justify-center overflow-hidden'>
+        <div className='filter w-[90%] flex flex-wrap my-4 p-10 text-zinc-900'>
             {product && <FilterType type={product.sort((a: any, b: any) => a.idType - b.idType).map((f: any) => f.type)} currentType={currentType} setCurrentType={setCurrentType} />}
             {product && <FilterBrand listBrand={listBrand} setFilter={setFilter} filterData={filter} />}
             <FilterPrice setFilter={setFilter} filterData={filter} />
             <Button size='sm' radius='sm' color='danger' className='mx-1' onClick={() => { setFilter({ brand: [], price: "", detail: [] }) }}>CLEAR</Button>
         </div>
-        <div className='product-layout w-full md:w-[90%] h-auto min-h-[760px] grid grid-cols-1 ssm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-            {currentData && currentData.slice((12 * activePage) - 12, 12 * activePage).map((d: ProductType) =>
-                <Product_Layout_01 data={d} key={`product-${d.idProduct}`} />)}
+        <div className='product-layout w-full md:w-[90%] h-auto min-h-[760px] flex flex-wrap justify-center'>
+            <div className='w-full md:w-[90%] h-auto min-h-[760px] grid grid-cols-1 ssm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
+                {currentData && currentData.slice((12 * activePage) - 12, 12 * activePage).map((d: ProductType) =>
+                    <Product_Layout_01 data={d} key={`product-${d.idProduct}`} />)}
+            </div>
+            {currentData && <Pagination className='my-2' isCompact size="lg" showControls page={activePage} total={pagination(12, currentData.length)}
+                initialPage={1} onChange={(e) => { setActivePage(e) }} />}
         </div>
-        {currentData && <Pagination isCompact size="lg" showControls page={activePage} total={pagination(12, currentData.length)}
-            initialPage={1} onChange={(e) => { setActivePage(e) }} />}
     </div>
 }
 

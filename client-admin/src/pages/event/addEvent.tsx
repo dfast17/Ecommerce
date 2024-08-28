@@ -7,7 +7,6 @@ import { CiTrash } from "react-icons/ci";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import { useFetchData } from "../../hooks/useFetchData";
-import { DatePicker } from "@nextui-org/react";
 
 const FormAddEvent = ({ props }: { props: any }) => {
     const { sale, setSale } = useContext(StateContext)
@@ -78,7 +77,10 @@ const FormAddEvent = ({ props }: { props: any }) => {
                 <form className="w-full h-auto flex flex-wrap">
                     {dataSale.map((e: any) => (
                         <div key={e} className="w-[99%] flex items-center mr-4 my-2">
-                            #{e} - <input {...register(`percent-${e}`, { required: true, max: 50 })} onChange={(e) => { if (Number(e.target.value) > 50) e.target.value = '50' }} max={50} type="text" className="w-[60px] h-[30px] flex justify-center items-center rounded-lg bg-transparent border-solid border-slate-300 border outline-none mx-2 px-2" placeholder="%" />
+                            #{e} - <input {...register(`percent-${e}`, { required: true, max: 50 })}
+                                onChange={(e) => { if (Number(e.target.value) > 50) e.target.value = '50' }} max={50} type="text"
+                                className="w-[60px] h-[30px] flex justify-center items-center rounded-lg bg-transparent border-solid border-slate-300 border outline-none mx-2 px-2"
+                                placeholder="%" />
                             {'=>'}
                             <Controller
                                 name={`select${e}`}

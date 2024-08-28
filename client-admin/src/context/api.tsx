@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect } from "react";
-import { statisticalCommentPost, statisticalCommentProduct, statisticalOrder, statisticalProduct, statisticalRevenue, statisticalUser } from "../api/statistical";
+import { statisticalCommentPost, statisticalCommentProduct, statisticalOrder, statisticalProduct, statisticalRevenue, statisticalUser, statistocalOrderCount } from "../api/statistical";
 import { StateContext } from "./state";
 import { useFetchData, useFetchDataByKey } from "../hooks/useFetchData";
 import { productStore } from "../store/product";
@@ -17,21 +17,27 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const fetchStatistical = async () => {
             //cPostdata is comment_post_data and cProductData is comment_product_data
-            const [productData, userData, revenueData, orderData, cPostData, cProductData] = await Promise.all([
+            const [productData, userData, revenueData, orderData, orderCount, cPostData, cProductData] = await Promise.all([
                 statisticalProduct(),
                 statisticalUser(),
                 statisticalRevenue(),
                 statisticalOrder(),
+                statistocalOrderCount(),
                 statisticalCommentPost(),
                 statisticalCommentProduct()
 
             ])
-            if (productData.status === 200 && userData.status === 200 && revenueData.status === 200 && orderData.status === 200, cPostData.status === 200 && cProductData.status === 200) {
+            if (productData.status === 200 && userData.status === 200
+                && revenueData.status === 200 && orderData.status === 200
+                && cPostData.status === 200 && cProductData.status === 200
+                && orderCount.status === 200
+            ) {
                 setStatistical({
                     product: productData.data,
                     user: userData.data,
                     revenue: revenueData.data,
                     order: orderData.data,
+                    countOrder: orderCount.data,
                     commentPost: cPostData.data,
                     commentProduct: cProductData.data
                 });

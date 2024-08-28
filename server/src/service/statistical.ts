@@ -54,6 +54,38 @@ export default class StatisticalStatement {
             .limit(5)
             .execute()
     }
+    public countOrder = async () => {
+        return await db.selectFrom("order")
+            .select((eb: any) => [
+                eb.fn.count("idOrder").as("total")
+                , eb
+                    .selectFrom("order")
+                    .select((eb: any) => eb.fn.count("idOrder").as("new"))
+                    .where("created_at", ">", sql<string>`DATE_FORMAT(DATE_SUB(CURDATE(),INTERVAL 1 MONTH), '%Y-%m')`)
+                    .as("new")
+                , eb
+                    .selectFrom("order")
+                    .select((eb: any) => eb.fn.count("idOrder").as("pending"))
+                    .where("orderStatus", "=", "pending")
+                    .as("pending")
+                , eb
+                    .selectFrom("order")
+                    .select((eb: any) => eb.fn.count("idOrder").as("delivery"))
+                    .where("orderStatus", "=", "delivery")
+                    .as("delivery")
+                , eb
+                    .selectFrom("order")
+                    .select((eb: any) => eb.fn.count("idOrder").as("shipping"))
+                    .where("orderStatus", "=", "shipping")
+                    .as("shipping")
+                , eb
+                    .selectFrom("order")
+                    .select((eb: any) => eb.fn.count("idOrder").as("success"))
+                    .where("orderStatus", "=", "success")
+                    .as("success")
+            ])
+            .execute()
+    }
     public commentPost = async () => {
         return await db.selectFrom("commentPost")
             .select<any>(["id", "u.idUser", "u.nameUser", "commentValue", "created_date"])

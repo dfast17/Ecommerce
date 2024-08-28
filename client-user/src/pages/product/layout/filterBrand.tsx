@@ -21,9 +21,10 @@ const FilterBrand = ({ listBrand, setFilter, filterData }: FilBrand) => {
   return <Popover showArrow placement="bottom">
     <PopoverTrigger>
       <Button
+        variant="bordered"
         size="sm"
         radius="sm"
-        color="primary"
+        color="default"
         className="mx-1"
       >
         BRAND
@@ -33,11 +34,11 @@ const FilterBrand = ({ listBrand, setFilter, filterData }: FilBrand) => {
       <div className="px-1 py-2 w-full">
         <div className="mt-2 flex flex-col gap-2 w-full">
           {listBrand.map((b: string) =>
-            <Checkbox 
-            defaultSelected={filterData.brand.includes(b)}
-            onClick={() => { setFilterBrand(b) }} 
-            classNames={{ base: cn("inline-flex w-full max-w-md bg-content1",), label: ["w-full"] }}
-            key={`checkbox-brand-${b}`}
+            <Checkbox
+              defaultSelected={filterData.brand.includes(b)}
+              onClick={() => { setFilterBrand(b) }}
+              classNames={{ base: cn("inline-flex w-full max-w-md bg-content1",), label: ["w-full"] }}
+              key={`checkbox-brand-${b}`}
             >
               {b.toLocaleUpperCase()}
             </Checkbox>)}

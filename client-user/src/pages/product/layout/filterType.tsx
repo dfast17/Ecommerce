@@ -1,15 +1,15 @@
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
 
-const FilterType = ({type,currentType,setCurrentType}:{type:string[],currentType:string,setCurrentType:React.Dispatch<React.SetStateAction<string>>}) => {
+const FilterType = ({ type, currentType, setCurrentType }: { type: string[], currentType?: string, setCurrentType: React.Dispatch<React.SetStateAction<string>> }) => {
   return <Dropdown>
     <DropdownTrigger>
       <Button
-        variant="solid"
+        variant="bordered"
         radius='sm'
         size='sm'
-        color='primary'
+        color='default'
       >
-        {currentType.toLocaleUpperCase()}
+        {currentType ? currentType.toLocaleUpperCase() : "Type"}
       </Button>
     </DropdownTrigger>
     <DropdownMenu aria-label="Static Actions">

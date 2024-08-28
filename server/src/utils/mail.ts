@@ -45,7 +45,7 @@ export const handleSendMail = (res: any, data: any) => {
             await transport.sendMail(mailOptions)
             res.status(200).json({ status: 200, message: 'Email sent successfully.' })
         } catch (error: any) {
-            /* console.log(error) */
+            console.log(error)
             res.status(500).json({ err: error.message });
         }
     }

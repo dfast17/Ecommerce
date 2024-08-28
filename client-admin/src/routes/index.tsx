@@ -1,6 +1,6 @@
 import Auth from "../pages/auth";
 import Dashboard from "../pages/dashboard";
-import Order from "../pages/order";
+import Order from "../pages/event";
 import Post from "../pages/post";
 import Product from "../pages/product";
 import Account from "../pages/account";

@@ -8,6 +8,7 @@ interface statisticalType {
     user: any[] | null,
     revenue: any[] | null,
     order: any[] | null,
+    countOrder: any[] | null,
     commentPost: any[] | null,
     commentProduct: any[] | null
 }
@@ -22,7 +23,11 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isLogin, setIsLogin] = useState<boolean>(true)
     const [isDark, setIsDark] = useState<boolean>(false)
-    const [statistical, setStatistical] = useState<statisticalType>({ product: null, user: null, revenue: null, order: null, commentPost: null, commentProduct: null })
+    const [statistical, setStatistical] = useState<statisticalType>({
+        product: null, user: null, revenue: null,
+        order: null, countOrder: null,
+        commentPost: null, commentProduct: null
+    })
     const [role, setRole] = useState<number | null>(null)
     const [position, setPosition] = useState<string | null>(null)
     const [post, setPost] = useState<PostType[] | null>(null)
